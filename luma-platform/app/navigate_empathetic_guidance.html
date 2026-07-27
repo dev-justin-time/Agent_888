@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation | Your Empathetic Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Manrope:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#003824",
+                    "secondary-container": "#374b44",
+                    "tertiary": "#a8cfbc",
+                    "surface-container-high": "#1d2d28",
+                    "on-primary-fixed": "#002113",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#6ffbbe",
+                    "tertiary-container": "#84ab98",
+                    "secondary": "#b5cbc3",
+                    "surface-tint": "#4edea3",
+                    "primary": "#4edea3",
+                    "on-tertiary-container": "#1b3f31",
+                    "surface-dim": "#061612",
+                    "surface-bright": "#2c3d37",
+                    "on-tertiary-fixed-variant": "#294e3f",
+                    "tertiary-fixed-dim": "#a8cfbc",
+                    "on-secondary-fixed-variant": "#374b44",
+                    "surface-container": "#12231e",
+                    "outline": "#86948a",
+                    "tertiary-fixed": "#c3ecd7",
+                    "surface": "#061612",
+                    "inverse-primary": "#006c49",
+                    "on-secondary-fixed": "#0b1f1a",
+                    "inverse-on-surface": "#23342f",
+                    "primary-container": "#10b981",
+                    "surface-container-lowest": "#02110d",
+                    "on-secondary-container": "#a4bab2",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#d4e7df",
+                    "on-tertiary-fixed": "#002115",
+                    "on-error": "#690005",
+                    "background": "#061612",
+                    "on-surface-variant": "#bbcabf",
+                    "on-tertiary": "#113729",
+                    "on-secondary": "#21342e",
+                    "on-surface": "#d4e7df",
+                    "error-container": "#93000a",
+                    "surface-variant": "#283833",
+                    "secondary-fixed-dim": "#b5cbc3",
+                    "outline-variant": "#3c4a42",
+                    "surface-container-highest": "#283833",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "secondary-fixed": "#d1e8df",
+                    "on-primary-container": "#00422b",
+                    "surface-container-low": "#0e1f1a",
+                    "on-background": "#d4e7df"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "section-gap": "48px",
+                    "container-margin": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(18, 35, 30, 0.6);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .luma-bubble {
+            border-bottom-left-radius: 4px;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+
+        .user-bubble {
+            border-bottom-right-radius: 4px;
+            background: linear-gradient(135deg, #10b981 0%, #005236 100%);
+        }
+
+        .luma-glow {
+            filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.3));
+        }
+
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .input-glow:focus-within {
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.15);
+            border-color: rgba(78, 222, 163, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Atmospheric Background Shader -->
+
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full bg-surface/80 dark:bg-surface/80 backdrop-blur-xl text-primary dark:text-primary shadow-sm border-b border-white/10 flex justify-between items-center px-container-margin h-16 w-full z-50">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-primary-container/20 border border-primary/30 luma-glow transition-all duration-200 active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="spa" style="font-variation-settings: 'FILL' 1;">spa</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-semibold text-primary">LumaNation</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full hover:bg-surface-variant/50 transition-all duration-200 active:scale-95 flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-white/10 overflow-hidden shadow-sm transition-all duration-200 active:scale-95">
+<img class="w-full h-full object-cover" data-alt="A serene close-up portrait of a diverse person with a calm expression, softly lit by warm, emerald-hued ambient light in a dark, atmospheric setting. The style is cinematic and high-fidelity, reflecting the LumaNation sanctuary aesthetic with deep shadows and soft green highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnkEJxkFfLeWU3o6R5m-zkBrr-qZi5ubosJLHqnghiWtqvDDZUsaHSIFXJfwBUfgdts-1YNdPRWjlxe0lu9OAp5H-jPiO-fsMB-LbwUYXrD9dZ_NtLFLN459XUzydinRuN-I5fXn2sC8i0wb_B-ZWOK3Iu5yGbg2PWN4WMdEXgmI38PsmLqSfJqrs9FjXgFeefo60FJTo2RNbtpVfKqMldl0nWFt3lgj4TxzOAuQa-pA09qptcU52JgQlrFXhxR6UzZjFWrpKrIcaW"/>
+</div>
+</div>
+</header>
+<!-- Main Chat Canvas -->
+<main class="flex-grow pt-20 pb-32 px-container-margin overflow-y-auto scroll-hide z-10 relative">
+<div class="max-w-3xl mx-auto flex flex-col space-y-gutter">
+<!-- Date/Time Anchor -->
+<div class="flex justify-center my-section-gap">
+<span class="px-4 py-1 rounded-full bg-surface-container-high/40 text-on-surface-variant/60 font-label-sm text-label-sm border border-white/5">
+                    Today's Sanctuary
+                </span>
+</div>
+<!-- Luma Greeting -->
+<div class="flex items-end gap-3 group">
+<div class="w-8 h-8 rounded-full bg-primary-container/10 border border-primary/20 flex items-center justify-center shrink-0 mb-1 animate-float">
+<span class="material-symbols-outlined text-primary scale-75" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div class="luma-bubble glass-panel px-6 py-4 rounded-[28px] max-w-[85%] text-on-surface transition-transform duration-300">
+<p class="font-body-md text-body-md leading-relaxed">
+                        Hello—I'm LumaNation. If you'd like, share a bit of what's on your mind and I'll offer a short, gentle story or small practice to steady you.
+                    </p>
+</div>
+</div>
+<!-- Example User Response (Initial State) -->
+<div class="flex flex-col items-end gap-1 opacity-0 translate-y-4 animate-in duration-700 delay-300 fill-mode-forwards" id="initial-hint">
+<span class="text-label-sm font-label-sm text-on-surface-variant/40 mr-4">Suggested</span>
+<div class="flex gap-2 mr-2 overflow-x-auto scroll-hide max-w-full">
+<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-label-sm whitespace-nowrap hover:bg-primary/10 transition-colors">
+                        "I'm feeling overwhelmed"
+                    </button>
+<button class="px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-label-sm font-label-sm whitespace-nowrap hover:bg-primary/10 transition-colors">
+                        "Just looking for peace"
+                    </button>
+</div>
+</div>
+<!-- Space for more messages -->
+<div id="chat-anchor"></div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 w-full px-container-margin pb-unit-2 z-50">
+<div class="max-w-3xl mx-auto">
+<!-- Message Input Area -->
+<div class="glass-panel rounded-[32px] p-2 flex items-center gap-2 mb-gutter input-glow transition-all duration-300">
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant/60 hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+</button>
+<input class="flex-grow bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 py-3 px-2 font-body-md" placeholder="Speak your mind softly..." type="text"/>
+<button class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg transition-all duration-200 active:scale-95 hover:brightness-110">
+<span class="material-symbols-outlined" data-icon="send" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+<!-- Navigation Bar (Shared Component Logic) -->
+<nav class="fixed bottom-4 left-0 w-full z-50 flex justify-around items-center px-container-margin py-3 bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl text-primary dark:text-primary font-label-sm text-label-sm fixed bottom-unit-2 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] rounded-full border border-white/10 shadow-[0_8px_32px_rgba(3,18,14,0.4)] md:hidden">
+<a class="flex flex-col items-center justify-center text-primary scale-110 after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span>Navigate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="spa">spa</span>
+<span>Resources</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="diversity_1">diversity_1</span>
+<span>Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="handshake">handshake</span>
+<span>Stewardship</span>
+</a>
+</nav>
+</div>
+</div>
+<!-- Desktop Navigation Overlay (for web view) -->
+<div class="hidden md:flex fixed left-gutter top-1/2 -translate-y-1/2 flex-col gap-unit-2 z-50">
+<div class="glass-panel p-2 rounded-full flex flex-col gap-4">
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-primary bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+</button>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-all">
+<span class="material-symbols-outlined" data-icon="spa">spa</span>
+</button>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-variant/50 transition-all">
+<span class="material-symbols-outlined" data-icon="diversity_1">diversity_1</span>
+</button>
+</div>
+</div>
+<script>
+        // Simple Interaction logic for demo
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.querySelector('input');
+            const chatAnchor = document.getElementById('chat-anchor');
+            const hint = document.getElementById('initial-hint');
+
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && input.value.trim() !== '') {
+                    // Hide hint
+                    hint.style.opacity = '0';
+                    
+                    // Create user message
+                    const msg = input.value;
+                    const userDiv = document.createElement('div');
+                    userDiv.className = 'flex justify-end';
+                    userDiv.innerHTML = `
+                        <div class="user-bubble px-6 py-4 rounded-[28px] max-w-[85%] text-on-primary shadow-lg animate-in slide-in-from-right-4 duration-300">
+                            <p class="font-body-md text-body-md">${msg}</p>
+                        </div>
+                    `;
+                    chatAnchor.parentNode.insertBefore(userDiv, chatAnchor);
+                    input.value = '';
+
+                    // Simulate Luma typing
+                    setTimeout(() => {
+                        const lumaLoading = document.createElement('div');
+                        lumaLoading.className = 'flex items-end gap-3 animate-pulse';
+                        lumaLoading.innerHTML = `
+                            <div class="w-8 h-8 rounded-full bg-primary-container/10 border border-primary/20 flex items-center justify-center shrink-0">
+                                <span class="material-symbols-outlined text-primary scale-75" data-icon="auto_awesome">auto_awesome</span>
+                            </div>
+                            <div class="luma-bubble glass-panel px-6 py-4 rounded-[28px] italic text-on-surface-variant/60">
+                                Luma is reflecting...
+                            </div>
+                        `;
+                        chatAnchor.parentNode.insertBefore(lumaLoading, chatAnchor);
+                        
+                        // Scroll to bottom
+                        document.querySelector('main').scrollTo({ top: document.querySelector('main').scrollHeight, behavior: 'smooth' });
+
+                        setTimeout(() => {
+                            lumaLoading.remove();
+                            const response = document.createElement('div');
+                            response.className = 'flex items-end gap-3 group';
+                            response.innerHTML = `
+                                <div class="w-8 h-8 rounded-full bg-primary-container/10 border border-primary/20 flex items-center justify-center shrink-0 mb-1">
+                                    <span class="material-symbols-outlined text-primary scale-75" data-icon="auto_awesome">auto_awesome</span>
+                                </div>
+                                <div class="luma-bubble glass-panel px-6 py-4 rounded-[28px] max-w-[85%] text-on-surface animate-in slide-in-from-left-4 duration-500">
+                                    <p class="font-body-md text-body-md">Close your eyes for a moment. Imagine you are a leaf floating on a calm, deep emerald pond. Every breath you take is a tiny ripple moving away from you, taking a small piece of that weight with it. Stay here for three breaths.</p>
+                                </div>
+                            `;
+                            chatAnchor.parentNode.insertBefore(response, chatAnchor);
+                            document.querySelector('main').scrollTo({ top: document.querySelector('main').scrollHeight, behavior: 'smooth' });
+                        }, 2000);
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body></html>

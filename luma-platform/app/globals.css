@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --luma-glow: rgba(78, 222, 163, 0.15);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #061612;
+  color: #d4e7df;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar for clean mobile feel */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}
+
+@layer components {
+  .glass-card {
+    background: rgba(18, 35, 30, 0.6);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(78, 222, 163, 0.3);
+    box-shadow: 0 0 20px rgba(78, 222, 163, 0.1);
+  }
+
+  .inner-glow {
+    box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+  }
+
+  .luma-gradient-bg {
+    background: radial-gradient(circle at 20% 30%, #0a2a22 0%, #061612 100%);
+  }
+
+  .chat-bubble-luma {
+    border-radius: 24px 24px 24px 4px;
+  }
+
+  .chat-bubble-user {
+    border-radius: 24px 24px 4px 24px;
+  }
+}
+
+@layer utilities {
+  .luma-glow {
+    filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.4));
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
