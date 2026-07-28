@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ProviderType } from "@prisma/client";
+import { ProviderApplySchema, formatValidationError } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -12,14 +12,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { name, cost, description, tags, type } = body;
+    const parsed = ProviderApplySchema.safeParse(body);
 
-    if (!name || !cost || !description || !type) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { status: "error", message: "Missing required application fields" },
+        { status: "error", ...formatValidationError(parsed) },
         { status: 400 }
       );
     }
+
+    const { name, cost, description, tags, type } = parsed.data;
 
     const user = await prisma.user.findUnique({
       where: { email: session.user.email },
@@ -44,10 +46,10 @@ export async function POST(req: NextRequest) {
       data: {
         userId: user.id,
         name,
-        type: type as ProviderType,
+        type,
         cost,
         description,
-        tags: Array.isArray(tags) ? tags : [],
+        tags,
       },
     });
 

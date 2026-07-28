@@ -1,17 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { RegisterSchema, formatValidationError } from "@/lib/validation";
+import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
-  try {
-    const { email, password } = await req.json();
+  const limit = rateLimit(req, "register", RATE_LIMITS.register);
+  if (!limit.success) {
+    return NextResponse.json(
+      { status: "error", message: "Too many registration attempts. Please try again later." },
+      { status: 429, headers: { "Retry-After": limit.retryAfter.toString() } }
+    );
+  }
 
-    if (!email || !password) {
+  try {
+    const body = await req.json();
+    const parsed = RegisterSchema.safeParse(body);
+
+    if (!parsed.success) {
       return NextResponse.json(
-        { status: "error", message: "Email and password are required" },
+        { status: "error", ...formatValidationError(parsed) },
         { status: 400 }
       );
     }
+
+    const { email, password } = parsed.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {

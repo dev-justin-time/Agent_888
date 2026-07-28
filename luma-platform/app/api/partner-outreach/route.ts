@@ -1,23 +1,27 @@
-import { NextRequest, NextResponse } from "next/server"
-import { callAgentTool } from "@/lib/agent-client"
+import { NextRequest, NextResponse } from "next/server";
+import { callAgentTool } from "@/lib/agent-client";
+import { PartnerOutreachSchema, formatValidationError } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
   try {
-    const input = await req.json();
+    const body = await req.json();
+    const parsed = PartnerOutreachSchema.safeParse(body);
 
-    if (!input.org_name || !input.org_type || !input.alignment_focus) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { status: "error", message: "Missing org_name, org_type, or alignment_focus" },
+        { status: "error", ...formatValidationError(parsed) },
         { status: 400 }
       );
     }
 
+    const { org_name, org_type, alignment_focus, org_recent_initiative } = parsed.data;
+
     const url = process.env.AGENT_OUTREACH_URL || "http://localhost:8094";
     const data = await callAgentTool(url, "generate_partnership_outreach", {
-      org_name: input.org_name,
-      org_type: input.org_type,
-      alignment_focus: input.alignment_focus,
-      org_recent_initiative: input.org_recent_initiative || "",
+      org_name,
+      org_type,
+      alignment_focus,
+      org_recent_initiative,
     });
 
     return NextResponse.json(data);

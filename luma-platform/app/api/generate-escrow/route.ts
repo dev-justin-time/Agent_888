@@ -1,19 +1,38 @@
-import { NextRequest, NextResponse } from "next/server"
-import { callAgentTool } from "@/lib/agent-client"
+import { NextRequest, NextResponse } from "next/server";
+import { callAgentTool } from "@/lib/agent-client";
+import { EscrowSchema, formatValidationError } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
   try {
-    const input = await req.json();
+    const body = await req.json();
+    const parsed = EscrowSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { status: "error", ...formatValidationError(parsed) },
+        { status: 400 }
+      );
+    }
+
+    const {
+      donor_name,
+      donor_type,
+      amount,
+      currency,
+      specific_use_case,
+      prefer_general_purpose,
+      open_to_growth_strategy,
+    } = parsed.data;
 
     const url = process.env.AGENT_ESCROW_URL || "http://localhost:8095";
     const data = await callAgentTool(url, "create_escrow_instruction", {
-      donor_name: input.donor_name || "Anonymous Donor",
-      donor_type: input.donor_type || "Individual",
-      amount: input.amount || 0,
-      currency: input.currency || "USD",
-      specific_use_case: input.specific_use_case || "",
-      prefer_general_purpose: input.prefer_general_purpose ?? true,
-      open_to_growth_strategy: input.open_to_growth_strategy ?? true,
+      donor_name,
+      donor_type,
+      amount,
+      currency,
+      specific_use_case,
+      prefer_general_purpose,
+      open_to_growth_strategy,
     });
 
     return NextResponse.json(data);

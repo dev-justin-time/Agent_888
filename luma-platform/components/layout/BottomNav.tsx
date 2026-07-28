@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, MapPin, Users, Briefcase } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { MessageCircle, MapPin, Users, Briefcase, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/lib/constants";
 
@@ -11,14 +12,21 @@ const icons: Record<string, React.ComponentType<{ size?: number | string; classN
   resources: MapPin,
   community: Users,
   stewardship: Briefcase,
+  admin: Shield,
 };
 
 export function BottomNav() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const items: { id: string; label: string; href: string }[] = [...NAV_ITEMS];
+  if (session?.user?.role === "ADMIN") {
+    items.push({ id: "admin", label: "Admin", href: "/admin" });
+  }
 
   return (
     <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex justify-around items-center h-16 px-gutter w-[calc(100%-48px)] max-w-md bg-surface-container/60 backdrop-blur-2xl border border-white/10 shadow-xl shadow-[rgba(3,18,14,0.4)] rounded-full">
-      {NAV_ITEMS.map((item) => {
+      {items.map((item) => {
         const isActive = pathname.startsWith(item.href);
         const Icon = icons[item.id];
 

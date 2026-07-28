@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { ProviderConnectSchema, formatValidationError } from "@/lib/validation";
 
 export async function GET() {
   try {
@@ -24,14 +25,17 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { user_locale, provider_type } = await req.json();
+    const body = await req.json();
+    const parsed = ProviderConnectSchema.safeParse(body);
 
-    if (!user_locale || !provider_type) {
+    if (!parsed.success) {
       return NextResponse.json(
-        { status: "error", message: "Missing user_locale or provider_type" },
+        { status: "error", ...formatValidationError(parsed) },
         { status: 400 }
       );
     }
+
+    const { user_locale, provider_type } = parsed.data;
 
     const providers = await prisma.provider.findMany({
       where: { type: provider_type },

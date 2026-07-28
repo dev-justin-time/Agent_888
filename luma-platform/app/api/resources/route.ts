@@ -1,20 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import resources from "../../../data/resources.json";
+import { ResourceNeedSchema, formatValidationError } from "@/lib/validation";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const locale = searchParams.get("locale") || "US";
-  const need = (searchParams.get("need") as "hotline" | "sponsor" | "community") || "community";
+
+  const parsed = ResourceNeedSchema.safeParse({
+    locale: searchParams.get("locale") ?? undefined,
+    need: searchParams.get("need") ?? undefined,
+  });
+
+  if (!parsed.success) {
+    return NextResponse.json(
+      { status: "error", ...formatValidationError(parsed) },
+      { status: 400 }
+    );
+  }
+
+  const { locale, need } = parsed.data;
 
   try {
     let data: unknown;
 
     if (need === "hotline") {
-      const hotline =
+      data =
         (await prisma.hotline.findUnique({ where: { locale } })) ??
         (await prisma.hotline.findUnique({ where: { locale: "US" } }));
-      data = hotline;
     } else {
       data = await prisma.grant.findMany({
         orderBy: [{ featured: "desc" }, { name: "asc" }],
@@ -25,24 +36,13 @@ export async function GET(req: NextRequest) {
       status: "success",
       type: need,
       data,
-      billed_amount: 0,
     });
   } catch (error) {
     console.error("Resources DB error:", error);
 
-    let data: unknown;
-    if (need === "hotline") {
-      data = (resources.hotlines as Record<string, { name: string; number: string; text: string }>)[locale] ?? resources.hotlines["US"];
-    } else {
-      data = resources.grants;
-    }
-
-    return NextResponse.json({
-      status: "success",
-      type: need,
-      data,
-      message: "Served from local cache while the database is unavailable.",
-      billed_amount: 0,
-    });
+    return NextResponse.json(
+      { status: "error", message: "Service temporarily unavailable." },
+      { status: 503 }
+    );
   }
 }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
-import { Phone, Globe, Heart, MapPin } from "lucide-react";
+import { Phone, Globe, Heart, MapPin, AlertCircle } from "lucide-react";
 
 interface Hotline {
   name: string;
@@ -27,19 +27,31 @@ export default function ResourcesPage() {
   const [hotline, setHotline] = useState<Hotline | null>(null);
   const [grants, setGrants] = useState<Grant[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     Promise.all([
-      fetch(`/api/resources?need=hotline&locale=${locale}`).then((r) => r.json()),
-      fetch(`/api/resources?need=sponsor&locale=${locale}`).then((r) => r.json()),
+      fetch(`/api/resources?need=hotline&locale=${locale}`).then((r) =>
+        r.ok ? r.json() : { data: null, error: true }
+      ),
+      fetch(`/api/resources?need=sponsor&locale=${locale}`).then((r) =>
+        r.ok ? r.json() : { data: [], error: true }
+      ),
     ])
       .then(([hotlineRes, grantsRes]) => {
+        if (hotlineRes.error || grantsRes.error) {
+          setError("Resources are temporarily unavailable. Please try again later.");
+        }
         setHotline(hotlineRes.data || null);
         setGrants(grantsRes.data || []);
       })
       .catch((err) => {
         console.error("Failed to load resources:", err);
+        setError("Resources are temporarily unavailable. Please try again later.");
+        setHotline(null);
+        setGrants([]);
       })
       .finally(() => setLoading(false));
   }, [locale]);
@@ -68,6 +80,13 @@ export default function ResourcesPage() {
           </select>
         </label>
       </div>
+
+      {error && (
+        <div className="flex items-center gap-3 p-4 rounded-2xl bg-error/10 border border-error/20 text-error">
+          <AlertCircle size={20} />
+          <p className="text-sm font-medium">{error}</p>
+        </div>
+      )}
 
       {loading ? (
         <div className="text-center text-on-surface-variant animate-pulse">Loading resources...</div>
