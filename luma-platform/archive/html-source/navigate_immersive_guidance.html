@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation - Navigate</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --luma-glow: rgba(78, 222, 163, 0.15);
+        }
+        body {
+            background-color: #061612;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(18, 35, 30, 0.6);
+        }
+        .inner-glow {
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+        .luma-gradient-bg {
+            background: radial-gradient(circle at 20% 30%, #0a2a22 0%, #061612 100%);
+        }
+        .chat-bubble-luma {
+            border-radius: 24px 24px 24px 4px;
+        }
+        .chat-bubble-user {
+            border-radius: 24px 24px 4px 24px;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 6s ease-in-out infinite 1s;
+        }
+        #shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -20;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#690005",
+                      "on-secondary": "#21342e",
+                      "surface-container-low": "#0e1f1a",
+                      "tertiary": "#a8cfbc",
+                      "on-primary-fixed-variant": "#005236",
+                      "on-tertiary-fixed-variant": "#294e3f",
+                      "outline-variant": "#3c4a42",
+                      "on-error-container": "#ffdad6",
+                      "surface": "#061612",
+                      "surface-container": "#12231e",
+                      "on-surface": "#d4e7df",
+                      "surface-container-high": "#1d2d28",
+                      "inverse-primary": "#006c49",
+                      "tertiary-container": "#84ab98",
+                      "on-secondary-fixed-variant": "#374b44",
+                      "error": "#ffb4ab",
+                      "secondary": "#b5cbc3",
+                      "background": "#061612",
+                      "surface-dim": "#061612",
+                      "secondary-fixed": "#d1e8df",
+                      "surface-tint": "#4edea3",
+                      "on-tertiary": "#113729",
+                      "primary-container": "#10b981",
+                      "inverse-surface": "#d4e7df",
+                      "on-primary-container": "#00422b",
+                      "on-surface-variant": "#bbcabf",
+                      "primary-fixed": "#6ffbbe",
+                      "surface-variant": "#283833",
+                      "on-primary": "#003824",
+                      "surface-container-lowest": "#02110d",
+                      "secondary-fixed-dim": "#b5cbc3",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-tertiary-fixed": "#002115",
+                      "secondary-container": "#374b44",
+                      "surface-bright": "#2c3d37",
+                      "on-tertiary-container": "#1b3f31",
+                      "tertiary-fixed-dim": "#a8cfbc",
+                      "surface-container-highest": "#283833",
+                      "inverse-on-surface": "#23342f",
+                      "on-secondary-container": "#a4bab2",
+                      "tertiary-fixed": "#c3ecd7",
+                      "on-background": "#d4e7df",
+                      "on-primary-fixed": "#002113",
+                      "on-secondary-fixed": "#0b1f1a",
+                      "error-container": "#93000a",
+                      "primary": "#4edea3",
+                      "outline": "#86948a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "unit": "8px",
+                      "section-gap": "48px",
+                      "container-margin": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Manrope"],
+                      "body-md": ["Manrope"],
+                      "body-lg": ["Manrope"],
+                      "headline-md": ["Manrope"],
+                      "label-sm": ["JetBrains Mono"],
+                      "display-lg": ["Manrope"],
+                      "headline-lg-mobile": ["Manrope"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="min-h-screen text-on-surface selection:bg-primary/30">
+<!-- Procedural Background Shader -->
+<canvas id="shader-canvas"></canvas>
+<!-- Top AppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 h-16 flex items-center">
+<div class="flex justify-between items-center px-container-margin w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20 bg-surface-container flex items-center justify-center">
+<img class="w-full h-full object-cover" data-alt="Luma Logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6abogukAYYDzBcx-J_sNVQoe-wowQVc_YcyAB-mNA3Xj-pTNOsZzuq5VQAkzzvXG7vf-3HSnPuuIPq_hyNJ5deRMT_883O42ZidH0JUEtwLg_ou98feBH85UKR_BlcEM5A-K8hS3GE1Z_q0ln_dK-rsxzFnAdga6Smc6GO14Wf2K9zsc-6fp9m3AlBpcqQ2piVtNZDKCVs6R9lgSEO1OnXnBWt1_CBQ0wsp62BaHcWD_5eZzxidGNNbjHXfxScZQKR73L8UqFR27A"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary">LumaNation</h1>
+</div>
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 pb-32 px-container-margin max-w-3xl mx-auto flex flex-col gap-section-gap min-h-screen relative z-10">
+<!-- Chat History Area -->
+<div class="flex flex-col gap-8">
+<!-- User Message -->
+<div class="flex justify-end animate-in fade-in slide-in-from-right duration-700">
+<div class="glass-card inner-glow chat-bubble-user max-w-[85%] px-6 py-4 shadow-xl animate-float-delayed">
+<p class="font-body-md text-on-surface leading-relaxed">
+                        I'm feeling a bit overwhelmed by the noise of the world today. I need a place to ground myself and find focus.
+                    </p>
+<span class="font-label-sm text-on-surface-variant/40 mt-2 block text-right">09:41 AM</span>
+</div>
+</div>
+<!-- Luma Assistant Micro-Narrative -->
+<div class="flex justify-start items-start gap-4 animate-in fade-in slide-in-from-left duration-700 delay-300">
+<!-- Avatar with floating animation -->
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 border border-primary/20 animate-float">
+<span class="material-symbols-outlined text-primary text-lg" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col gap-3 max-w-[85%]">
+<div class="glass-card inner-glow chat-bubble-luma px-6 py-5 shadow-2xl relative overflow-hidden animate-float">
+<!-- Gentle Luma Glow effect -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+<p class="font-body-lg text-primary-fixed-dim italic mb-4 leading-relaxed">
+                            "The deepest part of the forest is often the quietest, yet it's where the roots grow strongest."
+                        </p>
+<p class="font-body-md text-on-surface leading-relaxed">
+                            I hear you. Take a deep breath. Imagine the air as a cool, emerald mist filling your lungs. We are here in this digital sanctuary, where the only rhythm that matters is yours.
+                        </p>
+<p class="font-body-md text-on-surface mt-4">
+                            Shall we begin a sensory grounding exercise, or would you like to explore some of our quiet resources for stewardship?
+                        </p>
+<span class="font-label-sm text-on-surface-variant/40 mt-3 block">Luma Guide • Just now</span>
+</div>
+<!-- Suggested Actions (Chips) -->
+<div class="flex flex-wrap gap-2 animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
+<button class="bg-primary/10 border border-primary/20 px-4 py-2 rounded-full font-label-sm text-primary hover:bg-primary/20 transition-colors active:scale-95">
+                            Sensory Grounding
+                        </button>
+<button class="bg-secondary-container/30 border border-outline-variant/30 px-4 py-2 rounded-full font-label-sm text-secondary hover:bg-secondary-container/50 transition-colors active:scale-95">
+                            Stewardship Guide
+                        </button>
+</div>
+</div>
+</div>
+<div id="chat-end"></div>
+</div>
+</main>
+<!-- Bottom Interaction Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-surface via-surface/90 to-transparent pb-24 pt-10">
+<div class="max-w-3xl mx-auto px-container-margin">
+<div class="glass-card inner-glow rounded-full px-6 py-3 flex items-center gap-4 border border-white/10 shadow-[0_-10px_40px_rgba(3,18,14,0.4)]">
+<button class="text-on-surface-variant/60 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<input class="bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/40 w-full font-body-md" placeholder="Speak to the forest..." type="text"/>
+<button class="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-inverse-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-4 left-0 right-0 z-50 flex justify-around items-center h-16 px-gutter max-w-md mx-auto bg-surface-container/60 backdrop-blur-2xl border border-white/10 rounded-full shadow-xl shadow-[rgba(3,18,14,0.4)]">
+<button class="flex flex-col items-center justify-center text-primary relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-primary after:rounded-full hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Navigate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-label-sm">Stewardship</span>
+</button>
+</nav>
+<script>
+        // Shader logic
+        const canvas = document.getElementById('shader-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (gl) {
+            const vertexShaderSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                    float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 - u_time * 0.3);
+                    vec3 color = mix(vec3(0.01, 0.07, 0.06), vec3(0.02, 0.1, 0.09), uv.y + noise * 0.1);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vertexShader);
+            gl.attachShader(program, fragmentShader);
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+
+            function render(time) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+
+                gl.uniform1f(timeLocation, time * 0.001);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+
+            requestAnimationFrame(render);
+        }
+
+        // Input micro-interactions
+        const chatInput = document.querySelector('input');
+        const inputContainer = chatInput.closest('.glass-card');
+        
+        chatInput.addEventListener('focus', () => {
+            inputContainer.classList.add('border-primary/50');
+            inputContainer.style.boxShadow = '0 0 20px rgba(78, 222, 163, 0.2)';
+        });
+        
+        chatInput.addEventListener('blur', () => {
+            inputContainer.classList.remove('border-primary/50');
+            inputContainer.style.boxShadow = '0 -10px 40px rgba(3, 18, 14, 0.4)';
+        });
+    </script>
+</body></html>

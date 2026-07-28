@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation Community - Verified Providers</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Manrope:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration - Updated for Deep Earth Theme -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#1f1800",
+                    "secondary-container": "#4a3f35",
+                    "tertiary": "#c5b3a3",
+                    "surface-container-high": "#2d2621",
+                    "on-primary-fixed": "#241d00",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#e9c46a",
+                    "tertiary-container": "#5d4e42",
+                    "secondary": "#d3c3b8",
+                    "surface-tint": "#e9c46a",
+                    "primary": "#e9c46a", /* Desaturated Gold Accent */
+                    "on-tertiary-container": "#f0dfd1",
+                    "surface-dim": "#1a1612",
+                    "surface-bright": "#3d342d",
+                    "on-tertiary-fixed-variant": "#4d4239",
+                    "tertiary-fixed-dim": "#c5b3a3",
+                    "on-secondary-fixed-variant": "#4a3f35",
+                    "surface-container": "#1e1a16",
+                    "outline": "#9c8e83",
+                    "tertiary-fixed": "#e6d5c7",
+                    "surface": "#12100d", /* Earthy Charcoal/Umber */
+                    "inverse-primary": "#755b00",
+                    "on-secondary-fixed": "#211b15",
+                    "inverse-on-surface": "#322b26",
+                    "primary-container": "#b08d57", /* Clay-inspired gold/green */
+                    "surface-container-lowest": "#0c0a09",
+                    "on-secondary-container": "#e7d6cb",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#eee0d7",
+                    "on-tertiary-fixed": "#251b14",
+                    "on-error": "#690005",
+                    "background": "#12100d",
+                    "on-surface-variant": "#c9bbb0",
+                    "on-tertiary": "#3b2f27",
+                    "on-secondary": "#372e26",
+                    "on-surface": "#eee0d7", /* Warm White */
+                    "error-container": "#93000a",
+                    "surface-variant": "#2b2520",
+                    "secondary-fixed-dim": "#d3c3b8",
+                    "outline-variant": "#4e443c",
+                    "surface-container-highest": "#362f29",
+                    "primary-fixed-dim": "#e9c46a",
+                    "on-primary-fixed-variant": "#584400",
+                    "secondary-fixed": "#f0dfd5",
+                    "on-primary-container": "#241d00",
+                    "surface-container-low": "#1a1612",
+                    "on-background": "#eee0d7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "section-gap": "48px",
+                    "container-margin": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #12100d;
+            color: #eee0d7;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        .glass-card {
+            background: rgba(43, 37, 32, 0.4);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            border: 1px solid rgba(233, 196, 106, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(233, 196, 106, 0.4);
+            box-shadow: 0 0 20px rgba(233, 196, 106, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .luma-glow-bg {
+            background: radial-gradient(circle at 50% -20%, rgba(233, 196, 106, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(54, 47, 41, 0.3) 0%, transparent 50%);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .active-dot::after {
+            content: '';
+            display: block;
+            width: 4px;
+            height: 4px;
+            background-color: #e9c46a;
+            border-radius: 50%;
+            margin-top: 4px;
+        }
+
+        /* Hide scrollbars for clean look */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="luma-glow-bg min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/5 shadow-sm flex justify-between items-center px-container-margin h-16">
+<div class="flex items-center gap-4">
+<button class="transition-all duration-200 active:scale-95 text-primary hover:bg-surface-variant/50 p-2 rounded-full">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-semibold text-primary">LumaNation</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden cursor-pointer transition-all duration-200 active:scale-95">
+<img class="w-full h-full object-cover" data-alt="A serene portrait of a diverse user with a calm expression, softly lit by emerald and forest green ambient light in a high-end minimalist setting. The visual style is photography-based but with a cinematic, ethereal quality that matches the dark sanctuary brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQCqAm3xrOcs-yNwmt4hgNux5bgqRfXgUxtGLi0QmaD7ZaxjkTrTD0R-voLdmbPrJb4k09AVC6PtEaVea8hYkIyCloFyP66fd2gzcvWXbSeyl3Ci75w9Dl_oZ2FheuyjlBF00J665h4dPUSKHHUyOpJ-ThDuH2Ee_XguLMqT0k0wK5y4gfmLJp96MCjDFV_X_hnnPpdnh_ec13HXrBUfb2hVGRgPYt5Q5pIqVVRBPTuV2ADfw6CSrR6sGNNdALejp9n2HKrrDT4Knk"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin max-w-5xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-section-gap">
+<div class="flex flex-col items-center text-center space-y-4">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest px-4 py-1 rounded-full bg-primary/10 border border-primary/20">Trusted Ecosystem</span>
+<h2 class="font-headline-lg text-headline-lg md:text-display-lg md:font-display-lg text-on-surface">Community Care</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                Discover off-platform specialists who uphold our sanctuary standards. Each provider is strictly vetted for zero-record privacy and empathetic excellence.
+            </p>
+</div>
+</section>
+<!-- Search & Filters -->
+<section class="mb-gutter">
+<div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/60">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container/40 border-0 border-b border-outline-variant focus:border-primary focus:ring-0 transition-all font-body-md text-body-md placeholder:text-on-surface-variant/40 rounded-t-xl" placeholder="Search by name or specialty..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 w-full md:w-auto">
+<button class="px-6 py-2 rounded-full bg-primary/20 text-primary border border-primary/30 font-label-sm text-label-sm whitespace-nowrap">All Providers</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant/80 border border-white/5 font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant/50 transition-colors">Counseling</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant/80 border border-white/5 font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant/50 transition-colors">Holistic</button>
+<button class="px-6 py-2 rounded-full bg-surface-container text-on-surface-variant/80 border border-white/5 font-label-sm text-label-sm whitespace-nowrap hover:bg-surface-variant/50 transition-colors">Legal Aid</button>
+</div>
+</div>
+</section>
+<!-- Provider Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Provider Card 1 -->
+<div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">spa</span>
+</div>
+<span class="font-label-sm text-[10px] bg-primary text-on-primary px-3 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        VERIFIED
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Healing Paths</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Trauma-informed cognitive behavioral therapy with a focus on environmental anxiety.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Zero-Record Privacy</span>
+</div>
+<a class="group flex items-center justify-between py-3 px-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" href="#">
+<span class="font-label-sm text-label-sm text-on-surface">View Profile</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Provider Card 2 -->
+<div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-2xl bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">diversity_1</span>
+</div>
+<span class="font-label-sm text-[10px] bg-primary text-on-primary px-3 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        VERIFIED
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">OpenCare Collective</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Community-driven mental health support group with decentralized records.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Zero-Record Privacy</span>
+</div>
+<a class="group flex items-center justify-between py-3 px-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" href="#">
+<span class="font-label-sm text-label-sm text-on-surface">View Profile</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Featured Wide Content (Bento Style) -->
+<div class="md:col-span-2 lg:col-span-1 glass-card rounded-3xl overflow-hidden relative group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-30 group-hover:scale-110 transition-transform duration-700" data-alt="A lush, misty forest interior with soft green light filtering through ancient cedar branches. The atmosphere is deeply tranquil, with moss-covered stones and a sense of infinite, quiet depth. The color palette emphasizes emerald, deep forest green, and subtle obsidian shadows, maintaining a dark-mode sanctuary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZOqkPkgaIOi6b_TEGAeJENaYJQPLgHdCHKxjYjZx4Wn7AAWt6wrE--oS97rYyMi0R_Ow9xT6TuoZ9buoEkRqIlMi1KRtA161lXf3ryQ4ik-VN3Zmn0aqXFmkoFVwWvuTlTZZsa_OudhsoSJmhnRFmScoqL1J_MLxWlfi9ua3qfXcjlT2Oambd1t3NeR91PZQHmVLnMOrO83eQdkPIhiPwzCsdQfOzaSRFL6_TqwGFqEZILKCgwbvnmhGzBAtKZ-ahlaBFCAv28BmQ"/>
+</div>
+<div class="relative z-10 p-8 h-full flex flex-col justify-end">
+<h3 class="font-headline-lg text-headline-lg text-white mb-2">Request Vetting</h3>
+<p class="font-body-md text-body-md text-on-surface/80 mb-6">Know a provider who prioritizes absolute user privacy? Recommend them for our community network.</p>
+<button class="w-fit px-8 py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-full font-bold shadow-lg transition-all active:scale-95">
+                    Submit Referral
+                </button>
+</div>
+</div>
+<!-- Provider Card 3 -->
+<div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-2xl bg-tertiary-container/30 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-3xl">gavel</span>
+</div>
+<span class="font-label-sm text-[10px] bg-primary text-on-primary px-3 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        VERIFIED
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Echo Ethics</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Specialized legal guidance for digital privacy and whistleblower protection.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Zero-Record Privacy</span>
+</div>
+<a class="group flex items-center justify-between py-3 px-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" href="#">
+<span class="font-label-sm text-label-sm text-on-surface">View Profile</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Provider Card 4 -->
+<div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">psychology</span>
+</div>
+<span class="font-label-sm text-[10px] bg-primary text-on-primary px-3 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        VERIFIED
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Mindful Anchor</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">One-on-one mindfulness coaching sessions using encrypted communication channels.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Zero-Record Privacy</span>
+</div>
+<a class="group flex items-center justify-between py-3 px-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" href="#">
+<span class="font-label-sm text-label-sm text-on-surface">View Profile</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Provider Card 5 -->
+<div class="glass-card rounded-3xl p-6 flex flex-col justify-between space-y-6">
+<div>
+<div class="flex justify-between items-start mb-4">
+<div class="w-14 h-14 rounded-2xl bg-secondary-container/40 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-3xl">volunteer_activism</span>
+</div>
+<span class="font-label-sm text-[10px] bg-primary text-on-primary px-3 py-1 rounded-full font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                        VERIFIED
+                    </span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Sovereign Souls</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Support network for those transitioning out of surveillance-heavy environments.</p>
+</div>
+<div class="flex flex-col space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-label-sm text-label-sm uppercase tracking-tighter">Zero-Record Privacy</span>
+</div>
+<a class="group flex items-center justify-between py-3 px-4 bg-white/5 hover:bg-white/10 rounded-2xl transition-all" href="#">
+<span class="font-label-sm text-label-sm text-on-surface">View Profile</span>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Pagination/Footer Spacer -->
+<div class="mt-section-gap text-center">
+<button class="px-8 py-3 rounded-full border border-outline-variant text-on-surface-variant hover:border-primary/50 hover:text-primary transition-all active:scale-95 font-label-sm text-label-sm">
+            LOAD MORE PROVIDERS
+        </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-4 left-0 w-full z-50 flex justify-around items-center px-container-margin py-3">
+<div class="bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border border-white/5 shadow-[0_8px_32px_rgba(18,16,13,0.6)] rounded-full w-[calc(100%-48px)] max-w-lg mx-auto h-16 flex justify-around items-center px-6">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-[10px]">Navigate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">spa</span>
+<span class="font-label-sm text-[10px]">Resources</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary scale-110 active-dot" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">diversity_1</span>
+<span class="font-label-sm text-[10px]">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-[10px]">Stewardship</span>
+</a>
+</div>
+</nav>
+<!-- Background Subtle Animation Element -->
+<div class="fixed inset-0 -z-10 pointer-events-none opacity-40">
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-[120px] animate-pulse"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-secondary-container/20 rounded-full blur-[150px]" style="animation: pulse 12s infinite alternate;"></div>
+</div>
+<script>
+    // Simple micro-interactions
+    document.querySelectorAll('.glass-card').forEach(card => {
+        card.addEventListener('mousedown', () => {
+            card.style.transform = 'scale(0.98)';
+        });
+        card.addEventListener('mouseup', () => {
+            card.style.transform = 'translateY(-2px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
+    });
+</script>
+</body></html>

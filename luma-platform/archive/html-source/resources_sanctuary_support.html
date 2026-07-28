@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(18, 35, 30, 0.4);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(78, 222, 163, 0.3);
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.1);
+            transform: translateY(-2px);
+        }
+        .inner-glow {
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+        body {
+            background-color: #061612;
+            color: #d4e7df;
+            overflow-x: hidden;
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-on-scroll {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Global Canvas Background */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "on-secondary": "#21342e",
+                        "surface-container-low": "#0e1f1a",
+                        "tertiary": "#a8cfbc",
+                        "on-primary-fixed-variant": "#005236",
+                        "on-tertiary-fixed-variant": "#294e3f",
+                        "outline-variant": "#3c4a42",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#061612",
+                        "surface-container": "#12231e",
+                        "on-surface": "#d4e7df",
+                        "surface-container-high": "#1d2d28",
+                        "inverse-primary": "#006c49",
+                        "tertiary-container": "#84ab98",
+                        "on-secondary-fixed-variant": "#374b44",
+                        "error": "#ffb4ab",
+                        "secondary": "#b5cbc3",
+                        "background": "#061612",
+                        "surface-dim": "#061612",
+                        "secondary-fixed": "#d1e8df",
+                        "surface-tint": "#4edea3",
+                        "on-tertiary": "#113729",
+                        "primary-container": "#10b981",
+                        "inverse-surface": "#d4e7df",
+                        "on-primary-container": "#00422b",
+                        "on-surface-variant": "#bbcabf",
+                        "primary-fixed": "#6ffbbe",
+                        "surface-variant": "#283833",
+                        "on-primary": "#003824",
+                        "surface-container-lowest": "#02110d",
+                        "secondary-fixed-dim": "#b5cbc3",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-tertiary-fixed": "#002115",
+                        "secondary-container": "#374b44",
+                        "surface-bright": "#2c3d37",
+                        "on-tertiary-container": "#1b3f31",
+                        "tertiary-fixed-dim": "#a8cfbc",
+                        "surface-container-highest": "#283833",
+                        "inverse-on-surface": "#23342f",
+                        "on-secondary-container": "#a4bab2",
+                        "tertiary-fixed": "#c3ecd7",
+                        "on-background": "#d4e7df",
+                        "on-primary-fixed": "#002113",
+                        "on-secondary-fixed": "#0b1f1a",
+                        "error-container": "#93000a",
+                        "primary": "#4edea3",
+                        "outline": "#86948a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "unit": "8px",
+                        "section-gap": "48px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-sm": ["JetBrains Mono"],
+                        "display-lg": ["Manrope"],
+                        "headline-lg-mobile": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-32">
+<!-- Procedural Background Canvas -->
+<canvas id="bg-canvas"></canvas>
+<!-- Top App Bar -->
+<header class="sticky top-0 z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10">
+<div class="flex justify-between items-center px-container-margin h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden">
+<img alt="Luma Nation Guide" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXK-whUdfzhZFTdZ8QuXskoKWGzUU_rWmfWwkfFVXpKEcjmeAGvNQkTdjSKzucxMX-B_1z7T8rq3tugJ_r45z6yiF0R48f43nsfs_5MmmQ3dCOFmLarUqupAUG_3vAPKtWwI1HhoUsR0kfjNleDBrWtXVflNhFMFexa0zi8HXEUoJpkFudKWYZHlrPL-UuyzGZ-KJXv7CAjh4eBujGvwKPxzJ4UAE3yJlyWWOcvyXR8hAsv7oWhklpXiJoOzMXS46WVn8Bs-G6h5DN"/>
+</div>
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-primary-fixed">LumaNation</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity active:scale-95 duration-200">settings</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-margin pt-unit">
+<!-- Hero Section with Forest Imagery -->
+<section class="py-section-gap relative rounded-3xl overflow-hidden mb-12">
+<img alt="Mystical forest background" class="absolute inset-0 w-full h-full object-cover -z-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA77TS8uC1f0ghnG3LoTNiYc3ij6bikjw3eeFT3tubaTQcfP9d0opKPSGcHPgM0GIBwc1iBN3rLQGJ4VYefJ29iCdcqShbK0tZhO0_orzD--770wq7nZyvQ6Z2oH7Ub8mWQWQX_uho-nEVu0qaCnCSZtQctJbcrvrV4owtlVAAV3KMv9ssN1io2Ugnaw0fIeajAgzCeYQXm2T2Ym_dVXctthbigv79K_SFw-W64IIZTL9OrPhZCMEQM9KW0aHKc4RztzlPW96sLt1Cc"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent -z-10"></div>
+<div class="max-w-2xl px-8 py-12">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-4">Finding Your Path</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Access immediate support channels and community-funded grants designed to nurture your growth and sanctuary.</p>
+</div>
+</section>
+<!-- Hotlines Section (Bento Grid) -->
+<section class="mb-section-gap">
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary">support_agent</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Immediate Support</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
+<!-- Primary Hotline -->
+<div class="md:col-span-2 lg:col-span-3 glass-card rounded-xl p-8 flex flex-col justify-between group animate-on-scroll">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-sm text-label-sm">24/7 National</span>
+<span class="material-symbols-outlined text-on-surface-variant/40">call</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">24/7 Support Line</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">A confidential, judgment-free space to talk whenever you need to be heard.</p>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary tracking-widest text-xl">1-800-LUMA-CARE</span>
+<button class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined">call</span>
+</button>
+</div>
+</div>
+<!-- Text Support -->
+<div class="md:col-span-2 lg:col-span-3 glass-card rounded-xl p-8 flex flex-col justify-between border-l-4 border-l-primary/30 animate-on-scroll delay-1">
+<div>
+<div class="flex justify-between items-start mb-6">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full font-label-sm text-label-sm">Instant Reply</span>
+<span class="material-symbols-outlined text-on-surface-variant/40">sms</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Text Support</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8">Prefer typing? Connect with a trained empathetic listener through secure messaging.</p>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary tracking-widest text-xl">TEXT "HELLO" TO 741741</span>
+<button class="w-12 h-12 rounded-full bg-surface-container-high border border-white/10 flex items-center justify-center text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+<!-- Specialized Lines -->
+<div class="md:col-span-1 lg:col-span-2 glass-card rounded-xl p-6 animate-on-scroll delay-2">
+<span class="material-symbols-outlined text-tertiary mb-4">nature_people</span>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2 text-lg">Youth Refuge</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Dedicated support for individuals under 25.</p>
+<span class="font-label-sm text-label-sm text-primary block">1-888-YOUTH-LUMA</span>
+</div>
+<div class="md:col-span-1 lg:col-span-2 glass-card rounded-xl p-6 animate-on-scroll delay-3">
+<span class="material-symbols-outlined text-tertiary mb-4">diversity_3</span>
+<h4 class="font-headline-md text-headline-md text-on-surface mb-2 text-lg">Peer Network</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Speak with someone who has walked your path.</p>
+<span class="font-label-sm text-label-sm text-primary block">1-800-PEER-CONNECT</span>
+</div>
+<div class="md:col-span-2 lg:col-span-2 glass-card rounded-xl p-6 flex flex-col justify-center items-center text-center bg-primary/5 border-primary/20 animate-on-scroll">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2">Emergency?</p>
+<p class="font-headline-md text-headline-md text-error mb-4">Dial 988</p>
+<p class="font-body-md text-body-md text-on-surface-variant/70 italic text-sm">For immediate crisis intervention</p>
+</div>
+</div>
+</section>
+<!-- Grants Section with Growth Visual -->
+<section class="mb-section-gap">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">volunteer_activism</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Grants &amp; Funding</h2>
+</div>
+<button class="font-label-sm text-label-sm text-primary flex items-center gap-2 hover:opacity-80">
+                    View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<!-- Featured Grant -->
+<div class="glass-card rounded-2xl overflow-hidden flex flex-col md:flex-row h-full animate-on-scroll">
+<div class="md:w-1/2 h-48 md:h-auto relative">
+<img alt="Community garden visualization" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArAAf7GBKi1sniUBADQUbCKDR6XTsStUa39aXehJb-aLOe8luXz219_pRpUM_mukfG4FEazaxwD2B9Fua7O4r4TnfDgj-nAYry9t_jGTfzSNdnyF4-C6Hlfvuoe_ji7_LSlrYUZqxnp-KJRQpkXoTmYsVM3aZ9AtacXh17yu3ZUwO2ctK046epDFRfrUMQoym1BQOmoADOuQlulUAmwayzlePnoy5O1W-QfKVKO5KGDtqeq9XO7n7U3XFBscsZqTvlkUaLqgjyuELR"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent"></div>
+</div>
+<div class="p-8 md:w-1/2 flex flex-col justify-between bg-surface-container/20">
+<div>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full font-label-sm text-label-sm mb-4 inline-block">Featured</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Community Wellness Grant</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Funding local initiatives focused on emotional grounding and nature-based healing.</p>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Up to</p>
+<p class="font-display-lg text-display-lg text-primary text-3xl">$5,000</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-sm text-label-sm active:scale-95 transition-transform">Apply</button>
+</div>
+</div>
+</div>
+<!-- Secondary Grant with Growth Visual Integration -->
+<div class="flex flex-col gap-6">
+<div class="glass-card rounded-2xl p-8 flex flex-col justify-between relative overflow-hidden animate-on-scroll delay-1">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-9xl">handshake</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Rolling Applications</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Personal Growth Stipend</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Small grants for individuals seeking professional counseling or therapeutic resources.</p>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Awards of</p>
+<p class="font-display-lg text-display-lg text-primary text-3xl">$750</p>
+</div>
+<button class="border border-primary text-primary px-6 py-2 rounded-full font-label-sm text-label-sm hover:bg-primary/5 active:scale-95 transition-transform">Learn More</button>
+</div>
+</div>
+<div class="rounded-2xl overflow-hidden h-40 animate-on-scroll delay-2">
+<img alt="Growth seedling" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR1vlWRvqDCH6wokO7jNSzBHmbFMNRqtU1Wj16mRQ9DJQKRomMQSSk9x-ynw02k0PusV-RsDVt3gppyPhPbtSJh_Vg2tgKjelKgYM5WexcZgOtV8BJ-24pA3_ZS7NLllndq8JiLzzUmwTjTyCZHi2symvqObYTUXa8lJxfw6mNyJghWtMgcJSWMn2Nlozf5Y88bYQEYGwo201cMKSLU0lsADe1w-DP4I-ZxbFoqX8ziYv76FXXkkcxF91FV5nxMgeBxfaKQbQyU42H"/>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA / Footer Info -->
+<section class="max-w-xl mx-auto text-center py-section-gap">
+<p class="font-body-md text-body-md text-on-surface-variant italic">"In the heart of the forest, no one walks alone."</p>
+<div class="mt-8 flex justify-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="font-label-sm text-label-sm">Secure Connection</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-sm">encrypted</span>
+<span class="font-label-sm text-label-sm">Privacy Guaranteed</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-4 left-0 right-0 z-50 flex justify-around items-center h-16 px-gutter max-w-md mx-auto bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border border-white/10 shadow-xl rounded-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Navigate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-primary after:rounded-full transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-label-sm">Stewardship</span>
+</a>
+</nav>
+<!-- Shader Initialization Script -->
+<script>
+    const canvas = document.getElementById('bg-canvas');
+    const gl = canvas.getContext('webgl');
+
+    if (gl) {
+        const vertexShaderSource = `
+            attribute vec2 position;
+            void main() {
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision highp float;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 - u_time * 0.3);
+                vec3 color = mix(vec3(0.01, 0.07, 0.06), vec3(0.02, 0.1, 0.09), uv.y + noise * 0.1);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const program = gl.createProgram();
+        gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource));
+        gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource));
+        gl.linkProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+        const positionLocation = gl.getAttribLocation(program, 'position');
+        const timeLocation = gl.getUniformLocation(program, 'u_time');
+        const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+
+        function render(time) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            gl.useProgram(program);
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            gl.uniform1f(timeLocation, time * 0.001);
+            gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+    }
+
+    // Scroll trigger for animations
+    const observerOptions = {
+        threshold: 0.1
+    };
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('opacity-100');
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Smooth scroll implementation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+</script>
+</body></html>

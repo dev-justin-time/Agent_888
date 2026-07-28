@@ -1,0 +1,42 @@
+[
+  {
+    "id": "openheart-therapy",
+    "name": "OpenHeart Foundation",
+    "description": "Therapy grants for individuals seeking professional counseling or therapeutic resources.",
+    "amount": "$500",
+    "coverage": "US",
+    "featured": false,
+    "rolling": false,
+    "tags": ["Therapy", "Grants"]
+  },
+  {
+    "id": "global-mind-app",
+    "name": "Global Mind Collective",
+    "description": "App subsidies covering the full cost of LumaNation for qualifying members.",
+    "amount": "100%",
+    "coverage": "Global",
+    "featured": false,
+    "rolling": false,
+    "tags": ["App Subsidies", "Global"]
+  },
+  {
+    "id": "community-wellness",
+    "name": "Community Wellness Grant",
+    "description": "Funding local initiatives focused on emotional grounding and nature-based healing.",
+    "amount": "$5,000",
+    "coverage": "US",
+    "featured": true,
+    "rolling": false,
+    "tags": ["Community", "Nature-Based"]
+  },
+  {
+    "id": "personal-growth",
+    "name": "Personal Growth Stipend",
+    "description": "Small grants for individuals seeking professional counseling or therapeutic resources.",
+    "amount": "$750",
+    "coverage": "US",
+    "featured": false,
+    "rolling": true,
+    "tags": ["Personal", "Rolling"]
+  }
+]

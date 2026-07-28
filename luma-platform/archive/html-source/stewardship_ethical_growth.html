@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation | Stewardship</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "on-secondary": "#21342e",
+                    "surface-container-low": "#0e1f1a",
+                    "tertiary": "#a8cfbc",
+                    "on-primary-fixed-variant": "#005236",
+                    "on-tertiary-fixed-variant": "#294e3f",
+                    "outline-variant": "#3c4a42",
+                    "on-error-container": "#ffdad6",
+                    "surface": "#061612",
+                    "surface-container": "#12231e",
+                    "on-surface": "#d4e7df",
+                    "surface-container-high": "#1d2d28",
+                    "inverse-primary": "#006c49",
+                    "tertiary-container": "#84ab98",
+                    "on-secondary-fixed-variant": "#374b44",
+                    "error": "#ffb4ab",
+                    "secondary": "#b5cbc3",
+                    "background": "#061612",
+                    "surface-dim": "#061612",
+                    "secondary-fixed": "#d1e8df",
+                    "surface-tint": "#4edea3",
+                    "on-tertiary": "#113729",
+                    "primary-container": "#10b981",
+                    "inverse-surface": "#d4e7df",
+                    "on-primary-container": "#00422b",
+                    "on-surface-variant": "#bbcabf",
+                    "primary-fixed": "#6ffbbe",
+                    "surface-variant": "#283833",
+                    "on-primary": "#003824",
+                    "surface-container-lowest": "#02110d",
+                    "secondary-fixed-dim": "#b5cbc3",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-tertiary-fixed": "#002115",
+                    "secondary-container": "#374b44",
+                    "surface-bright": "#2c3d37",
+                    "on-tertiary-container": "#1b3f31",
+                    "tertiary-fixed-dim": "#a8cfbc",
+                    "surface-container-highest": "#283833",
+                    "inverse-on-surface": "#23342f",
+                    "on-secondary-container": "#a4bab2",
+                    "tertiary-fixed": "#c3ecd7",
+                    "on-background": "#d4e7df",
+                    "on-primary-fixed": "#002113",
+                    "on-secondary-fixed": "#0b1f1a",
+                    "error-container": "#93000a",
+                    "primary": "#4edea3",
+                    "outline": "#86948a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "unit": "8px",
+                    "section-gap": "48px",
+                    "container-margin": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #061612;
+            color: #d4e7df;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .glass-panel {
+            background: rgba(18, 35, 30, 0.6);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .luma-glow:hover {
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.2);
+            border-color: rgba(78, 222, 163, 0.4);
+        }
+
+        .primary-gradient {
+            background: linear-gradient(135deg, #4edea3 0%, #006c49 100%);
+        }
+
+        .active-glow {
+            box-shadow: inset 0 0 10px rgba(78, 222, 163, 0.3);
+        }
+
+        /* Slow, rhythmic shimmer effect */
+        @keyframes rhythmic-shimmer {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(0.99); filter: brightness(1.2) drop-shadow(0 0 12px rgba(78, 222, 163, 0.4)); }
+        }
+
+        .action-shimmer {
+            animation: rhythmic-shimmer 4s ease-in-out infinite;
+        }
+
+        /* Shader Canvas Positioning */
+        #shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #283833; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3c4a42; }
+
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<canvas id="shader-canvas"></canvas>
+<!-- Background Atmospheric Elements -->
+<div class="fixed inset-0 pointer-events-none z-0">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-tertiary/5 blur-[100px] rounded-full"></div>
+</div>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 h-16">
+<div class="flex justify-between items-center px-container-margin h-full w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Luma AI Guide" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFv3X6XFj3ch2iU4ovBrJxo_X4cevE3ag0nW2huwihf_rr4kJaUpL07D5_yZmKCOL6Q76Wzc2gU18Sl5ycC6Ra1XwTaohWfu40c_RRnsPQI10JfCIaGcLxcJtmjeMt9UWX0BdZbhrlop93y11jVUSXDUyuuVXetUCSj8MIe6b8LDzAH15XSHDXFD7RgO5inSfeatYRGyP-B8aw7iX7SBYYpZMrfYrMkXiYopmRblrszNbLqGC5VFs6VxGX_JwGYMdyzUbkmvyNAk-W"/>
+</div>
+<span class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-primary-fixed">LumaNation</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed hover:opacity-80 transition-opacity">settings</button>
+</div>
+</div>
+</header>
+<main class="relative z-10 pt-24 pb-32 px-container-margin max-w-7xl mx-auto min-h-screen">
+<!-- Header Section with Forest Imagery Overlay -->
+<section class="mb-section-gap text-center md:text-left relative overflow-hidden rounded-2xl p-8 md:p-12">
+<div class="absolute inset-0 z-0">
+<img alt="Mystical Forest" class="w-full h-full object-cover opacity-20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA77TS8uC1f0ghnG3LoTNiYc3ij6bikjw3eeFT3tubaTQcfP9d0opKPSGcHPgM0GIBwc1iBN3rLQGJ4VYefJ29iCdcqShbK0tZhO0_orzD--770wq7nZyvQ6Z2oH7Ub8mWQWQX_uho-nEVu0qaCnCSZtQctJbcrvrV4owtlVAAV3KMv9ssN1io2Ugnaw0fIeajAgzCeYQXm2T2Ym_dVXctthbigv79K_SFw-W64IIZTL9OrPhZCMEQM9KW0aHKc4RztzlPW96sLt1Cc"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10">
+<h1 class="font-display-lg text-display-lg mb-2 text-on-surface">Stewardship</h1>
+<p class="text-on-surface-variant max-w-2xl">Manage your organizational commitments and outreach efforts with clarity and calm. Tools designed for ethical partnership and transparent escrow management.</p>
+</div>
+</section>
+<!-- Tool Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- Tool: Partner Outreach -->
+<div class="glass-panel luma-glow rounded-xl p-8 transition-all duration-300">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="flex items-center gap-2 text-primary mb-1">
+<span class="material-symbols-outlined">send_spark</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Growth Engine</span>
+</div>
+<h2 class="font-headline-md text-headline-md">Partner Outreach</h2>
+</div>
+</div>
+<div class="space-y-4 mb-8">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">PARTNER TYPE</label>
+<select class="w-full bg-surface-container/50 border-none border-b border-outline focus:border-primary focus:ring-0 text-on-surface rounded-t-lg transition-all">
+<option>Conservation Foundation</option>
+<option>Ethical Tech Collective</option>
+<option>Mental Health Nonprofit</option>
+</select>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">OUTREACH TONE</label>
+<div class="flex gap-2">
+<button class="bg-primary/10 text-primary px-4 py-2 rounded-full font-label-sm text-label-sm active-glow">Empathetic</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">Visionary</button>
+<button class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-sm text-label-sm hover:bg-surface-container-high transition-colors">Pragmatic</button>
+</div>
+</div>
+</div>
+<button class="primary-gradient text-on-primary-container w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold active:scale-95 transition-all shadow-lg action-shimmer" onclick="generateEmail()">
+<span class="material-symbols-outlined">mail</span>
+                Generate partner outreach email
+            </button>
+<div class="mt-8 hidden animate-in fade-in slide-in-from-bottom-4 duration-500" id="email-preview">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">PREVIEW</span>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy
+                    </button>
+</div>
+<div class="bg-surface-container-lowest/80 p-6 rounded-lg font-body-md text-on-surface-variant leading-relaxed border border-white/5 whitespace-pre-line">
+                    Dear [Partner Name],
+
+                    We at LumaNation have been closely following your stewardship in the environmental sector. Our mission to create empathetic digital sanctuaries aligns deeply with your commitment to restorative ecological practices.
+
+                    We are writing to propose a collaborative partnership that bridges human wellness with environmental resilience...
+                </div>
+</div>
+</div>
+<!-- Tool: Escrow Management -->
+<div class="glass-panel luma-glow rounded-xl p-8 transition-all duration-300">
+<div class="flex items-start justify-between mb-6">
+<div>
+<div class="flex items-center gap-2 text-tertiary mb-1">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Trust Protocol</span>
+</div>
+<h2 class="font-headline-md text-headline-md">Escrow Document</h2>
+</div>
+</div>
+<div class="space-y-4 mb-8">
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">FUND ALLOCATION</label>
+<input class="w-full bg-surface-container/50 border-none border-b border-outline focus:border-primary focus:ring-0 text-on-surface rounded-t-lg" placeholder="$10,000.00" type="text"/>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">RELEASE MILESTONE</label>
+<input class="w-full bg-surface-container/50 border-none border-b border-outline focus:border-primary focus:ring-0 text-on-surface rounded-t-lg" placeholder="Project Phase 1" type="text"/>
+</div>
+</div>
+<div>
+<label class="font-label-sm text-label-sm text-on-surface-variant mb-2 block">ESCROW AGENT</label>
+<input class="w-full bg-surface-container/50 border-none border-b border-outline focus:border-primary focus:ring-0 text-on-surface rounded-t-lg" placeholder="Luma Governance DAO" type="text"/>
+</div>
+</div>
+<button class="bg-surface-container-high border border-primary/30 text-primary w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold active:scale-95 transition-all hover:bg-surface-container-highest action-shimmer" onclick="createDocument()">
+<span class="material-symbols-outlined">description</span>
+                Create mock escrow document
+            </button>
+<div class="mt-8 hidden animate-in fade-in slide-in-from-bottom-4 duration-500" id="doc-preview">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">LEGAL DRAFT PREVIEW</span>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">download</span> Download PDF
+                    </button>
+</div>
+<div class="bg-surface-container-lowest/80 p-6 rounded-lg font-mono text-[13px] text-on-surface-variant/80 border border-white/5 h-48 overflow-y-auto leading-6">
+                    [ESCROW AGREEMENT v1.2]
+                    Date: October 24, 2023
+                    Parties: LumaNation Stewardship Council &amp; [Partner]
+
+                    1. DEFINITIONS: "Funds" shall refer to the digital assets held in the Luma Trust Ledger...
+                    2. DISBURSEMENT: Assets are scheduled for release upon the verified completion of 'Project Phase 1' as audited by the Luma Governance DAO...
+                    3. TERMINATION: This agreement remains binding until all milestones are met or a mutual cessation is recorded on the distributed ledger...
+                </div>
+</div>
+</div>
+</div>
+<!-- Secondary Information Section -->
+<section class="mt-section-gap grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-6 glass-panel rounded-xl">
+<span class="material-symbols-outlined text-primary mb-4 block">diversity_3</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Stewardship Values</h3>
+<p class="text-sm text-on-surface-variant">Every partnership outreach is measured against our core value of 'Deep Rooted Empathy'. We prioritize long-term ecological impact over short-term gains.</p>
+</div>
+<div class="p-6 glass-panel rounded-xl">
+<span class="material-symbols-outlined text-primary mb-4 block">account_balance_wallet</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Fund Transparency</h3>
+<p class="text-sm text-on-surface-variant">LumaNation maintains 100% transparency. Our escrow documents are publicly auditable and secured by cryptographic proofs of intent.</p>
+</div>
+<div class="p-6 glass-panel rounded-xl overflow-hidden relative">
+<img alt="Forest Moss Texture" class="absolute inset-0 w-full h-full object-cover opacity-20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBG3bT2E6gCij4D-NCqhA0JCu_llOzdxkUe0OtZczKapzGGHbkA91gcAFVXL4JTrfCjOpYmhMJWUhHkZqfZYY3lzBVxyuRf3MK3qkkzc-QY-rXhz8qRtdy2iTR5BQlg6-Ec_63RO98p-oSB9mkv9PTw-QNTswML2UvBxiYqUe4hAHYM6bKneyp8aW_Ts9U665WomowaMpuKPAkWg9XucsRRwQa17amHXtw_WOzJTYD54hTQea4kiDONXuGE1ruczN8Mt55rVpyBVeH"/>
+<div class="relative z-10">
+<span class="material-symbols-outlined text-primary mb-4 block">shield_with_heart</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Ethical Guardrails</h3>
+<p class="text-sm text-on-surface-variant">Tools here are governed by our AI Ethics board, ensuring all generated content remains respectful and aligned with human flourishing.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] max-w-md bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl rounded-full border border-white/10 shadow-xl shadow-[rgba(3,18,14,0.4)] h-16 z-50 flex justify-around items-center px-gutter">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm">Navigate</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-primary after:rounded-full active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">handshake</span>
+<span class="font-label-sm text-label-sm">Stewardship</span>
+</button>
+</nav>
+<script>
+    // WebGL Shader Setup
+    const canvas = document.getElementById('shader-canvas');
+    const gl = canvas.getContext('webgl');
+
+    if (gl) {
+        const vertexShaderSource = `
+            attribute vec2 position;
+            void main() {
+                gl_Position = vec4(position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision highp float;
+            uniform float u_time;
+            uniform vec2 u_resolution;
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 - u_time * 0.3);
+                vec3 color = mix(vec3(0.01, 0.07, 0.06), vec3(0.02, 0.1, 0.09), uv.y + noise * 0.1);
+                gl_FragColor = vec4(color, 1.0);
+            }
+        `;
+
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            return shader;
+        }
+
+        const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+        const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+        const program = gl.createProgram();
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        gl.useProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+        const positionLocation = gl.getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(positionLocation);
+        gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+        const timeLocation = gl.getUniformLocation(program, 'u_time');
+        const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+
+        function render(time) {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+
+            gl.uniform1f(timeLocation, time * 0.001);
+            gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+
+            gl.drawArrays(gl.TRIANGLES, 0, 6);
+            requestAnimationFrame(render);
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    function generateEmail() {
+        const preview = document.getElementById('email-preview');
+        preview.classList.remove('hidden');
+        preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function createDocument() {
+        const preview = document.getElementById('doc-preview');
+        preview.classList.remove('hidden');
+        preview.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Simple parallax effect for glass cards
+    document.addEventListener('mousemove', (e) => {
+        const cards = document.querySelectorAll('.glass-panel');
+        const x = (e.clientX / window.innerWidth - 0.5) * 10;
+        const y = (e.clientY / window.innerHeight - 0.5) * 10;
+        
+        cards.forEach(card => {
+            card.style.transform = `translate(${x}px, ${y}px)`;
+        });
+    });
+</script>
+</body></html>

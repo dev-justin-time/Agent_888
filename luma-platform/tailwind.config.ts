@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss';
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -77,13 +77,13 @@ const config: Config = {
         },
       },
       fontFamily: {
-        "display-lg": ["Manrope", "sans-serif"],
-        "headline-lg": ["Manrope", "sans-serif"],
-        "headline-lg-mobile": ["Manrope", "sans-serif"],
-        "headline-md": ["Manrope", "sans-serif"],
-        "body-lg": ["Manrope", "sans-serif"],
-        "body-md": ["Manrope", "sans-serif"],
-        "label-sm": ["JetBrains Mono", "monospace"],
+        "display-lg": ["var(--font-manrope)", "sans-serif"],
+        "headline-lg": ["var(--font-manrope)", "sans-serif"],
+        "headline-lg-mobile": ["var(--font-manrope)", "sans-serif"],
+        "headline-md": ["var(--font-manrope)", "sans-serif"],
+        "body-lg": ["var(--font-manrope)", "sans-serif"],
+        "body-md": ["var(--font-manrope)", "sans-serif"],
+        "label-sm": ["var(--font-jetbrains)", "monospace"],
       },
       fontSize: {
         "display-lg": [

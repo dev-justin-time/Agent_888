@@ -1,5 +1,5 @@
-import { TopAppBar } from "./TopAppBar';
-import { BottomNav } from "./BottomNav';
+import { TopAppBar } from "./TopAppBar"
+import { BottomNav } from "./BottomNav"
 
 export function MainLayout({ children }: { children: React.ReactNode }) {
   return (

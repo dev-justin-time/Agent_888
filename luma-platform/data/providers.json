@@ -1,0 +1,68 @@
+[
+  {
+    "id": "p_101",
+    "name": "Dr. Aris Thorne",
+    "locale": "US-NY",
+    "type": "counselor",
+    "verified": true,
+    "cost": "Sliding Scale ($0-$20)",
+    "description": "Licensed counselor specializing in life transitions and stress navigation.",
+    "tags": ["Counseling", "Sliding Scale"],
+    "founded": "2015"
+  },
+  {
+    "id": "p_102",
+    "name": "Elena Rostova",
+    "locale": "US-CA",
+    "type": "peer",
+    "verified": true,
+    "cost": "Pro Bono (Free)",
+    "description": "Peer support specialist focused on grief, isolation, and resilience.",
+    "tags": ["Peer Support", "Pro Bono"],
+    "founded": "2020"
+  },
+  {
+    "id": "healing-paths",
+    "name": "Healing Paths",
+    "locale": "US",
+    "type": "navigator",
+    "verified": true,
+    "cost": "Sliding Scale ($0-$50)",
+    "description": "A holistic network specializing in forest therapy and somatic release.",
+    "tags": ["Nature-Based", "Somatic Therapy"],
+    "founded": "2018"
+  },
+  {
+    "id": "opencare-collective",
+    "name": "OpenCare Collective",
+    "locale": "Global",
+    "type": "peer",
+    "verified": true,
+    "cost": "Pay What You Can",
+    "description": "Peer-led mutual aid sanctuary focused on deep listening and radical empathy.",
+    "tags": ["Mutual Aid", "Peer Support"],
+    "reach": "Global"
+  },
+  {
+    "id": "breathwork-alliance",
+    "name": "Breathwork Alliance",
+    "locale": "US",
+    "type": "counselor",
+    "verified": true,
+    "cost": "$25/session",
+    "description": "Professional educators focusing on conscious breathing as a tool for anxiety management.",
+    "tags": ["Science-Based", "Mindfulness"],
+    "founded": "2019"
+  },
+  {
+    "id": "silent-space",
+    "name": "Silent Space",
+    "locale": "US-OR",
+    "type": "navigator",
+    "verified": true,
+    "cost": "Free - $40",
+    "description": "Curated physical retreat centers and quiet zones for digital detoxing.",
+    "tags": ["Physical Spaces", "Detox"],
+    "reach": "PNW"
+  }
+]

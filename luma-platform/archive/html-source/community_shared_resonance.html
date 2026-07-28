@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation Community - Sanctuary of Support</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(18, 35, 30, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+        
+        body {
+            background-color: #061612;
+            color: #d4e7df;
+            overflow-x: hidden;
+            font-family: 'Manrope', sans-serif;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: saturate(180%) blur(20px);
+            border-top: 1px solid var(--glass-border);
+            border-left: 1px solid var(--glass-border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnZH5vD7aK9Of9R7IMOvaEw6NZO-bh3jc6MwmLLqCfECta8Kq5TIs8TA238XkxJzSahXCKSjOCngCV6UxMDziOy23bMMoeqwhGgBah-w7B7GISLDvSiU5jTZktI36lifKkzqC5vcP77U-dPwyteLJzys5FnP_2JwSkLi1t7jjiJPJFkO4pSxj63Q4N0RWdc6PSwyNe-3L5JgclCJOc6ToySh1v5BoFjhd7yoQBCY-fee6jkfeQwwKMRuZGsmo05xayc_V9xMsV61Mx');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            mix-blend-mode: overlay;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glass-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card:hover {
+            background: rgba(18, 35, 30, 0.8);
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.15);
+        }
+
+        .luma-glow {
+            filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.4));
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .active-dot::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background-color: #4edea3;
+            border-radius: 50%;
+        }
+
+        @keyframes breathe {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .bg-gradient-animate {
+            background: radial-gradient(circle at 50% 50%, #00422b 0%, #061612 70%);
+            animation: breathe 10s ease-in-out infinite;
+        }
+
+        @keyframes badge-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(78, 222, 163, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(78, 222, 163, 0); }
+        }
+
+        .verified-pulse {
+            animation: badge-pulse 2s infinite;
+        }
+
+        #shader-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-error": "#690005",
+                    "on-secondary": "#21342e",
+                    "surface-container-low": "#0e1f1a",
+                    "tertiary": "#a8cfbc",
+                    "on-primary-fixed-variant": "#005236",
+                    "on-tertiary-fixed-variant": "#294e3f",
+                    "outline-variant": "#3c4a42",
+                    "on-error-container": "#ffdad6",
+                    "surface": "#061612",
+                    "surface-container": "#12231e",
+                    "on-surface": "#d4e7df",
+                    "surface-container-high": "#1d2d28",
+                    "inverse-primary": "#006c49",
+                    "tertiary-container": "#84ab98",
+                    "on-secondary-fixed-variant": "#374b44",
+                    "error": "#ffb4ab",
+                    "secondary": "#b5cbc3",
+                    "background": "#061612",
+                    "surface-dim": "#061612",
+                    "secondary-fixed": "#d1e8df",
+                    "surface-tint": "#4edea3",
+                    "on-tertiary": "#113729",
+                    "primary-container": "#10b981",
+                    "inverse-surface": "#d4e7df",
+                    "on-primary-container": "#00422b",
+                    "on-surface-variant": "#bbcabf",
+                    "primary-fixed": "#6ffbbe",
+                    "surface-variant": "#283833",
+                    "on-primary": "#003824",
+                    "surface-container-lowest": "#02110d",
+                    "secondary-fixed-dim": "#b5cbc3",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-tertiary-fixed": "#002115",
+                    "secondary-container": "#374b44",
+                    "surface-bright": "#2c3d37",
+                    "on-tertiary-container": "#1b3f31",
+                    "tertiary-fixed-dim": "#a8cfbc",
+                    "surface-container-highest": "#283833",
+                    "inverse-on-surface": "#23342f",
+                    "on-secondary-container": "#a4bab2",
+                    "tertiary-fixed": "#c3ecd7",
+                    "on-background": "#d4e7df",
+                    "on-primary-fixed": "#002113",
+                    "on-secondary-fixed": "#0b1f1a",
+                    "error-container": "#93000a",
+                    "primary": "#4edea3",
+                    "outline": "#86948a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "unit": "8px",
+                    "section-gap": "48px",
+                    "container-margin": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Background Atmospheric Layer -->
+<div class="fixed inset-0 z-[-2] overflow-hidden">
+<canvas id="shader-canvas"></canvas>
+<div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary/10 blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-5%] w-[50%] h-[50%] rounded-full bg-tertiary/10 blur-[100px]"></div>
+</div>
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 w-full">
+<div class="flex justify-between items-center px-container-margin h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden border border-primary/30">
+<img class="w-full h-full object-cover" data-alt="A ethereal, high-resolution portrait of a digital guide character with soft luminous features, glowing skin, and emerald green accents, set against a dark misty forest background. The style is cinematic 3D rendering with soft focus and professional lighting that emphasizes a calming, wise presence for LumaNation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFsg7yA1eVhEBlasjqGDtTReTC83b5OHVP-CkM5BGrsTz9imM6ZpKqvNqi3Kg84qoHBc31rjfjHjwyN5-jUlV8gH0MJ8oqFYxpPRKgbntNgdXQORkBxJZgcIctYgI9ba1AWkWqPbzyUWKBLFCAlyM-aW4nBjSJAQbT4XrGfi7Pb--jYvK6lS0XUSomFXlZJTsVIxO18eH13LIH0nfkpW4iuTb0bx_3u9arz9mEQ3xwF3sPJpoLY5ZWvrCs-F7aBgn5IU4TvOaxQtzs"/>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tight text-primary dark:text-primary-fixed">LumaNation</h1>
+</div>
+<button class="text-on-surface-variant dark:text-on-surface-variant hover:opacity-80 transition-opacity p-2 rounded-full hover:bg-surface-container-high">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-container-margin pt-12 space-y-section-gap">
+<!-- Hero Section -->
+<section class="text-center space-y-4 max-w-2xl mx-auto">
+<h2 class="font-display-lg text-display-lg text-primary leading-tight">Shared Resonance</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Connecting you with verified sanctuaries and intentional communities beyond our digital borders.</p>
+</section>
+<!-- Provider Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Provider Card 1: Healing Paths -->
+<div class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group">
+<div class="space-y-6">
+<div class="flex justify-between items-start">
+<div class="bg-primary/10 p-4 rounded-2xl border border-primary/20">
+<span class="material-symbols-outlined text-primary text-4xl">park</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="flex items-center gap-1 bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-label-sm text-primary uppercase tracking-widest border border-primary/20 verified-pulse">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                            </span>
+<div class="flex items-center gap-1.5 bg-on-primary-container/20 px-3 py-1 rounded-full text-[10px] font-label-sm text-primary-fixed border border-primary-fixed/20">
+<span class="material-symbols-outlined text-sm">shield_person</span> Zero-Record Privacy
+                            </div>
+</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Healing Paths</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">A holistic network specializing in forest therapy and somatic release. They focus on non-clinical, earth-based grounding techniques for emotional regulation.</p>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Nature-Based</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Somatic Therapy</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/60">Founded 2018</span>
+<a class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90" href="#">
+<span class="material-symbols-outlined">north_east</span>
+</a>
+</div>
+</div>
+<!-- Provider Card 2: OpenCare Collective -->
+<div class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group">
+<div class="space-y-6">
+<div class="flex justify-between items-start">
+<div class="bg-tertiary/10 p-4 rounded-2xl border border-tertiary/20">
+<span class="material-symbols-outlined text-tertiary text-4xl">diversity_1</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="flex items-center gap-1 bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-label-sm text-primary uppercase tracking-widest border border-primary/20 verified-pulse">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                            </span>
+<div class="flex items-center gap-1.5 bg-on-primary-container/20 px-3 py-1 rounded-full text-[10px] font-label-sm text-primary-fixed border border-primary-fixed/20">
+<span class="material-symbols-outlined text-sm">shield_person</span> Zero-Record Privacy
+                            </div>
+</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">OpenCare Collective</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Peer-led mutual aid sanctuary focused on deep listening and radical empathy. An open collective for those seeking communal support without hierarchies.</p>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Mutual Aid</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Peer Support</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/60">Global Reach</span>
+<a class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90" href="#">
+<span class="material-symbols-outlined">north_east</span>
+</a>
+</div>
+</div>
+<!-- Visual Break Component / Animated Resource -->
+<div class="relative rounded-[2rem] overflow-hidden min-h-[320px] flex flex-col justify-end p-8 border border-white/10 lg:row-span-1">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60" data-alt="Bioluminescent forest detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdfbV_TY1Yc6z_zgYKJZT7dup8znsYLrwDOvTtG4Q3-FYpq0D8fPfXcDjJ0Df180bRynjOHxTVO-jGzB0yq1ONAldhwefXVmFsyoIpxWhnPUIfbZcIXq66qdJYGfXD-Qpq-qXMvvDTke5ANVrXdMafF5UDdVLpANlyHSGwC1eMBD-PR9zHwJoESZsOxsXl5SV2J0fB4QAHRXH83n4qJ70GTjP3HlZqmr_nqnx9uCXHTRNDCEiyoGNmTfWTBJryld0rbCybZxApbve2"/>
+</div>
+<div class="relative z-10 space-y-2">
+<h4 class="font-headline-md text-headline-md text-white">Community Vetting</h4>
+<p class="font-body-md text-body-md text-white/70">Every provider passes our 'Sanctuary Protocol', ensuring zero data tracking and absolute anonymity.</p>
+</div>
+</div>
+<!-- Provider Card 3: Breathwork Alliance -->
+<div class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group">
+<div class="space-y-6">
+<div class="flex justify-between items-start">
+<div class="bg-primary/10 p-4 rounded-2xl border border-primary/20">
+<span class="material-symbols-outlined text-primary text-4xl">air</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="flex items-center gap-1 bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-label-sm text-primary uppercase tracking-widest border border-primary/20 verified-pulse">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                            </span>
+<div class="flex items-center gap-1.5 bg-on-primary-container/20 px-3 py-1 rounded-full text-[10px] font-label-sm text-primary-fixed border border-primary-fixed/20">
+<span class="material-symbols-outlined text-sm">shield_person</span> Zero-Record Privacy
+                            </div>
+</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Breathwork Alliance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Professional educators focusing on conscious breathing as a tool for anxiety management. Secular and science-backed approaches.</p>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Science-Based</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Mindfulness</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/60">Digital Sessions</span>
+<a class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90" href="#">
+<span class="material-symbols-outlined">north_east</span>
+</a>
+</div>
+</div>
+<!-- Provider Card 4: Silent Space -->
+<div class="glass-card rounded-[2rem] p-8 flex flex-col justify-between group">
+<div class="space-y-6">
+<div class="flex justify-between items-start">
+<div class="bg-on-surface-variant/10 p-4 rounded-2xl border border-on-surface-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant text-4xl">notifications_off</span>
+</div>
+<div class="flex flex-col items-end gap-2">
+<span class="flex items-center gap-1 bg-surface-container-high px-3 py-1 rounded-full text-[10px] font-label-sm text-primary uppercase tracking-widest border border-primary/20 verified-pulse">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span> Verified
+                            </span>
+<div class="flex items-center gap-1.5 bg-on-primary-container/20 px-3 py-1 rounded-full text-[10px] font-label-sm text-primary-fixed border border-primary-fixed/20">
+<span class="material-symbols-outlined text-sm">shield_person</span> Zero-Record Privacy
+                            </div>
+</div>
+</div>
+<div class="space-y-3">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Silent Space</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">Curated physical retreat centers and quiet zones for digital detoxing. A network of non-tech sanctuaries across the continent.</p>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Physical Spaces</span>
+<span class="px-3 py-1 bg-secondary-container/30 text-secondary text-xs rounded-full border border-secondary-container/50">Detox</span>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5 flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant/60">Location: PNW</span>
+<a class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center transition-transform hover:scale-110 active:scale-90" href="#">
+<span class="material-symbols-outlined">north_east</span>
+</a>
+</div>
+</div>
+<!-- CTA Card -->
+<div class="bg-primary/5 border border-primary/20 rounded-[2rem] p-8 flex flex-col items-center justify-center text-center space-y-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-animate opacity-20"></div>
+<div class="relative z-10 space-y-4">
+<span class="material-symbols-outlined text-5xl text-primary luma-glow">add_circle</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Become a Partner</h3>
+<p class="font-body-md text-body-md text-on-surface-variant px-4">Help us expand the digital forest. Apply to join our verified community of providers.</p>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-headline-md text-sm tracking-wide transition-all hover:shadow-[0_0_20px_rgba(78,222,163,0.3)] hover:-translate-y-1">
+                        Apply Now
+                    </button>
+</div>
+</div>
+</section>
+<!-- Stewardship Pledge Section -->
+<section class="max-w-4xl mx-auto glass-card rounded-[2.5rem] overflow-hidden flex flex-col md:flex-row items-stretch">
+<div class="w-full md:w-1/2 h-64 md:h-auto">
+<img class="w-full h-full object-cover" data-alt="A serene, wide-angle cinematic shot of a dark, bioluminescent forest floor. Tiny glowing mushrooms and fern patterns are illuminated by emerald green light from within. Soft mist hangs in the air, creating a deep sense of layered sanctuary and safety. The composition is artistic and minimalist, echoing the glassmorphism UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdfbV_TY1Yc6z_zgYKJZT7dup8znsYLrwDOvTtG4Q3-FYpq0D8fPfXcDjJ0Df180bRynjOHxTVO-jGzB0yq1ONAldhwefXVmFsyoIpxWhnPUIfbZcIXq66qdJYGfXD-Qpq-qXMvvDTke5ANVrXdMafF5UDdVLpANlyHSGwC1eMBD-PR9zHwJoESZsOxsXl5SV2J0fB4QAHRXH83n4qJ70GTjP3HlZqmr_nqnx9uCXHTRNDCEiyoGNmTfWTBJryld0rbCybZxApbve2"/>
+</div>
+<div class="w-full md:w-1/2 p-10 flex flex-col justify-center space-y-4">
+<h3 class="font-headline-md text-headline-md text-primary">The Sanctuary Oath</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">LumaNation only partners with collectives that uphold our core tenet: Your emotional state is your own property. We never exchange your data for access, ensuring your path remains private and pure.</p>
+<div class="pt-4 flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Stewardship First</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-4 left-0 right-0 z-50 flex justify-around items-center h-16 px-gutter max-w-md mx-auto bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border border-white/10 shadow-xl rounded-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-label-sm text-label-sm mt-1">Navigate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">local_library</span>
+<span class="font-label-sm text-label-sm mt-1">Resources</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed relative active-dot transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">groups</span>
+<span class="font-label-sm text-label-sm mt-1">Community</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 hover:text-primary/80 transition-colors active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-label-sm mt-1">Stewardship</span>
+</a>
+</nav>
+<script>
+        // Shader Animation Implementation
+        const canvas = document.getElementById('shader-canvas');
+        const gl = canvas.getContext('webgl');
+
+        if (gl) {
+            const vertexShaderSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision highp float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+
+                void main() {
+                    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                    float noise = sin(uv.x * 10.0 + u_time * 0.5) * cos(uv.y * 10.0 - u_time * 0.3);
+                    vec3 color = mix(vec3(0.01, 0.07, 0.06), vec3(0.02, 0.1, 0.09), uv.y + noise * 0.1);
+                    gl_FragColor = vec4(color, 1.0);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                return shader;
+            }
+
+            const program = gl.createProgram();
+            gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vertexShaderSource));
+            gl.attachShader(program, createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource));
+            gl.linkProgram(program);
+            gl.useProgram(program);
+
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, "position");
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+            const timeLocation = gl.getUniformLocation(program, "u_time");
+            const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+
+            function render(time) {
+                time *= 0.001;
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform1f(timeLocation, time);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // Micro-interaction for cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
+</body></html>

@@ -6,7 +6,7 @@ import { MessageCircle, MapPin, Users, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/lib/constants";
 
-const icons: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const icons: Record<string, React.ComponentType<{ size?: number | string; className?: string }>> = {
   navigate: MessageCircle,
   resources: MapPin,
   community: Users,

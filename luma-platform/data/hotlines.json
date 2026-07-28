@@ -1,0 +1,17 @@
+{
+  "US": {
+    "name": "988 Lifeline",
+    "number": "988",
+    "text": "Text HOME to 741741"
+  },
+  "UK": {
+    "name": "Samaritans",
+    "number": "116 123",
+    "text": "Text SHOUT to 85258"
+  },
+  "CA": {
+    "name": "Talk Suicide",
+    "number": "1-833-456-4566",
+    "text": "Text 45645"
+  }
+}

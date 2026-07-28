@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumaNation | Stewardship</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..900&amp;family=Manrope:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 35, 30, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .inner-glow {
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+        .luma-glow:hover {
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.15);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #4edea3;
+            border-radius: 10px;
+        }
+        @keyframes pulse-gentle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        .animate-pulse-gentle {
+            animation: pulse-gentle 4s ease-in-out infinite;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#003824",
+                    "secondary-container": "#374b44",
+                    "tertiary": "#a8cfbc",
+                    "surface-container-high": "#1d2d28",
+                    "on-primary-fixed": "#002113",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#6ffbbe",
+                    "tertiary-container": "#84ab98",
+                    "secondary": "#b5cbc3",
+                    "surface-tint": "#4edea3",
+                    "primary": "#4edea3",
+                    "on-tertiary-container": "#1b3f31",
+                    "surface-dim": "#061612",
+                    "surface-bright": "#2c3d37",
+                    "on-tertiary-fixed-variant": "#294e3f",
+                    "tertiary-fixed-dim": "#a8cfbc",
+                    "on-secondary-fixed-variant": "#374b44",
+                    "surface-container": "#12231e",
+                    "outline": "#86948a",
+                    "tertiary-fixed": "#c3ecd7",
+                    "surface": "#061612",
+                    "inverse-primary": "#006c49",
+                    "on-secondary-fixed": "#0b1f1a",
+                    "inverse-on-surface": "#23342f",
+                    "primary-container": "#10b981",
+                    "surface-container-lowest": "#02110d",
+                    "on-secondary-container": "#a4bab2",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#d4e7df",
+                    "on-tertiary-fixed": "#002115",
+                    "on-error": "#690005",
+                    "background": "#061612",
+                    "on-surface-variant": "#bbcabf",
+                    "on-tertiary": "#113729",
+                    "on-secondary": "#21342e",
+                    "on-surface": "#d4e7df",
+                    "error-container": "#93000a",
+                    "surface-variant": "#283833",
+                    "secondary-fixed-dim": "#b5cbc3",
+                    "outline-variant": "#3c4a42",
+                    "surface-container-highest": "#283833",
+                    "primary-fixed-dim": "#4edea3",
+                    "on-primary-fixed-variant": "#005236",
+                    "secondary-fixed": "#d1e8df",
+                    "on-primary-container": "#00422b",
+                    "surface-container-low": "#0e1f1a",
+                    "on-background": "#d4e7df"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "gutter": "16px",
+                    "section-gap": "48px",
+                    "container-margin": "24px"
+            },
+            "fontFamily": {
+                    "label-sm": ["JetBrains Mono"],
+                    "display-lg": ["Manrope"],
+                    "body-lg": ["Manrope"],
+                    "body-md": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg-mobile": ["Manrope"],
+                    "headline-lg": ["Manrope"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen selection:bg-primary/30 font-body-md overflow-x-hidden">
+<!-- Atmospheric Background Animation -->
+
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin h-16 w-full bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-variant/50 p-2 rounded-full transition-all duration-200 active:scale-95">menu</button>
+<h1 class="font-headline-md text-headline-md font-semibold text-primary">LumaNation</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-white/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional high-resolution headshot of a diverse user in soft, cinematic lighting with a shallow depth of field, reflecting a calm and competent demeanor. The background is a blurred office filled with indoor plants and soft emerald green lighting, maintaining the sanctuary aesthetic of LumaNation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIh7aFAN43UlJdpYAwu3IKMFsd5u8cpBn6fbMZxtoeHiaPOssjz4y20kOh0FNpT3MgX494API-oH2twEO6XBOyhbfFRWKtuqEHV7BsxqbfZwY5Qhm7nI9wSuVDLegLv9Uw7Go2emMcXbCYg1ISJNXNVXCMx5pvNR_abAKALvE4ZhjO9EQiFY83PFah4As_Z0pYE9FD7gpfl_lcgLXdxxnN10srcaFDKOGoHoKZoh9B7Rqov5OH11UBHZ28dvGOKg4IL-364zCP_haD"/>
+</div>
+</div>
+</header>
+<main class="relative z-10 pt-24 pb-32 px-container-margin max-w-6xl mx-auto">
+<!-- Screen Header -->
+<header class="mb-section-gap">
+<div class="flex flex-col gap-2">
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse-gentle"></span>
+                    STEWARDSHIP CENTER
+                </span>
+<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Community Growth &amp; Documents</h2>
+<p class="text-on-surface-variant max-w-2xl">Manage your outreach strategies and legal frameworks with clarity. Generate high-impact communication and secure stewardship agreements.</p>
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-8">
+<!-- Tool Section: Email Generation -->
+<section class="lg:col-span-6 space-y-6">
+<div class="glass-panel inner-glow rounded-xl p-6 luma-glow transition-all duration-300">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">campaign</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Partner Outreach</h3>
+<p class="text-on-surface-variant text-sm">Automated communication composer</p>
+</div>
+</div>
+<div class="space-y-4 mb-6">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">Partner Type</label>
+<select class="bg-surface-container border-b border-outline-variant focus:border-primary focus:ring-0 text-on-surface py-2 rounded-t-lg">
+<option>Eco-Conservation Agency</option>
+<option>Private Land Steward</option>
+<option>Educational Institution</option>
+<option>Community Collective</option>
+</select>
+</div>
+<button class="w-full py-4 bg-gradient-to-r from-primary-container to-on-primary-fixed-variant text-on-primary font-bold rounded-lg transition-all duration-200 active:scale-[0.98] hover:shadow-[0_0_15px_rgba(78,222,163,0.3)] flex items-center justify-center gap-2" id="btn-generate-email">
+<span>Generate partner outreach email</span>
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</button>
+</div>
+<div class="relative group h-96" id="email-result">
+<div class="absolute inset-0 bg-surface-container-lowest/50 rounded-lg border border-white/5 p-4 custom-scrollbar overflow-y-auto">
+<div class="h-full flex flex-col items-center justify-center text-center opacity-40" id="email-placeholder">
+<span class="material-symbols-outlined text-4xl mb-2">edit_note</span>
+<p class="text-sm">Click the button above to draft <br/> a tailored partnership proposal.</p>
+</div>
+<div class="hidden text-sm leading-relaxed text-on-surface-variant space-y-4 font-body-md" id="email-content">
+<div class="p-3 bg-primary/5 border-l-2 border-primary rounded-r-md">
+<span class="text-primary font-bold">Subject:</span> Potential Stewardship Collaboration - LumaNation Network
+                                </div>
+<p>Dear Conservation Director,</p>
+<p>I am reaching out on behalf of LumaNation to discuss a potential stewardship alignment between our organizations. We have been closely following your work in restorative ecology and believe there is a significant opportunity for integrated digital-physical forest management.</p>
+<p>Our platform facilitates seamless resource sharing and community-led maintenance of sensitive ecosystems. By joining our "Stewardship Tier," your agency would gain access to:</p>
+<ul class="list-disc ml-4 space-y-1">
+<li>Real-time atmospheric monitoring data.</li>
+<li>Automated volunteer coordination frameworks.</li>
+<li>Secured funding pipelines for long-term restoration.</li>
+</ul>
+<p>I would welcome the opportunity to discuss how we can leverage the LumaNation infrastructure to support your local initiatives. Are you available for a brief introductory call next Tuesday or Wednesday?</p>
+<p>Best regards,<br/>[Your Name]<br/>LumaNation Steward</p>
+</div>
+</div>
+<button class="absolute top-2 right-2 p-2 bg-surface-variant/80 rounded-md hover:bg-primary/20 transition-colors hidden group-hover:block border border-white/10">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Tool Section: Document Management -->
+<section class="lg:col-span-6 space-y-6">
+<div class="glass-panel inner-glow rounded-xl p-6 luma-glow transition-all duration-300 h-full flex flex-col">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md font-semibold text-on-surface">Asset Escrow</h3>
+<p class="text-on-surface-variant text-sm">Secure document generation</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="flex flex-col gap-1">
+<label class="text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">Asset Value</label>
+<input class="bg-surface-container border-b border-outline-variant focus:border-primary focus:ring-0 text-on-surface py-2 px-3 rounded-t-lg" placeholder="e.g. $15,000" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="text-xs font-label-sm text-on-surface-variant uppercase tracking-wider">Duration</label>
+<select class="bg-surface-container border-b border-outline-variant focus:border-primary focus:ring-0 text-on-surface py-2 rounded-t-lg">
+<option>12 Months</option>
+<option>24 Months</option>
+<option>Indefinite</option>
+</select>
+</div>
+<button class="col-span-2 py-4 bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-all duration-200 active:scale-[0.98] hover:bg-secondary-container/80 flex items-center justify-center gap-2" id="btn-generate-doc">
+<span>Create mock escrow document</span>
+<span class="material-symbols-outlined text-sm">verified_user</span>
+</button>
+</div>
+<div class="flex-grow relative bg-white/5 rounded-lg overflow-hidden border border-white/5" id="doc-result">
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center opacity-40" id="doc-placeholder">
+<span class="material-symbols-outlined text-4xl mb-2">history_edu</span>
+<p class="text-sm">Ready to generate <br/> legal framework preview.</p>
+</div>
+<div class="hidden h-full flex flex-col" id="doc-content">
+<div class="bg-surface-bright/50 p-4 border-b border-white/10 flex justify-between items-center">
+<span class="font-label-sm text-xs text-primary">DRAFT_ESCROW_V04.PDF</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-sm opacity-50 cursor-pointer hover:opacity-100">print</span>
+<span class="material-symbols-outlined text-sm opacity-50 cursor-pointer hover:opacity-100">download</span>
+</div>
+</div>
+<div class="p-6 text-[10px] uppercase font-label-sm leading-relaxed text-on-surface-variant overflow-y-auto custom-scrollbar flex-grow bg-surface-container-lowest">
+<div class="text-center mb-8">
+<h4 class="text-sm font-bold text-on-surface underline">STEWARDSHIP ASSET ESCROW AGREEMENT</h4>
+<p class="mt-2 italic">Strictly Confidential - For Review Only</p>
+</div>
+<div class="space-y-4">
+<div>
+<p class="font-bold text-on-surface">1. DEFINITIONS</p>
+<p class="mt-1">"Asset" refers to the digital-biological ecosystem footprint defined in Schedule A. "Escrow Agent" refers to the LumaNation DAO Protocol.</p>
+</div>
+<div>
+<p class="font-bold text-on-surface">2. DEPOSIT OF ASSET</p>
+<p class="mt-1">The Steward shall deposit the Stewardship Rights into the Escrow Account within 48 hours of execution of this Agreement. The DAO shall verify the integrity of the biometric lock-ins.</p>
+</div>
+<div>
+<p class="font-bold text-on-surface">3. RELEASE CONDITIONS</p>
+<p class="mt-1">The Asset shall be released only upon the verification of "Net-Positive Ecology Gains" sustained over three consecutive lunar cycles, verified via autonomous aerial telemetry.</p>
+</div>
+<div>
+<p class="font-bold text-on-surface">4. GOVERNING LAW</p>
+<p class="mt-1">This agreement is governed by the Digital Sanctuary Statutes of 2024 and sub-spatial contract law of the LumaNation ecosystem.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Secondary Insights / Bento Area -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-6 rounded-xl flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">partner_exchange</span>
+</div>
+<div>
+<p class="text-2xl font-bold">14</p>
+<p class="text-xs text-on-surface-variant">Active Proposals</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">folder_managed</span>
+</div>
+<div>
+<p class="text-2xl font-bold">32</p>
+<p class="text-xs text-on-surface-variant">Locked Documents</p>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex items-center gap-4">
+<div class="text-primary">
+<span class="material-symbols-outlined text-4xl">energy_savings_leaf</span>
+</div>
+<div>
+<p class="text-2xl font-bold">890h</p>
+<p class="text-xs text-on-surface-variant">Impact Time</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-4 left-0 w-full z-50 flex justify-around items-center px-container-margin py-3 bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_rgba(3,18,14,0.4)] fixed bottom-unit-2 left-1/2 -translate-x-1/2 w-[calc(100%-48px)] rounded-full">
+<!-- Navigate -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-sm text-label-sm">Navigate</span>
+</a>
+<!-- Resources -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">spa</span>
+<span class="font-label-sm text-label-sm">Resources</span>
+</a>
+<!-- Community -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 opacity-60 hover:text-primary transition-colors active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">diversity_1</span>
+<span class="font-label-sm text-label-sm">Community</span>
+</a>
+<!-- Stewardship (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary scale-110 after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-sm text-label-sm">Stewardship</span>
+</a>
+</nav>
+<script>
+        document.getElementById('btn-generate-email').addEventListener('click', function() {
+            this.querySelector('span:first-child').innerText = 'Regenerating...';
+            document.getElementById('email-placeholder').classList.add('hidden');
+            document.getElementById('email-content').classList.remove('hidden');
+            
+            // Add a subtle fade-in animation to the result
+            const content = document.getElementById('email-content');
+            content.style.opacity = '0';
+            setTimeout(() => {
+                content.style.transition = 'opacity 0.5s ease-out';
+                content.style.opacity = '1';
+                this.querySelector('span:first-child').innerText = 'Generate partner outreach email';
+            }, 500);
+        });
+
+        document.getElementById('btn-generate-doc').addEventListener('click', function() {
+            this.querySelector('span:first-child').innerText = 'Synthesizing...';
+            document.getElementById('doc-placeholder').classList.add('hidden');
+            document.getElementById('doc-content').classList.remove('hidden');
+            
+            const content = document.getElementById('doc-content');
+            content.style.opacity = '0';
+            setTimeout(() => {
+                content.style.transition = 'opacity 0.8s ease-in';
+                content.style.opacity = '1';
+                this.querySelector('span:first-child').innerText = 'Create mock escrow document';
+            }, 800);
+        });
+
+        // Hover effect for labels to simulate "Luma Glow"
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(78, 222, 163, 0.4)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    </script>
+</body></html>
