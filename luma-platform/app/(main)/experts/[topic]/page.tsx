@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Send, Heart, ArrowLeft, Phone, ShieldAlert, Info } from "lucide-react";
 import { EXPERT_TOPIC_MAP, EXPERT_TOPICS } from "@/lib/constants";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
@@ -21,6 +21,9 @@ export default function ExpertChatPage() {
   const topicId = Array.isArray(params?.topic) ? params.topic[0] : params?.topic;
   const topic = topicId ? EXPERT_TOPIC_MAP[topicId] : undefined;
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  const sentQ = useRef(false);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -44,6 +47,17 @@ export default function ExpertChatPage() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
+
+  // Auto-send a question from the Question Library (?q=…).
+  useEffect(() => {
+    if (topic && q && !sentQ.current) {
+      sentQ.current = true;
+      const timer = setTimeout(() => handleSend(q), 250);
+      return () => clearTimeout(timer);
+    }
+    // handleSend is recreated each render; only fire once the topic is ready.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topic, q]);
 
   if (!topic) {
     return (

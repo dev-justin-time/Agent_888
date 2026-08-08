@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Shield, CheckCircle2, ExternalLink, Users, Search, Filter, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
@@ -16,6 +17,19 @@ export default function CommunityPage() {
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [verifiedOnly, setVerifiedOnly] = useState(true);
   const [connecting, setConnecting] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+
+  // Deep-link from the Question Library (?search=…&type=…).
+  useEffect(() => {
+    const s = searchParams.get("search");
+    const t = searchParams.get("type");
+    if (s !== null) setSearch(s);
+    if (t === "navigator" || t === "counselor" || t === "peer" || t === "all") setTypeFilter(t);
+    if (s !== null || t !== null) {
+      document.getElementById("provider-grid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [handoff, setHandoff] = useState<{ name: string; url: string } | null>(null);
 
   const runNeed = (call: CommunityCall) => {

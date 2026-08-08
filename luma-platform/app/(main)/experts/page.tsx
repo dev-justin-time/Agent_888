@@ -1,12 +1,26 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Sparkles, Shield, Cpu } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Sparkles, Shield, Cpu, Search, ArrowRight } from "lucide-react";
 import { EXPERT_TOPICS } from "@/lib/constants";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
 
+const QUICK_SEARCHES = [
+  "50/30/20 budget",
+  "negotiate salary",
+  "phishing link",
+  "STAR method",
+  "overwhelmed",
+  "security deposit",
+];
+
 export default function ExpertsPage() {
+  const router = useRouter();
+  const [quick, setQuick] = useState("");
+
   return (
     <div className="max-w-5xl mx-auto space-y-section-gap">
       <section className="text-center">
@@ -19,6 +33,63 @@ export default function ExpertsPage() {
           learning, home admin, digital safety, and headspace. Every expert runs on built-in
           evidence-based frameworks, stays completely anonymous, and never records a word.
         </p>
+      </section>
+
+      {/* Question Library — search all 600 curated questions */}
+      <section className="glass-card inner-glow p-6 rounded-2xl border-l-4 border-l-primary/50">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-4">
+            <span className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
+              <Search className="text-primary" size={24} />
+            </span>
+            <div>
+              <h3 className="font-headline-md text-headline-md text-primary font-semibold">
+                Question Library
+              </h3>
+              <p className="font-body-md text-body-md text-on-surface-variant text-sm">
+                600 most common questions across every expert — search them all in one place.
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/questions"
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary border border-primary/30 rounded-full px-4 py-2 hover:bg-primary/10 active:scale-95 transition-all"
+          >
+            Browse all <ArrowRight size={14} />
+          </Link>
+        </div>
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            router.push(`/questions?q=${encodeURIComponent(quick)}`);
+          }}
+          className="relative mt-4"
+        >
+          <Search
+            size={16}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
+          />
+          <input
+            type="text"
+            value={quick}
+            onChange={(e) => setQuick(e.target.value)}
+            placeholder="Search 600 questions — e.g. eviction, STAR method, gift card scam…"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-container/50 border border-white/10 rounded-full text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
+          />
+        </form>
+
+        <div className="mt-3 flex flex-wrap gap-2">
+          {QUICK_SEARCHES.map((term) => (
+            <Link
+              key={term}
+              href={`/questions?q=${encodeURIComponent(term)}`}
+              className="text-xs text-secondary border border-secondary/25 rounded-full px-3 py-1 hover:bg-secondary/10 active:scale-95 transition-all"
+            >
+              {term}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">

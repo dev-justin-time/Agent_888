@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
 import { Phone, Globe, Heart, MapPin, AlertCircle, Sparkles } from "lucide-react";
@@ -29,10 +30,20 @@ export default function ResourcesPage() {
   const [grants, setGrants] = useState<Grant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const need = searchParams.get("need");
 
   const scrollToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  // Deep-link from the Question Library (?need=hotline|grants) once data is loaded.
+  useEffect(() => {
+    if (!loading && (need === "hotline" || need === "grants")) {
+      scrollToSection(need === "hotline" ? "immediate-support" : "grants-funding");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, need]);
 
   useEffect(() => {
     setLoading(true);

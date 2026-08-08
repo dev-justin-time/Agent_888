@@ -3,6 +3,7 @@ export const NAV_ITEMS = [
   { id: "resources", label: "Resources", href: "/resources" },
   { id: "community", label: "Community", href: "/community" },
   { id: "experts", label: "Experts", href: "/experts" },
+  { id: "questions", label: "Questions", href: "/questions" },
   { id: "stewardship", label: "Stewardship", href: "/stewardship" },
 ] as const;
 

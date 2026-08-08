@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Send, Heart, Sparkles, Wind } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
@@ -32,10 +32,23 @@ export default function NavigatePage() {
   const [showGrounding, setShowGrounding] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const q = searchParams.get("q");
+  const sentQ = useRef(false);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Auto-send a question from the Question Library (?q=…).
+  useEffect(() => {
+    if (q && !sentQ.current) {
+      sentQ.current = true;
+      const timer = setTimeout(() => handleSend(q), 250);
+      return () => clearTimeout(timer);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [q]);
 
   const handleSend = async (text: string = input) => {
     if (!text.trim() || isLoading) return;

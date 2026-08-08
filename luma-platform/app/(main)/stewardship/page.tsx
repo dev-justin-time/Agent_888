@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Copy, Check, Mail, FileText, Briefcase, Shield, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
@@ -40,6 +41,26 @@ export default function StewardshipPage() {
   const [useCase, setUseCase] = useState("");
   const [escrow, setEscrow] = useState<EscrowResult | null>(null);
   const [escrowLoading, setEscrowLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const ranScenario = useRef(false);
+
+  // Deep-link from the Question Library (?run=<callId>) — prefill + generate.
+  useEffect(() => {
+    const runId = searchParams.get("run");
+    if (!runId || ranScenario.current) return;
+    const esc = ESCROW_TOP_CALLS.find((c) => c.id === runId);
+    if (esc) {
+      ranScenario.current = true;
+      runEscrowScenario(esc);
+      return;
+    }
+    const out = OUTREACH_TOP_CALLS.find((c) => c.id === runId);
+    if (out) {
+      ranScenario.current = true;
+      runOutreachScenario(out);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const generateOutreach = async (prefill?: OutreachCall) => {
     setOutreachLoading(true);
