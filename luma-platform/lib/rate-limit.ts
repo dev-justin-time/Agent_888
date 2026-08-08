@@ -37,9 +37,16 @@ const DEFAULT_CHAT_LIMIT: RateLimitConfig = safeRateLimitConfig(
   { windowMs: 60 * 1000, maxRequests: 30 }
 );
 
+const DEFAULT_EXPERT_LIMIT: RateLimitConfig = safeRateLimitConfig(
+  process.env.RATE_LIMIT_EXPERT_WINDOW_MS,
+  process.env.RATE_LIMIT_EXPERT_MAX,
+  { windowMs: 60 * 1000, maxRequests: 40 }
+);
+
 export const RATE_LIMITS = {
   register: DEFAULT_REGISTER_LIMIT,
   chat: DEFAULT_CHAT_LIMIT,
+  expert: DEFAULT_EXPERT_LIMIT,
 };
 
 function getClientIp(req: NextRequest): string {

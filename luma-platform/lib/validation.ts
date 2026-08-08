@@ -67,6 +67,21 @@ export const ChatMessageSchema = z.object({
   message: z.string().min(1, "Message is required").max(4000).trim(),
 });
 
+export const ExpertTopicEnum = z.enum([
+  "finance",
+  "legal",
+  "career",
+  "learning",
+  "home",
+  "digital",
+  "wellbeing",
+]);
+
+export const ExpertConsultSchema = z.object({
+  topic: ExpertTopicEnum,
+  message: z.string().min(1, "Message is required").max(4000).trim(),
+});
+
 export const HotlineSchema = z.object({
   locale: z
     .string()

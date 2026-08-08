@@ -52,3 +52,14 @@ export interface ApiError {
   status: "error";
   message: string;
 }
+
+export interface ExpertConsultResponse {
+  status: "success";
+  expert: string;
+  response: string;
+  framework_used?: string;
+  route_to_resources?: boolean;
+  priority?: "URGENT_SAFETY_PROTOCOL";
+  disclaimer?: string;
+  billed_amount: number;
+}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { MessageCircle, MapPin, Users, Briefcase, Shield } from "lucide-react";
+import { MessageCircle, MapPin, Users, Briefcase, Shield, Lightbulb } from "lucide-react";
 
 export default function LandingPage() {
   return (
@@ -28,7 +28,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mt-12">
         <Link href="/navigate">
           <GlassCard className="p-6 h-full hover:-translate-y-1 transition-transform">
             <MessageCircle className="text-primary mb-4" size={28} />
@@ -54,6 +54,16 @@ export default function LandingPage() {
             <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Community</h3>
             <p className="font-body-md text-body-md text-on-surface-variant">
               Connect with verified professionals and sanctuaries through zero-record privacy.
+            </p>
+          </GlassCard>
+        </Link>
+        <Link href="/experts">
+          <GlassCard className="p-6 h-full hover:-translate-y-1 transition-transform">
+            <Lightbulb className="text-primary mb-4" size={28} />
+            <h3 className="font-headline-md text-headline-md text-on-surface mb-2">Experts</h3>
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              Plain-language logic for money, rights, career, learning, home, and digital
+              safety — grounded in built-in frameworks.
             </p>
           </GlassCard>
         </Link>

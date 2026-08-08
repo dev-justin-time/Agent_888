@@ -8,7 +8,7 @@
 |------|-------|--------|
 | Frontend | `app/page.tsx`, `layout.tsx`, `globals.css`, many `*.html` pages | SPA mock data, duplicated Tailwind config in HTML, no shared layout, no real routing |
 | Design | `DESIGN.md` | Tokens exist but are not centralized in Tailwind config |
-| Backend agents | `luma-navigator.ts`, `luma-resources.ts`, `luma-community.ts`, `luma-escrow-manager.ts`, `luma-partner-outreach.ts` | Standalone services with hard-coded mock data and no frontend wiring |
+| Backend agents | `luma-navigator.ts`, `luma-resources.ts`, `luma-community.ts`, `luma-escrow-manager.ts`, `luma-partner-outreach.ts` + 7 expert agents (`luma-expert-*.ts`) | Standalone services called over HTTP through API route proxies |
 | Assets | PNG/Marketing images | Loose in app root; need organized `public/` or `assets/` structure |
 
 ## 2. Target Project Structure
@@ -39,11 +39,19 @@ luma-platform/                 <- repo root
 │   ├── validators.ts
 │   └── utils.ts
 ├── agents/                    <- moved from sibling `agents` directory
+│   ├── lib/expert-core.ts     <- shared expert engine (safety rails, frameworks, fallbacks)
 │   ├── luma-navigator.ts
 │   ├── luma-resources.ts
 │   ├── luma-community.ts
 │   ├── luma-escrow-manager.ts
-│   └── luma-partner-outreach.ts
+│   ├── luma-partner-outreach.ts
+│   ├── luma-expert-finance.ts      (port 8101)
+│   ├── luma-expert-legal.ts        (port 8102)
+│   ├── luma-expert-career.ts       (port 8103)
+│   ├── luma-expert-learning.ts     (port 8104)
+│   ├── luma-expert-home.ts         (port 8105)
+│   ├── luma-expert-digital.ts      (port 8106)
+│   └── luma-expert-wellbeing.ts    (port 8107)
 ├── data/                      <- structured real-world data with clear replaceable source
 │   ├── hotlines.json
 │   ├── grants.json
@@ -106,6 +114,12 @@ luma-platform/                 <- repo root
 - `app/api/generate-escrow/route.ts` uses `luma-escrow-manager.ts` with OpenAI structured outputs + Zod validation.
 - `app/api/partner-outreach/route.ts` uses `luma-partner-outreach.ts`.
 - Both endpoints return typed JSON; UI supports copy, mailto, and PDF export.
+
+### 5.5 Experts (`/experts`, `/experts/[topic]`)
+- Seven expert agents (`luma-expert-*.ts`) share one engine: `agents/lib/expert-core.ts`.
+- `app/api/expert/route.ts` proxies `{ topic, message }` to the right agent URL + tool (`consult_finance`, `consult_legal`, `consult_career`, `consult_learning`, `consult_home`, `consult_digital`, `consult_wellbeing`) with Zod validation + rate limiting.
+- Every expert runs the same pipeline: **urgent safety screening → continuity protocol → deterministic framework match → LLM enrichment (structured JSON) → guaranteed knowledge-base fallback → resource routing signals.**
+- Env overrides: `AGENT_EXPERT_FINANCE_URL` … `AGENT_EXPERT_WELLBEING_URL` (defaults `http://localhost:8101` … `8107`).
 
 ## 6. Meaningful Functions to Add per Use Case
 

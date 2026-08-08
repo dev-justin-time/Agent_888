@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { MessageCircle, MapPin, Users, Briefcase, Shield } from "lucide-react";
+import { MessageCircle, MapPin, Users, Briefcase, Shield, Lightbulb } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "@/lib/constants";
 
@@ -11,6 +11,7 @@ const icons: Record<string, React.ComponentType<{ size?: number | string; classN
   navigate: MessageCircle,
   resources: MapPin,
   community: Users,
+  experts: Lightbulb,
   stewardship: Briefcase,
   admin: Shield,
 };

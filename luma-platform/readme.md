@@ -39,6 +39,13 @@ Luma is designed to provide maximum human value without extracting profit or com
    npm run agent:community
    npm run agent:outreach
    npm run agent:escrow
+   npm run agent:expert-finance
+   npm run agent:expert-legal
+   npm run agent:expert-career
+   npm run agent:expert-learning
+   npm run agent:expert-home
+   npm run agent:expert-digital
+   npm run agent:expert-wellbeing
    ```
 
 Visit [http://localhost:3000](http://localhost:3000).
@@ -58,6 +65,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 - `/navigate` — Anonymous chat with Luma
 - `/resources` — Hotlines & grants
 - `/community` — Verified providers
+- `/experts` — Expert guidance (money, legal, career, learning, home, digital, wellbeing)
 - `/stewardship` — Partner outreach & escrow instructions
 - `/sign-in`, `/sign-up` — Provider authentication
 - `/provider/apply` — Provider onboarding application

@@ -15,7 +15,14 @@
     "agent:resources": "ts-node agents/luma-resources.ts",
     "agent:community": "ts-node agents/luma-community.ts",
     "agent:outreach": "ts-node agents/luma-partner-outreach.ts",
-    "agent:escrow": "ts-node agents/luma-escrow-manager.ts"
+    "agent:escrow": "ts-node agents/luma-escrow-manager.ts",
+    "agent:expert-finance": "ts-node agents/luma-expert-finance.ts",
+    "agent:expert-legal": "ts-node agents/luma-expert-legal.ts",
+    "agent:expert-career": "ts-node agents/luma-expert-career.ts",
+    "agent:expert-learning": "ts-node agents/luma-expert-learning.ts",
+    "agent:expert-home": "ts-node agents/luma-expert-home.ts",
+    "agent:expert-digital": "ts-node agents/luma-expert-digital.ts",
+    "agent:expert-wellbeing": "ts-node agents/luma-expert-wellbeing.ts"
   },
   "dependencies": {
     "@blocks-network/sdk": "^0.1.0",
