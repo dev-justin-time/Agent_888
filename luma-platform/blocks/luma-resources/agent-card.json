@@ -1,0 +1,58 @@
+{
+  "identity": {
+    "agentName": "lumanation_resources",
+    "displayName": "Luma Resources",
+    "description": "Finds sponsors, grants, and locale-based hotlines for immediate support.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "JSON payload: { \"locale\": \"US\", \"need\": \"hotline|sponsor|community\" } Covers 50 common questions — e.g. I'm in crisis right now and need someone to talk to | What are the crisis hotline numbers in my area? | I need to talk to someone tonight",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "resources",
+      "name": "Support Resources"
+    },
+    {
+      "id": "immediate-support",
+      "name": "Immediate support"
+    },
+    {
+      "id": "grants-funding",
+      "name": "Grants & funding"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

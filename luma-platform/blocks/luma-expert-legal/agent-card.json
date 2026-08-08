@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_legal",
+    "displayName": "Luma Expert: Legal & Rights",
+    "description": "Understand your rights around housing, contracts, consumer issues, and the workplace.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a rights or legal-literacy question. Covers 50 common questions — e.g. My landlord is threatening to evict me — what are my rights? | Can my landlord raise my rent whenever they want? | My landlord won't fix the broken heater — what can I do?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "legal",
+      "name": "Rights & Legal"
+    },
+    {
+      "id": "housing-tenants",
+      "name": "Housing & tenants"
+    },
+    {
+      "id": "consumer-protection",
+      "name": "Consumer protection"
+    },
+    {
+      "id": "workplace",
+      "name": "Workplace"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

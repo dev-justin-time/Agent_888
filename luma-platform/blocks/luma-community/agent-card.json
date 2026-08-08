@@ -1,0 +1,62 @@
+{
+  "identity": {
+    "agentName": "lumanation_community",
+    "displayName": "Luma Community",
+    "description": "Connects users to verified, low/no-cost professionals with secure off-platform handoffs.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "JSON payload: { \"user_locale\": \"US-NY\", \"provider_type\": \"navigator|counselor|peer\" } Covers 50 common questions — e.g. I need a counselor for grief support | How do I find a verified navigator? | I'm looking for peer support",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "providers",
+      "name": "Verified Providers"
+    },
+    {
+      "id": "find-a-counselor",
+      "name": "Find a counselor"
+    },
+    {
+      "id": "find-a-navigator",
+      "name": "Find a navigator"
+    },
+    {
+      "id": "find-a-peer",
+      "name": "Find a peer"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, Mail, FileText, Briefcase, Shield } from "lucide-react";
+import { Copy, Check, Mail, FileText, Briefcase, Shield, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { ESCROW_TOP_CALLS, OUTREACH_TOP_CALLS } from "@/data/top-calls";
+import type { EscrowCall, OutreachCall } from "@/data/top-calls";
 import { copyToClipboard } from "@/lib/utils";
 
 interface OutreachResult {
@@ -39,38 +41,70 @@ export default function StewardshipPage() {
   const [escrow, setEscrow] = useState<EscrowResult | null>(null);
   const [escrowLoading, setEscrowLoading] = useState(false);
 
-  const generateOutreach = async () => {
+  const generateOutreach = async (prefill?: OutreachCall) => {
     setOutreachLoading(true);
     const res = await fetch("/api/partner-outreach", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        org_name: orgName,
-        org_type: orgType,
-        alignment_focus: alignment,
-      }),
+      body: JSON.stringify(
+        prefill
+          ? {
+              org_name: prefill.orgName,
+              org_type: prefill.orgType,
+              alignment_focus: prefill.alignment,
+            }
+          : { org_name: orgName, org_type: orgType, alignment_focus: alignment }
+      ),
     });
     const data = await res.json();
     if (data.status === "success") setOutreach(data.outreach);
     setOutreachLoading(false);
   };
 
-  const generateEscrow = async () => {
+  const runOutreachScenario = (call: OutreachCall) => {
+    if (outreachLoading) return;
+    setOrgName(call.orgName);
+    setOrgType(call.orgType);
+    setAlignment(call.alignment);
+    generateOutreach(call);
+  };
+
+  const generateEscrow = async (prefill?: EscrowCall) => {
     setEscrowLoading(true);
     const res = await fetch("/api/generate-escrow", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        donor_name: donorName,
-        donor_type: donorType,
-        amount: Number(amount) || 0,
-        currency,
-        specific_use_case: useCase,
-      }),
+      body: JSON.stringify(
+        prefill
+          ? {
+              donor_name: prefill.donorName,
+              donor_type: prefill.donorType,
+              amount: Number(prefill.amount) || 0,
+              currency: prefill.currency,
+              specific_use_case: prefill.useCase,
+            }
+          : {
+              donor_name: donorName,
+              donor_type: donorType,
+              amount: Number(amount) || 0,
+              currency,
+              specific_use_case: useCase,
+            }
+      ),
     });
     const data = await res.json();
     if (data.status === "success") setEscrow({ escrow_document: data.escrow_document });
     setEscrowLoading(false);
+  };
+
+  const runEscrowScenario = (call: EscrowCall) => {
+    if (escrowLoading) return;
+    setDonorName(call.donorName);
+    setDonorType(call.donorType);
+    setAmount(call.amount);
+    setCurrency(call.currency);
+    setUseCase(call.useCase);
+    generateEscrow(call);
   };
 
   const handleCopy = (text: string) => {
@@ -99,6 +133,22 @@ export default function StewardshipPage() {
             </div>
           </div>
           <div className="space-y-4">
+            <div className="-mx-1 px-1">
+              <p className="text-xs font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+                <Sparkles size={12} className="text-primary" /> Top 50 scenarios — tap to prefill &amp; generate
+              </p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {OUTREACH_TOP_CALLS.map((call) => (
+                  <button
+                    key={call.id}
+                    onClick={() => runOutreachScenario(call)}
+                    className="text-[11px] text-primary border border-primary/25 rounded-full px-3 py-1.5 whitespace-nowrap hover:bg-primary/10 hover:border-primary/50 active:scale-95 transition-all"
+                  >
+                    {call.question}
+                  </button>
+                ))}
+              </div>
+            </div>
             <input
               type="text"
               placeholder="Organization name"
@@ -122,7 +172,7 @@ export default function StewardshipPage() {
               onChange={(e) => setAlignment(e.target.value)}
               className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none min-h-[80px]"
             />
-            <Button onClick={generateOutreach} disabled={outreachLoading} className="w-full">
+            <Button onClick={() => generateOutreach()} disabled={outreachLoading} className="w-full">
               {outreachLoading ? "Generating..." : "Generate outreach email"}
             </Button>
           </div>
@@ -158,6 +208,22 @@ export default function StewardshipPage() {
             </div>
           </div>
           <div className="space-y-4">
+            <div className="-mx-1 px-1">
+              <p className="text-xs font-label-sm text-on-surface-variant mb-2 flex items-center gap-1">
+                <Sparkles size={12} className="text-primary" /> Top 50 scenarios — tap to prefill &amp; generate
+              </p>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {ESCROW_TOP_CALLS.map((call) => (
+                  <button
+                    key={call.id}
+                    onClick={() => runEscrowScenario(call)}
+                    className="text-[11px] text-primary border border-primary/25 rounded-full px-3 py-1.5 whitespace-nowrap hover:bg-primary/10 hover:border-primary/50 active:scale-95 transition-all"
+                  >
+                    {call.question}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <input
                 type="text"
@@ -190,7 +256,7 @@ export default function StewardshipPage() {
               onChange={(e) => setUseCase(e.target.value)}
               className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             />
-            <Button onClick={generateEscrow} disabled={escrowLoading} className="w-full">
+            <Button onClick={() => generateEscrow()} disabled={escrowLoading} className="w-full">
               {escrowLoading ? "Generating..." : "Generate escrow document"}
             </Button>
           </div>

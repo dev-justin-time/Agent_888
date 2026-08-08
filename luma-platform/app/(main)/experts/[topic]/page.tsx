@@ -6,6 +6,8 @@ import { useParams, useRouter } from "next/navigation";
 import { Send, Heart, ArrowLeft, Phone, ShieldAlert, Info } from "lucide-react";
 import { EXPERT_TOPIC_MAP, EXPERT_TOPICS } from "@/lib/constants";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
+import TopQuestions from "@/components/experts/TopQuestions";
+import { TOP_CALLS_BY_EXPERT } from "@/data/top-calls";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -211,6 +213,16 @@ export default function ExpertChatPage() {
                 />
               </div>
             </div>
+          )}
+
+          {/* Searchable library of the 50 most common questions for this expert */}
+          {messages.length <= 1 && !isLoading && (
+            <TopQuestions
+              calls={TOP_CALLS_BY_EXPERT[topic.id] ?? []}
+              onSelect={handleSend}
+              title={`50 most common ${topic.label.toLowerCase()} questions`}
+              placeholder={`Search ${topic.label.toLowerCase()} questions…`}
+            />
           )}
           <div ref={endRef} />
         </div>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { callAgentTool } from "@/lib/agent-client";
+import { BLOCKS_AGENTS, callBlocksAgent } from "@/lib/blocks-agents";
 import { ChatMessageSchema, formatValidationError } from "@/lib/validation";
 import { rateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
@@ -23,10 +23,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const url = process.env.AGENT_NAVIGATOR_URL || "http://localhost:8091";
-    const data = await callAgentTool(url, "navigate_headspace", { message: parsed.data.message });
+    const result = await callBlocksAgent(BLOCKS_AGENTS.navigator, parsed.data.message);
 
-    return NextResponse.json(data);
+    if (!result.ok) {
+      return NextResponse.json(
+        { status: "error", message: "The navigation guide is currently unreachable. Please try again in a moment." },
+        { status: 503 }
+      );
+    }
+
+    return NextResponse.json(result.payload);
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(

@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_learning",
+    "displayName": "Luma Expert: Learning & Education",
+    "description": "Study systems, focus, memory, and learning any new skill faster.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a learning or study question. Covers 50 common questions — e.g. I keep forgetting what I study — how do I actually remember things? | What is spaced repetition and how do I use it? | How do I study for an exam without cramming?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "learning",
+      "name": "Learning"
+    },
+    {
+      "id": "memory-recall",
+      "name": "Memory & recall"
+    },
+    {
+      "id": "understanding",
+      "name": "Understanding"
+    },
+    {
+      "id": "focus",
+      "name": "Focus"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

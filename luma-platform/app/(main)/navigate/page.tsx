@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { Send, Heart, Sparkles, Wind } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import TopQuestions from "@/components/experts/TopQuestions";
+import { NAVIGATOR_TOP_CALLS } from "@/data/top-calls";
 import { copyToClipboard } from "@/lib/utils";
 
 interface Message {
@@ -110,6 +112,17 @@ export default function NavigatePage() {
               <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
+        )}
+
+        {/* Searchable library of the 50 most common ways people open up */}
+        {messages.length <= 1 && !isLoading && (
+          <TopQuestions
+            calls={NAVIGATOR_TOP_CALLS}
+            onSelect={handleSend}
+            title="50 most common things on people's minds"
+            placeholder="Search what's on your mind…"
+            compact
+          />
         )}
         <div ref={endRef} />
       </div>

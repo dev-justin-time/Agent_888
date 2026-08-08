@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_navigator",
+    "displayName": "Luma Navigator",
+    "description": "Gentle, story-based life navigation for heavy days — private, anonymous, zero-label.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Share what's on your mind. Covers 50 common questions — e.g. I'm feeling overwhelmed by everything right now | I don't know what to do with my life | I feel alone even when I'm around people",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "life-navigation",
+      "name": "Life Navigation"
+    },
+    {
+      "id": "heavy-feelings",
+      "name": "Heavy feelings"
+    },
+    {
+      "id": "transitions",
+      "name": "Transitions"
+    },
+    {
+      "id": "relationships",
+      "name": "Relationships"
+    },
+    {
+      "id": "self-identity",
+      "name": "Self & identity"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

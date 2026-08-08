@@ -1,0 +1,18 @@
+{
+  "name": "@lumanation/luma-expert-finance",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "blocks run",
+    "test": "node trigger.ts"
+  },
+  "dependencies": {
+    "@blocks-network/sdk": "^0.1.70",
+    "dotenv": "^16.4.0",
+    "openai": "^4.28.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.0"
+  }
+}

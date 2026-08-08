@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { BLOCKS_AGENTS, callBlocksAgent } from "@/lib/blocks-agents";
 import { ResourceNeedSchema, formatValidationError } from "@/lib/validation";
 
 export async function GET(req: NextRequest) {
@@ -17,32 +17,17 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const { locale, need } = parsed.data;
+  const result = await callBlocksAgent(
+    BLOCKS_AGENTS.resources,
+    JSON.stringify({ locale: parsed.data.locale, need: parsed.data.need })
+  );
 
-  try {
-    let data: unknown;
-
-    if (need === "hotline") {
-      data =
-        (await prisma.hotline.findUnique({ where: { locale } })) ??
-        (await prisma.hotline.findUnique({ where: { locale: "US" } }));
-    } else {
-      data = await prisma.grant.findMany({
-        orderBy: [{ featured: "desc" }, { name: "asc" }],
-      });
-    }
-
-    return NextResponse.json({
-      status: "success",
-      type: need,
-      data,
-    });
-  } catch (error) {
-    console.error("Resources DB error:", error);
-
+  if (!result.ok) {
     return NextResponse.json(
-      { status: "error", message: "Service temporarily unavailable." },
+      { status: "error", message: "Resources are temporarily unavailable." },
       { status: 503 }
     );
   }
+
+  return NextResponse.json(result.payload);
 }

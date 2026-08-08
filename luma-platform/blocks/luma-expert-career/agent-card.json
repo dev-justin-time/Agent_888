@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_career",
+    "displayName": "Luma Expert: Career & Work",
+    "description": "Interview prep, negotiation, job-search systems, and workplace navigation.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a career or work question. Covers 50 common questions — e.g. How do I prepare for a behavioral interview? | How do I answer 'tell me about a time you failed'? | What is the STAR method and how do I use it?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "career",
+      "name": "Career"
+    },
+    {
+      "id": "interviews",
+      "name": "Interviews"
+    },
+    {
+      "id": "negotiation",
+      "name": "Negotiation"
+    },
+    {
+      "id": "job-search",
+      "name": "Job search"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

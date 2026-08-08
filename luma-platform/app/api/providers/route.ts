@@ -1,26 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { BLOCKS_AGENTS, callBlocksAgent } from "@/lib/blocks-agents";
 import { ProviderConnectSchema, formatValidationError } from "@/lib/validation";
 
 export async function GET() {
-  try {
-    const providers = await prisma.provider.findMany({
-      where: { verified: true },
-      orderBy: { name: "asc" },
-    });
+  const result = await callBlocksAgent(
+    BLOCKS_AGENTS.community,
+    JSON.stringify({ action: "list" })
+  );
 
-    return NextResponse.json({
-      status: "success",
-      data: providers,
-      message: "Verified provider directory.",
-    });
-  } catch (error) {
-    console.error("Providers DB error:", error);
+  if (!result.ok) {
     return NextResponse.json(
       { status: "error", message: "Provider directory is currently unavailable." },
       { status: 503 }
     );
   }
+
+  return NextResponse.json(result.payload);
 }
 
 export async function POST(req: NextRequest) {
@@ -35,40 +30,23 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { user_locale, provider_type } = parsed.data;
-
-    const providers = await prisma.provider.findMany({
-      where: { type: provider_type },
-    });
-
-    const matched = providers.find(
-      (p) =>
-        p.locale === user_locale ||
-        p.locale.startsWith(user_locale.split("-")[0])
+    const result = await callBlocksAgent(
+      BLOCKS_AGENTS.community,
+      JSON.stringify({
+        action: "connect",
+        user_locale: parsed.data.user_locale,
+        provider_type: parsed.data.provider_type,
+      })
     );
 
-    if (!matched) {
-      return NextResponse.json({
-        status: "error",
-        message:
-          "No verified providers currently available in your specific locale. Please check back soon or use the Hotline feature.",
-      });
+    if (!result.ok) {
+      return NextResponse.json(
+        { status: "error", message: "Could not connect to a provider right now." },
+        { status: 503 }
+      );
     }
 
-    const secureLink = `https://luma.link/bridge/${matched.id}?token=${Date.now()}`;
-
-    return NextResponse.json({
-      status: "success",
-      provider: {
-        name: matched.name,
-        cost: matched.cost,
-        verification_status: "Verified via National Registry",
-      },
-      secure_handoff_link: secureLink,
-      privacy_notice:
-        "Clicking this link will take you off Luma to the provider's secure booking system. Luma does not store your name, data, or session details. This interaction is completely anonymous.",
-      billed_amount: 0,
-    });
+    return NextResponse.json(result.payload);
   } catch (error) {
     console.error("Provider connection error:", error);
     return NextResponse.json(

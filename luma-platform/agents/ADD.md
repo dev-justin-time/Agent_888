@@ -38,20 +38,16 @@ luma-platform/                 <- repo root
 │   ├── types.ts
 │   ├── validators.ts
 │   └── utils.ts
-├── agents/                    <- moved from sibling `agents` directory
-│   ├── lib/expert-core.ts     <- shared expert engine (safety rails, frameworks, fallbacks)
-│   ├── luma-navigator.ts
-│   ├── luma-resources.ts
-│   ├── luma-community.ts
-│   ├── luma-escrow-manager.ts
-│   ├── luma-partner-outreach.ts
-│   ├── luma-expert-finance.ts      (port 8101)
-│   ├── luma-expert-legal.ts        (port 8102)
-│   ├── luma-expert-career.ts       (port 8103)
-│   ├── luma-expert-learning.ts     (port 8104)
-│   ├── luma-expert-home.ts         (port 8105)
-│   ├── luma-expert-digital.ts      (port 8106)
-│   └── luma-expert-wellbeing.ts    (port 8107)
+├── agents/lib/               <- shared agent logic (SDK-independent, unit-testable)
+│   ├── expert-logic.ts       <- expert pipeline: safety rails, frameworks, LLM, fallback
+│   └── expert-topics.ts      <- all 7 expert knowledge bases (imported by Blocks handlers)
+├── blocks/                   <- deployable Blocks Network projects (one per agent)
+│   ├── luma-navigator/       <- handler.ts + agent-card.json + trigger.ts
+│   ├── luma-resources/       <- free/private
+│   ├── luma-community/       <- free/private
+│   ├── luma-escrow-steward/  <- paid $0.25
+│   ├── luma-partner-architect/ <- paid $0.25
+│   └── luma-expert-*/        <- 7 expert agents, paid $0.05 each
 ├── data/                      <- structured real-world data with clear replaceable source
 │   ├── hotlines.json
 │   ├── grants.json
@@ -163,9 +159,9 @@ luma-platform/                 <- repo root
 ## 8. Decisions Made
 
 1. ✅ **Repo root:** `luma-platform` is the project root, with `app/` and `agents/` as sibling directories.
-2. ✅ **Agent deployment:** Keep the five TS agents as standalone services and have the Next.js app call them via HTTP through API route proxies.
-3. ✅ **Data source:** Use typed JSON files (`data/providers.json`, `data/hotlines.json`, `data/grants.json`) as the source of truth, with a clear migration path to a real database later. Agents read from these files instead of hard-coded arrays.
-4. ✅ **Privacy vs. AI:** Continue using OpenAI API with clear disclosure; agents already route through OpenAI.
+2. ✅ **Agent deployment:** All 12 agents are deployed to Blocks Network as real `handler.ts` + `agent-card.json` projects under `blocks/`. The Next.js app calls them server-side through the Blocks `TaskClient` (`lib/blocks-agents.ts`) — no localhost HTTP proxies and no fake SDK stubs. See `blocks/README.md`.
+3. ✅ **Data source:** `luma-resources` and `luma-community` read from Postgres via Prisma (`lib/prisma.ts`). Expert agents read from the curated knowledge bases in `agents/lib/expert-topics.ts`.
+4. ✅ **Privacy vs. AI:** OpenAI is used only inside the deployed agent handlers, with clear disclosure. Luma still stores no user conversation data.
 
 ## 9. Implementation Phases
 

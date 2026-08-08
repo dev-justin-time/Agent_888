@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_home",
+    "displayName": "Luma Expert: Home & Life Admin",
+    "description": "Bills, insurance, paperwork, moves, and big life decisions — made manageable.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a home or life-admin question. Covers 50 common questions — e.g. I have bills piling up and I'm overwhelmed | How do I keep track of all my bills? | What happens if I miss a bill payment?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "life-admin",
+      "name": "Life Admin"
+    },
+    {
+      "id": "bills",
+      "name": "Bills"
+    },
+    {
+      "id": "big-decisions",
+      "name": "Big decisions"
+    },
+    {
+      "id": "insurance",
+      "name": "Insurance"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

@@ -1,6 +1,14 @@
 import OpenAI from "openai";
+import { TOP_CALLS_BY_EXPERT } from "../../data/top-calls/index.ts";
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Lazily created so the agent process can start and stay connected even when
+// the API key is missing — tasks then fail gracefully instead of crashing the
+// whole agent on startup.
+let _openai: OpenAI | null = null;
+function getOpenAI(): OpenAI {
+  _openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  return _openai;
+}
 
 /**
  * ────────────────────────────────────────────────────────────────────────────
@@ -137,11 +145,60 @@ export interface ConsultInput {
 
 // ─────────────────────── 3. Deterministic framework logic ───────────────────
 
+/** Normalize a phrase into a token set for fuzzy top-call matching. */
+function tokenize(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s']/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length > 2)
+  );
+}
+
+/**
+ * Top-call boost — if the user's message closely matches one of the curated
+ * "50 most common questions" for this expert, the mapped framework receives a
+ * strong deterministic boost (up to +20, dominating weak trigger matches).
+ * Coverage = fraction of the top call's words present in the message, so users
+ * who send a suggested question verbatim (or lightly edited) always land on
+ * the right framework — even when the LLM is unavailable.
+ */
+export function topCallBoost(
+  topicId: string,
+  message: string
+): { frameworkId: string; boost: number } | null {
+  const calls = TOP_CALLS_BY_EXPERT[topicId];
+  if (!calls) return null;
+  const msgTokens = tokenize(message);
+  let best: { frameworkId: string; boost: number } | null = null;
+
+  for (const call of calls) {
+    if (!call.frameworkId) continue;
+    const qTokens = tokenize(call.question);
+    if (!qTokens.size) continue;
+    let hit = 0;
+    for (const t of qTokens) {
+      if (msgTokens.has(t)) hit += 1;
+    }
+    const coverage = hit / qTokens.size;
+    if (coverage >= 0.6) {
+      const boost = Math.round(coverage * 20);
+      if (!best || boost > best.boost) {
+        best = { frameworkId: call.frameworkId, boost };
+      }
+    }
+  }
+
+  return best;
+}
+
 export function matchFramework(
   topic: ExpertTopic,
   message: string
 ): ExpertFramework | null {
   const lower = message.toLowerCase();
+  const callBoost = topCallBoost(topic.id, message);
   let best: ExpertFramework | null = null;
   let bestScore = 0;
 
@@ -150,6 +207,8 @@ export function matchFramework(
     for (const trigger of fw.triggers) {
       if (lower.includes(trigger)) score += 1;
     }
+    // A strongly-matched top call pins the framework deterministically.
+    if (callBoost && callBoost.frameworkId === fw.id) score += callBoost.boost;
     if (score > bestScore) {
       bestScore = score;
       best = fw;
@@ -202,7 +261,7 @@ export async function enrichWithLLM(
 ): Promise<LLMResult | null> {
   try {
     const scaffold = buildScaffold(topic, fw);
-    const response = await openai.chat.completions.create({
+    const response = await getOpenAI().chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
         { role: "system", content: topic.systemPrompt },

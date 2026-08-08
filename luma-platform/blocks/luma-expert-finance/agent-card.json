@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_finance",
+    "displayName": "Luma Expert: Money & Finance",
+    "description": "Plain-language money logic: budgeting, debt payoff strategy, savings, and spending decisions.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a money or budgeting question. Covers 50 common questions — e.g. How do I split my paycheck between needs, wants, and savings? | I keep running out of money before payday — how do I budget? | What percentage should go to rent, food, and fun each month?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "finance",
+      "name": "Finance"
+    },
+    {
+      "id": "budgeting",
+      "name": "Budgeting"
+    },
+    {
+      "id": "debt-payoff",
+      "name": "Debt payoff"
+    },
+    {
+      "id": "emergency-fund",
+      "name": "Emergency fund"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

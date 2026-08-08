@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_partner_architect",
+    "displayName": "Luma Partner Architect",
+    "description": "Drafts concise, high-impact partnership outreach emails focused on shared values.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "JSON payload with org_name, org_type, alignment_focus, org_recent_initiative Covers 50 common questions — e.g. Partner with a conservation agency on wetland restoration | Approach a private landowner about a conservation easement | Invite a university to co-host a research field station",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "stewardship",
+      "name": "Stewardship"
+    },
+    {
+      "id": "outreach",
+      "name": "Partnership Outreach"
+    },
+    {
+      "id": "conservation",
+      "name": "Conservation"
+    },
+    {
+      "id": "land",
+      "name": "Land"
+    },
+    {
+      "id": "education",
+      "name": "Education"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

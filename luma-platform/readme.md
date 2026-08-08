@@ -32,20 +32,14 @@ Luma is designed to provide maximum human value without extracting profit or com
    npm run dev
    ```
 
-6. **Start the standalone agents (in separate terminals)**
+6. **Deploy the agents to Blocks Network (paid)** — see `blocks/README.md` for the full runbook
    ```bash
-   npm run agent:navigator
-   npm run agent:resources
-   npm run agent:community
-   npm run agent:outreach
-   npm run agent:escrow
-   npm run agent:expert-finance
-   npm run agent:expert-legal
-   npm run agent:expert-career
-   npm run agent:expert-learning
-   npm run agent:expert-home
-   npm run agent:expert-digital
-   npm run agent:expert-wellbeing
+   npm install -g @blocks-network/cli   # Blocks CLI (one time)
+   npm run blocks:login                 # browser OAuth → writes BLOCKS_API_KEY to .env
+   npm run blocks:register-all          # all 12 agents private + free
+   npm run blocks:publish-free          # resources & community (private, free)
+   npm run blocks:publish-paid          # navigator, experts ($0.05) + escrow, outreach ($0.25)
+   npm run blocks:run:navigator         # one terminal per agent to keep it live
    ```
 
 Visit [http://localhost:3000](http://localhost:3000).
@@ -56,8 +50,8 @@ Visit [http://localhost:3000](http://localhost:3000).
 - **Styling:** Tailwind CSS with a custom sanctuary-themed design system
 - **Database:** Postgres (Neon/Supabase/local) via Prisma ORM
 - **Auth:** Next-Auth v5 (beta) with credentials provider and bcrypt
-- **AI:** OpenAI (used by standalone agents)
-- **Agents:** Standalone services in `agents/` called via HTTP from Next.js API routes
+- **AI:** OpenAI (used by the LLM-powered Blocks agents)
+- **Agents:** 12 agents deployed to [Blocks Network](https://blocks.ai) as real `handler.ts` + `agent-card.json` projects under `blocks/`. The Next.js app calls them server-side via the Blocks SDK `TaskClient` (`lib/blocks-agents.ts`) — no localhost HTTP proxies, no fake SDK stubs.
 
 ## 📂 Notable Routes
 

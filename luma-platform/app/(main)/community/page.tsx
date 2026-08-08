@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Shield, CheckCircle2, ExternalLink, Users, Search, Filter } from "lucide-react";
+import { Shield, CheckCircle2, ExternalLink, Users, Search, Filter, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
+import { COMMUNITY_TOP_CALLS } from "@/data/top-calls";
+import type { CommunityCall } from "@/data/top-calls";
 import type { Provider } from "@/lib/types";
 
 export default function CommunityPage() {
@@ -15,6 +17,12 @@ export default function CommunityPage() {
   const [verifiedOnly, setVerifiedOnly] = useState(true);
   const [connecting, setConnecting] = useState<string | null>(null);
   const [handoff, setHandoff] = useState<{ name: string; url: string } | null>(null);
+
+  const runNeed = (call: CommunityCall) => {
+    setSearch(call.search);
+    setTypeFilter(call.type);
+    document.getElementById("provider-grid")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     fetch("/api/providers")
@@ -73,6 +81,23 @@ export default function CommunityPage() {
         </p>
       </section>
 
+      <div className="glass-card inner-glow rounded-2xl border border-white/10 p-4">
+        <p className="font-label-sm text-label-sm text-on-surface-variant mb-3 flex items-center gap-1.5">
+          <Sparkles size={14} className="text-primary" /> Top 50 needs — tap to find a matching provider
+        </p>
+        <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
+          {COMMUNITY_TOP_CALLS.map((call) => (
+            <button
+              key={call.id}
+              onClick={() => runNeed(call)}
+              className="text-xs text-left text-primary border border-primary/25 rounded-full px-3 py-1.5 hover:bg-primary/10 hover:border-primary/50 active:scale-95 transition-all"
+            >
+              {call.question}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <GlassCard className="p-4 flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50" size={18} />
@@ -108,7 +133,7 @@ export default function CommunityPage() {
         </div>
       </GlassCard>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section id="provider-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 scroll-mt-24">
         {filtered.map((provider) => (
           <GlassCard key={provider.id} className="p-6 flex flex-col h-full">
             <div className="flex justify-between items-start mb-4">

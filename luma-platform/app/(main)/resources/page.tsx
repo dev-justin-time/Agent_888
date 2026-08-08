@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
-import { Phone, Globe, Heart, MapPin, AlertCircle } from "lucide-react";
+import { Phone, Globe, Heart, MapPin, AlertCircle, Sparkles } from "lucide-react";
+import { RESOURCES_TOP_CALLS } from "@/data/top-calls";
 
 interface Hotline {
   name: string;
@@ -28,6 +29,10 @@ export default function ResourcesPage() {
   const [grants, setGrants] = useState<Grant[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -66,6 +71,24 @@ export default function ResourcesPage() {
         </p>
       </section>
 
+      <div className="glass-card inner-glow rounded-2xl border border-white/10 p-4">
+        <p className="font-label-sm text-label-sm text-on-surface-variant mb-3 flex items-center gap-1.5">
+          <Sparkles size={14} className="text-primary" /> What are you looking for? Tap a need to jump straight to it
+        </p>
+        <div className="flex flex-wrap gap-2 max-h-52 overflow-y-auto pr-1">
+          {RESOURCES_TOP_CALLS.map((call) => (
+            <button
+              key={call.id}
+              disabled={loading}
+              onClick={() => scrollToSection(call.action === "hotline" ? "immediate-support" : "grants-funding")}
+              className="text-xs text-left text-primary border border-primary/25 rounded-full px-3 py-1.5 hover:bg-primary/10 hover:border-primary/50 active:scale-95 transition-all"
+            >
+              {call.question}
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="flex justify-end">
         <label className="flex items-center gap-2 text-sm text-on-surface-variant">
           Region:
@@ -92,7 +115,7 @@ export default function ResourcesPage() {
         <div className="text-center text-on-surface-variant animate-pulse">Loading resources...</div>
       ) : (
         <>
-          <section>
+          <section id="immediate-support" className="scroll-mt-24">
             <h3 className="font-headline-md text-headline-md text-on-surface mb-4 flex items-center gap-2">
               <Phone size={20} className="text-primary" /> Immediate Support
             </h3>
@@ -122,7 +145,7 @@ export default function ResourcesPage() {
             </div>
           </section>
 
-          <section>
+          <section id="grants-funding" className="scroll-mt-24">
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
                 <Heart size={20} className="text-primary" /> Grants & Funding

@@ -1,0 +1,62 @@
+{
+  "identity": {
+    "agentName": "lumanation_escrow_steward",
+    "displayName": "Luma Escrow Steward",
+    "description": "Drafts transparent, value-first escrow instruction documents for mission funding.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "JSON payload with donor_name, donor_type, amount, currency, specific_use_case, prefer_general_purpose, open_to_growth_strategy Covers 50 common questions — e.g. Fund a school garden for a local primary school | Protect a stretch of river with a conservation easement | Sponsor scholarships for first-generation students",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "stewardship",
+      "name": "Stewardship"
+    },
+    {
+      "id": "community",
+      "name": "Community"
+    },
+    {
+      "id": "conservation",
+      "name": "Conservation"
+    },
+    {
+      "id": "education",
+      "name": "Education"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

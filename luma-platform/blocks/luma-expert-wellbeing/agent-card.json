@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_wellbeing",
+    "displayName": "Luma Expert: Headspace & Well-being",
+    "description": "Gentle, evidence-based care for your headspace: overwhelm, heavy days, rest, and grounding.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Share what's weighing on your headspace. Covers 50 common questions — e.g. I feel completely overwhelmed by everything right now | There's too much to do and I can't start anything | My head won't stop spinning with thoughts",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "wellbeing",
+      "name": "Well-being"
+    },
+    {
+      "id": "overwhelm",
+      "name": "Overwhelm"
+    },
+    {
+      "id": "heavy-days",
+      "name": "Heavy days"
+    },
+    {
+      "id": "energy",
+      "name": "Energy"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}

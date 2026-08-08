@@ -1,0 +1,66 @@
+{
+  "identity": {
+    "agentName": "lumanation_expert_digital",
+    "displayName": "Luma Expert: Digital Safety",
+    "description": "Scam detection, phishing, account security, and privacy decisions.",
+    "version": "1.0.0",
+    "provider": {
+      "organization": "LumaNation"
+    }
+  },
+  "capabilities": {
+    "taskKinds": [
+      "request"
+    ]
+  },
+  "io": {
+    "inputs": [
+      {
+        "id": "request",
+        "description": "Ask a digital safety question. Covers 50 common questions — e.g. Is this message from my 'bank' a scam? | Someone is offering me free money — is it real? | How do I spot a scam?",
+        "contentType": "text/plain",
+        "required": true
+      }
+    ],
+    "outputs": [
+      {
+        "id": "result",
+        "description": "Structured JSON response",
+        "contentType": "application/json",
+        "guaranteed": true
+      }
+    ]
+  },
+  "tags": [
+    {
+      "id": "luma",
+      "name": "Luma"
+    },
+    {
+      "id": "expert",
+      "name": "Expert"
+    },
+    {
+      "id": "digital-safety",
+      "name": "Digital Safety"
+    },
+    {
+      "id": "scams",
+      "name": "Scams"
+    },
+    {
+      "id": "phishing",
+      "name": "Phishing"
+    },
+    {
+      "id": "account-security",
+      "name": "Account security"
+    }
+  ],
+  "runtime": {
+    "handler": "./handler.ts",
+    "handlerExport": "default",
+    "concurrency": 1,
+    "expectedInstances": 1
+  }
+}
