@@ -64,7 +64,7 @@ export default function SignInPage() {
         </form>
 
         <p className="mt-6 text-sm text-on-surface-variant text-center">
-          Don't have a provider account?{" "}
+          Don&apos;t have a provider account?{" "}
           <Link href="/sign-up" className="text-primary hover:underline">
             Create one
           </Link>

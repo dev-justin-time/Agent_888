@@ -192,7 +192,7 @@ export default function NavigatePage() {
               Breathe in for 4 counts, hold for 4, out for 6. The forest breathes with you.
             </p>
             <Button onClick={() => setShowGrounding(false)} variant="outline">
-              I'm ready to continue
+              I&apos;m ready to continue
             </Button>
           </GlassCard>
         </div>

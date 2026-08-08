@@ -3,35 +3,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-enum ProviderType {
-  navigator
-  counselor
-  peer
-}
-
-enum ApplicationStatus {
-  PENDING
-  APPROVED
-  REJECTED
-}
-
-enum UserRole {
-  USER
-  PROVIDER
-  ADMIN
-}
-
 model User {
-  id             String    @id @default(cuid())
-  email          String    @unique
-  hashedPassword String    @map("hashed_password")
-  role           UserRole  @default(USER)
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  id             String   @id @default(cuid())
+  email          String   @unique
+  hashedPassword String   @map("hashed_password")
+  role           String   @default("USER")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
   application ProviderApplication?
 
@@ -60,7 +42,7 @@ model Grant {
   coverage    String
   featured    Boolean  @default(false)
   rolling     Boolean  @default(false)
-  tags        String[]
+  tags        String
   createdAt   DateTime @default(now()) @map("created_at")
   updatedAt   DateTime @updatedAt @map("updated_at")
 
@@ -69,20 +51,20 @@ model Grant {
 }
 
 model Provider {
-  id          String       @id @default(cuid())
-  legacyId    String?      @unique @map("legacy_id")
+  id          String   @id @default(cuid())
+  legacyId    String?  @unique @map("legacy_id")
   name        String
   locale      String
-  type        ProviderType
-  verified    Boolean      @default(false)
+  type        String
+  verified    Boolean  @default(false)
   cost        String
   description String
-  tags        String[]
+  tags        String
   founded     String?
   reach       String?
   image       String?
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@index([type])
   @@index([locale])
@@ -90,16 +72,16 @@ model Provider {
 }
 
 model ProviderApplication {
-  id          String            @id @default(cuid())
-  userId      String            @unique @map("user_id")
+  id          String   @id @default(cuid())
+  userId      String   @unique @map("user_id")
   name        String
-  type        ProviderType
+  type        String
   cost        String
   description String
-  tags        String[]
-  status      ApplicationStatus @default(PENDING)
-  createdAt   DateTime          @default(now()) @map("created_at")
-  updatedAt   DateTime          @updatedAt @map("updated_at")
+  tags        String
+  status      String   @default("PENDING")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

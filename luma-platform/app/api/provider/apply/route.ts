@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { stringifyTags } from "@/lib/utils";
 import { ProviderApplySchema, formatValidationError } from "@/lib/validation";
 
 export async function POST(req: NextRequest) {
@@ -49,7 +50,7 @@ export async function POST(req: NextRequest) {
         type,
         cost,
         description,
-        tags,
+        tags: stringifyTags(tags),
       },
     });
 

@@ -3,28 +3,37 @@
 
 Luma is designed to provide maximum human value without extracting profit or compromising privacy. It uses story-based, third-person guidance to help users navigate heavy days, connects them to verified off-platform professionals, and manages mission-aligned funding with absolute transparency.
 
-## 🚀 Quick Start (Local)
+## 🚀 Quick Start (Local, fully offline)
+
+Everything runs on your machine — no Postgres server, no OpenAI key, no cloud accounts.
 
 1. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. **Set up environment variables**
+2. **Install & start Ollama** (the local LLM)
+   ```bash
+   ollama serve          # keep running in a terminal
+   ollama pull llama3.2  # one time (~2 GB)
+   ```
+
+3. **Set up environment variables**
    ```bash
    cp .env.example .env.local
-   # Edit .env.local with your Postgres URL, NextAuth secret, and OpenAI key.
+   # Generate NEXTAUTH_SECRET and pick an ADMIN_EMAIL / ADMIN_PASSWORD
    ```
 
-3. **Generate Prisma client and run migrations**
+4. **Create the local SQLite database and seed it**
    ```bash
    npx prisma generate
-   npx prisma migrate dev
+   npx prisma db push
+   npm run db:seed       # hotlines, grants, providers + the admin user
    ```
-
-4. **Seed the database**
+   `db:seed` reads `ADMIN_EMAIL`/`ADMIN_PASSWORD` from the environment. If you
+   set them only in `.env.local`, run it as:
    ```bash
-   npm run db:seed
+   set -a && source .env.local && set +a && npm run db:seed
    ```
 
 5. **Start the Next.js app**
@@ -32,26 +41,25 @@ Luma is designed to provide maximum human value without extracting profit or com
    npm run dev
    ```
 
-6. **Deploy the agents to Blocks Network (paid)** — see `blocks/README.md` for the full runbook
-   ```bash
-   npm install -g @blocks-network/cli   # Blocks CLI (one time)
-   npm run blocks:login                 # browser OAuth → writes BLOCKS_API_KEY to .env
-   npm run blocks:register-all          # all 12 agents private + free
-   npm run blocks:publish-free          # resources & community (private, free)
-   npm run blocks:publish-paid          # navigator, experts ($0.05) + escrow, outreach ($0.25)
-   npm run blocks:run:navigator         # one terminal per agent to keep it live
-   ```
+Visit [http://localhost:3000](http://localhost:3000). Sign in at `/sign-in` with
+`ADMIN_EMAIL`/`ADMIN_PASSWORD` to reach `/admin`.
 
-Visit [http://localhost:3000](http://localhost:3000).
+### Optional: Blocks Network deployment (paid)
+
+The app itself is fully local, but the same agent definitions under `blocks/`
+can still be published to [Blocks Network](https://blocks.ai). See
+`blocks/README.md` for the full runbook (deployed agents need an OpenAI key,
+and the resources/community agents read the app's local SQLite DB).
 
 ## 🏗 Architecture
 
 - **Framework:** Next.js 14 App Router + React + TypeScript
 - **Styling:** Tailwind CSS with a custom sanctuary-themed design system
-- **Database:** Postgres (Neon/Supabase/local) via Prisma ORM
+- **Database:** SQLite file (`prisma/dev.db`) via Prisma ORM — zero external services
 - **Auth:** Next-Auth v5 (beta) with credentials provider and bcrypt
-- **AI:** OpenAI (used by the LLM-powered Blocks agents)
-- **Agents:** 12 agents deployed to [Blocks Network](https://blocks.ai) as real `handler.ts` + `agent-card.json` projects under `blocks/`. The Next.js app calls them server-side via the Blocks SDK `TaskClient` (`lib/blocks-agents.ts`) — no localhost HTTP proxies, no fake SDK stubs.
+- **AI:** local Ollama model via its OpenAI-compatible endpoint (`lib/ollama.ts`), using the curated expert knowledge base in `agents/lib/` for deterministic, evidence-based frameworks with an LLM enrichment layer and guaranteed non-LLM fallbacks
+- **Safety rails:** crisis keyword screening, continuity protocol, and marker-driven resource routing on both `/navigate` and `/experts`
+- **Agents:** the same handlers under `blocks/` can be deployed to [Blocks Network](https://blocks.ai) (`lib/blocks-agents.ts` is the app-side consumer for that optional setup)
 
 ## 📂 Notable Routes
 

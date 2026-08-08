@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BLOCKS_AGENTS, callBlocksAgent } from "@/lib/blocks-agents";
+import { prisma } from "@/lib/prisma";
+import { parseTags } from "@/lib/utils";
 import { ResourceNeedSchema, formatValidationError } from "@/lib/validation";
 
 export async function GET(req: NextRequest) {
@@ -17,17 +18,43 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const result = await callBlocksAgent(
-    BLOCKS_AGENTS.resources,
-    JSON.stringify({ locale: parsed.data.locale, need: parsed.data.need })
-  );
+  const locale = (parsed.data.locale ?? "US").toUpperCase();
+  const need = parsed.data.need ?? "community";
 
-  if (!result.ok) {
+  try {
+    if (need === "hotline") {
+      const hotline =
+        (await prisma.hotline.findUnique({ where: { locale } })) ??
+        (await prisma.hotline.findUnique({ where: { locale: "US" } }));
+      return NextResponse.json({
+        status: "success",
+        type: "hotline",
+        data: hotline,
+        message: "Here is a safe, immediate connection in your area.",
+      });
+    }
+
+    const grants = await prisma.grant.findMany({
+      where:
+        need === "sponsor"
+          ? { OR: [{ coverage: locale }, { coverage: "Global" }] }
+          : undefined,
+      orderBy: [{ featured: "desc" }, { name: "asc" }],
+    });
+
+    const data = grants.map((grant) => ({ ...grant, tags: parseTags(grant.tags) }));
+
+    return NextResponse.json({
+      status: "success",
+      type: need,
+      data,
+      message: "Here are organizations that offer payment assistance.",
+    });
+  } catch (error) {
+    console.error("Resources API error:", error);
     return NextResponse.json(
       { status: "error", message: "Resources are temporarily unavailable." },
       { status: 503 }
     );
   }
-
-  return NextResponse.json(result.payload);
 }

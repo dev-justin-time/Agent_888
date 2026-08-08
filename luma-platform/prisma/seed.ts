@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import providers from "../data/providers.json";
 import resources from "../data/resources.json";
+import { stringifyTags } from "../lib/utils";
 
 const prisma = new PrismaClient();
 
@@ -33,7 +34,7 @@ async function seed() {
         coverage: g.coverage,
         featured: g.featured,
         rolling: g.rolling,
-        tags: g.tags,
+        tags: stringifyTags(g.tags),
       },
       create: {
         legacyId: g.id,
@@ -43,7 +44,7 @@ async function seed() {
         coverage: g.coverage,
         featured: g.featured,
         rolling: g.rolling,
-        tags: g.tags,
+        tags: stringifyTags(g.tags),
       },
     });
   }
@@ -55,11 +56,11 @@ async function seed() {
       update: {
         name: p.name,
         locale: p.locale,
-        type: p.type as import("@prisma/client").ProviderType,
+        type: p.type,
         verified: p.verified,
         cost: p.cost,
         description: p.description,
-        tags: p.tags,
+        tags: stringifyTags(p.tags),
         founded: p.founded,
         reach: p.reach,
       },
@@ -67,11 +68,11 @@ async function seed() {
         legacyId: p.id,
         name: p.name,
         locale: p.locale,
-        type: p.type as import("@prisma/client").ProviderType,
+        type: p.type,
         verified: p.verified,
         cost: p.cost,
         description: p.description,
-        tags: p.tags,
+        tags: stringifyTags(p.tags),
         founded: p.founded,
         reach: p.reach,
       },

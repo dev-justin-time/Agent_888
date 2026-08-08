@@ -245,7 +245,7 @@ function safeParseJson(text: string): Record<string, unknown> | null {
   }
 }
 
-function buildScaffold(topic: ExpertTopic, fw: ExpertFramework | null): string {
+export function buildScaffold(topic: ExpertTopic, fw: ExpertFramework | null): string {
   if (!fw) {
     return "No specific framework matched — respond with your best plain-language guidance for the user's situation, staying within your expertise and disclaiming anything outside it.";
   }
@@ -352,7 +352,7 @@ export async function runExpertConsult(
   };
 }
 
-function fallbackAnswer(topic: ExpertTopic): string {
+export function fallbackAnswer(topic: ExpertTopic): string {
   return (
     `Here's a calm, practical way to look at this.\n\n` +
     `Start by writing down the specific situation in one or two sentences — the clearer the problem, the clearer the path. Then sort what's fully within your control (your next action) from what isn't (outcomes, other people, rules outside your influence). Take one small step on the first item you control, and let that momentum decide the next move.\n\n` +

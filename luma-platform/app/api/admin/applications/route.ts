@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseTags } from "@/lib/utils";
 import { requireAdmin, forbidden, adminWriteLimit, logAdminAction } from "@/lib/admin";
 import { ApplicationUpdateSchema, formatValidationError } from "@/lib/validation";
 
@@ -20,7 +21,9 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "desc" },
     });
 
-    return NextResponse.json({ status: "success", data: applications });
+    const data = applications.map((a) => ({ ...a, tags: parseTags(a.tags) }));
+
+    return NextResponse.json({ status: "success", data });
   } catch (error) {
     console.error("Admin applications GET error:", error);
     return NextResponse.json({ status: "error", message: "Could not load applications" }, { status: 500 });

@@ -114,6 +114,21 @@ export const ApplicationUpdateSchema = z.object({
   status: ApplicationStatusEnum,
 });
 
+/** Validates the LLM-generated escrow document (see /api/generate-escrow). */
+export const EscrowDocumentSchema = z.object({
+  document_title: z.string().min(1),
+  fund_source: z.string().min(1),
+  designated_use: z.string().min(1),
+  stewardship_strategy: z.string().min(1),
+  disbursement_conditions: z.string().min(1),
+});
+
+/** Validates the LLM-generated outreach email (see /api/partner-outreach). */
+export const OutreachEmailSchema = z.object({
+  subject: z.string().min(1),
+  body: z.string().min(1),
+});
+
 export function formatValidationError<T>(result: { success: false; error: z.ZodError<T> }) {
   const isDev = process.env.NODE_ENV === "development";
   if (isDev) {

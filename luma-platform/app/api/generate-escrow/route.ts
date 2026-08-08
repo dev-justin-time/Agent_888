@@ -1,6 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { BLOCKS_AGENTS, callBlocksAgent } from "@/lib/blocks-agents";
-import { EscrowSchema, formatValidationError } from "@/lib/validation";
+import { completeJSON } from "@/lib/ollama";
+import { EscrowDocumentSchema, EscrowSchema, formatValidationError } from "@/lib/validation";
+
+const ESCROW_PROMPT = `You are a meticulous escrow steward for Luma, a mission-aligned funding initiative.
+Create a transparent, value-first escrow instruction document.
+Return ONLY valid JSON with exactly these keys:
+"escrow_document" containing:
+- "document_title" (string)
+- "fund_source" (string)
+- "designated_use" (string)
+- "stewardship_strategy" (string)
+- "disbursement_conditions" (string)`;
+
+interface EscrowDocument {
+  document_title: string;
+  fund_source: string;
+  designated_use: string;
+  stewardship_strategy: string;
+  disbursement_conditions: string;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,8 +42,8 @@ export async function POST(req: NextRequest) {
       open_to_growth_strategy,
     } = parsed.data;
 
-    const result = await callBlocksAgent(
-      BLOCKS_AGENTS.escrow,
+    const result = await completeJSON<{ escrow_document?: EscrowDocument }>(
+      ESCROW_PROMPT,
       JSON.stringify({
         donor_name,
         donor_type,
@@ -37,14 +55,18 @@ export async function POST(req: NextRequest) {
       })
     );
 
-    if (!result.ok) {
+    const doc = EscrowDocumentSchema.safeParse(result?.escrow_document);
+    if (!doc.success) {
       return NextResponse.json(
         { status: "error", message: "Escrow document generation is temporarily unavailable." },
         { status: 503 }
       );
     }
 
-    return NextResponse.json(result.payload);
+    return NextResponse.json({
+      status: "success",
+      escrow_document: doc.data,
+    });
   } catch (error) {
     console.error("Escrow generation error:", error);
     return NextResponse.json(

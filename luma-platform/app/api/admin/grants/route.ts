@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { parseTags, stringifyTags } from "@/lib/utils";
 import { requireAdmin, forbidden, adminWriteLimit, logAdminAction } from "@/lib/admin";
 import { GrantSchema, formatValidationError } from "@/lib/validation";
 
@@ -11,7 +12,8 @@ export async function GET() {
 
   try {
     const grants = await prisma.grant.findMany({ orderBy: [{ featured: "desc" }, { name: "asc" }] });
-    return NextResponse.json({ status: "success", data: grants });
+    const data = grants.map((g) => ({ ...g, tags: parseTags(g.tags) }));
+    return NextResponse.json({ status: "success", data });
   } catch (error) {
     console.error("Admin grants GET error:", error);
     return NextResponse.json({ status: "error", message: "Could not load grants" }, { status: 500 });
@@ -32,7 +34,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "error", ...formatValidationError(parsed) }, { status: 400 });
     }
 
-    const grant = await prisma.grant.create({ data: parsed.data });
+    const grant = await prisma.grant.create({
+      data: { ...parsed.data, tags: stringifyTags(parsed.data.tags) },
+    });
     logAdminAction("grant.created", session.user.id, { id: grant.id, name: grant.name });
     return NextResponse.json({ status: "success", data: grant }, { status: 201 });
   } catch (error) {
@@ -62,7 +66,7 @@ export async function PATCH(req: NextRequest) {
 
     const grant = await prisma.grant.update({
       where: { id },
-      data: parsed.data,
+      data: { ...parsed.data, tags: stringifyTags(parsed.data.tags) },
     });
 
     logAdminAction("grant.updated", session.user.id, { id: grant.id, name: grant.name });

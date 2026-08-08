@@ -42,7 +42,10 @@ and writes `BLOCKS_API_KEY` to `.env`. **Copy that same key into every
 ```
 BLOCKS_API_KEY=bk_...
 OPENAI_API_KEY=sk-...      # navigator, escrow, outreach, all experts
-DATABASE_URL=postgresql://…  # luma-resources, luma-community
+# luma-resources & luma-community read through ../../lib/prisma.ts, which now
+# targets the app's LOCAL SQLite database — set DATABASE_URL="file:./dev.db"
+# (relative to prisma/) and run those two agents on a machine with that file.
+DATABASE_URL="file:./dev.db"
 ```
 
 > Agent names are claimed network-wide. If a name is already taken,
@@ -96,12 +99,16 @@ npm run blocks:run:expert-finance
 
 ## 7. Calling the agents from the app
 
-`lib/blocks-agents.ts` wraps the Blocks `TaskClient` (server-side). ALL agent
-interactions go through Blocks now: `/api/chat` → navigator, `/api/expert` →
-per-topic expert, `/api/generate-escrow` → escrow steward,
-`/api/partner-outreach` → partner architect, `/api/resources` → resources
-(free), `/api/providers` → community (free). The app needs `BLOCKS_API_KEY` in
-its `.env.local`; the free agents also need `DATABASE_URL` and must be running.
+**The app no longer depends on Blocks by default.** As of the local-first
+refactor, every route runs on your machine: `/api/chat` and `/api/expert` use
+Ollama directly (`lib/ollama.ts`), and `/api/resources` + `/api/providers` read
+the local SQLite database. This deployment runbook is now optional — only
+needed if you want to offer the agents to external callers on Blocks Network.
+
+`lib/blocks-agents.ts` still wraps the Blocks `TaskClient` if you want to
+switch a route back to a deployed agent. It needs `BLOCKS_API_KEY` in the
+app's `.env.local`, and the free agents (resources/community) additionally
+need the SQLite `DATABASE_URL` above and must be running locally.
 
 ## 8. Top-50 logic libraries (`data/top-calls/`)
 
