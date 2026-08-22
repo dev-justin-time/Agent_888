@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const NAVIGATOR_TOP_CALLS: TopCall[] = [
   { id: "nav-01", category: "Heavy feelings", question: "I'm feeling overwhelmed by everything right now" },

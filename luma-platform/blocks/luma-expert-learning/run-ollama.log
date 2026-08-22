@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Expert: Learning & Education" (lumanation_expert_learning)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263730851,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263730852,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263731327,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_expert_learning-fb500413-6cfd-4f55-ba2f-fac1f0100199 started (agent name: lumanation_expert_learning)',
+  ts: 1786263731333,
+  agentName: 'lumanation_expert_learning',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_expert_learning-fb500413-6cfd-4f55-ba2f-fac1f0100199'
+}
+[blocks-run] instance AG-lumanation_expert_learning-fb500413-6cfd-4f55-ba2f-fac1f0100199 running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_expert_learning (instance: AG-lumanation_expert_learning-fb500413-6cfd-4f55-ba2f-fac1f0100199)',
+  ts: 1786263731497,
+  event: 'agent_registered',
+  agentName: 'lumanation_expert_learning',
+  instanceId: 'AG-lumanation_expert_learning-fb500413-6cfd-4f55-ba2f-fac1f0100199'
+}

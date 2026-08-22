@@ -1,13 +1,6 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
-import OpenAI from "openai";
+import { completeJSON } from "../../lib/ollama.ts";
 import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
-
-// Lazily created — the agent starts and stays connected even without a key.
-let _openai: OpenAI | null = null;
-function getOpenAI(): OpenAI {
-  _openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  return _openai;
-}
 
 interface EscrowInput {
   donor_name?: string;
@@ -43,25 +36,19 @@ export default async function handler(
   const input = parseTaskJson<EscrowInput>(task, DEFAULT_INPUT);
   ctx?.reportStatus("Drafting escrow instructions...");
   try {
-    const completion = await getOpenAI().chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: ESCROW_PROMPT },
-        {
-          role: "user",
-          content: `Create an escrow instruction for ${input.donor_name} (${input.donor_type}) for ${input.amount} ${input.currency}.
+    const document = await completeJSON<Record<string, unknown>>(
+      ESCROW_PROMPT,
+      `Create an escrow instruction for ${input.donor_name} (${input.donor_type}) for ${input.amount} ${input.currency}.
 Specific use case: ${input.specific_use_case || "None specified"}.
 Prefer general purpose: ${input.prefer_general_purpose}.
 Open to growth strategy: ${input.open_to_growth_strategy}.`,
-        },
-      ],
-      response_format: { type: "json_object" },
-    });
+      0.5
+    );
+    if (!document) return jsonError("Escrow generation returned invalid JSON.");
 
-    const raw = completion.choices[0]?.message.content || "{}";
     return jsonResult({
       status: "success",
-      escrow_document: JSON.parse(raw),
+      escrow_document: document,
       billed_amount: 0,
     });
   } catch (error) {

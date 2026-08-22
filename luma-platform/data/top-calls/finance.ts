@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const FINANCE_TOP_CALLS: TopCall[] = [
   // 50/30/20 Budget

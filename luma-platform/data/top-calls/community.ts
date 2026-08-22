@@ -1,4 +1,4 @@
-import type { CommunityCall } from "./types";
+import type { CommunityCall } from "./types.ts";
 
 export const COMMUNITY_TOP_CALLS: CommunityCall[] = [
   { id: "com-01", category: "Find a counselor", type: "counselor", search: "grief", question: "I need a counselor for grief support" },

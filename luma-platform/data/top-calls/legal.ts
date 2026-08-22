@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const LEGAL_TOP_CALLS: TopCall[] = [
   // Rights First Aid (housing / tenants)

@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const HOME_TOP_CALLS: TopCall[] = [
   // Bill Triage & Payment System

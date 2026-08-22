@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Partner Architect" (lumanation_partner_architect)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263252230,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263252231,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263252608,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_partner_architect-cb75535b-87ac-4b3f-a96a-024acd190c38 started (agent name: lumanation_partner_architect)',
+  ts: 1786263252614,
+  agentName: 'lumanation_partner_architect',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_partner_architect-cb75535b-87ac-4b3f-a96a-024acd190c38'
+}
+[blocks-run] instance AG-lumanation_partner_architect-cb75535b-87ac-4b3f-a96a-024acd190c38 running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_partner_architect (instance: AG-lumanation_partner_architect-cb75535b-87ac-4b3f-a96a-024acd190c38)',
+  ts: 1786263252818,
+  event: 'agent_registered',
+  agentName: 'lumanation_partner_architect',
+  instanceId: 'AG-lumanation_partner_architect-cb75535b-87ac-4b3f-a96a-024acd190c38'
+}

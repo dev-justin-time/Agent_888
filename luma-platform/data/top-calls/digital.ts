@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const DIGITAL_TOP_CALLS: TopCall[] = [
   // The Five Scam Red Flags

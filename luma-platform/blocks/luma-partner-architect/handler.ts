@@ -1,13 +1,6 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
-import OpenAI from "openai";
+import { completeJSON } from "../../lib/ollama.ts";
 import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
-
-// Lazily created — the agent starts and stays connected even without a key.
-let _openai: OpenAI | null = null;
-function getOpenAI(): OpenAI {
-  _openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  return _openai;
-}
 
 interface OutreachInput {
   org_name?: string;
@@ -38,24 +31,18 @@ export default async function handler(
   const input = parseTaskJson<OutreachInput>(task, DEFAULT_INPUT);
   ctx?.reportStatus("Drafting outreach...");
   try {
-    const completion = await getOpenAI().chat.completions.create({
-      model: "gpt-4o",
-      messages: [
-        { role: "system", content: OUTREACH_PROMPT },
-        {
-          role: "user",
-          content: `Draft an outreach email to ${input.org_name} (${input.org_type}).
+    const outreach = await completeJSON<Record<string, unknown>>(
+      OUTREACH_PROMPT,
+      `Draft an outreach email to ${input.org_name} (${input.org_type}).
 Alignment focus: ${input.alignment_focus}.
 Context: ${input.org_recent_initiative || "None"}.`,
-        },
-      ],
-      response_format: { type: "json_object" },
-    });
+      0.5
+    );
+    if (!outreach) return jsonError("Outreach generation returned invalid JSON.");
 
-    const raw = completion.choices[0]?.message.content || "{}";
     return jsonResult({
       status: "success",
-      outreach: JSON.parse(raw),
+      outreach,
       billed_amount: 0,
     });
   } catch (error) {

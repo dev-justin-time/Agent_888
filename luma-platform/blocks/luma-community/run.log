@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Community" (lumanation_community)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263247039,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263247040,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: free — using playground environment',
+  ts: 1786263247489,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'free',
+  environment: 'playground'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_community-cf474277-e94f-40c1-8624-63f3d50895c4 started (agent name: lumanation_community)',
+  ts: 1786263247499,
+  agentName: 'lumanation_community',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_community-cf474277-e94f-40c1-8624-63f3d50895c4'
+}
+[blocks-run] instance AG-lumanation_community-cf474277-e94f-40c1-8624-63f3d50895c4 running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_community (instance: AG-lumanation_community-cf474277-e94f-40c1-8624-63f3d50895c4)',
+  ts: 1786263247664,
+  event: 'agent_registered',
+  agentName: 'lumanation_community',
+  instanceId: 'AG-lumanation_community-cf474277-e94f-40c1-8624-63f3d50895c4'
+}

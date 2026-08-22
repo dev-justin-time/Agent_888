@@ -1,0 +1,48 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Expert: Headspace & Well-being" (lumanation_expert_wellbeing)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263735454,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263735456,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263735829,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_expert_wellbeing-701087cc-cf81-46c0-847e-1a442709e0bc started (agent name: lumanation_expert_wellbeing)',
+  ts: 1786263735835,
+  agentName: 'lumanation_expert_wellbeing',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_expert_wellbeing-701087cc-cf81-46c0-847e-1a442709e0bc'
+}
+[blocks-run] instance AG-lumanation_expert_wellbeing-701087cc-cf81-46c0-847e-1a442709e0bc running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_expert_wellbeing (instance: AG-lumanation_expert_wellbeing-701087cc-cf81-46c0-847e-1a442709e0bc)',
+  ts: 1786263736001,
+  event: 'agent_registered',
+  agentName: 'lumanation_expert_wellbeing',
+  instanceId: 'AG-lumanation_expert_wellbeing-701087cc-cf81-46c0-847e-1a442709e0bc'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Task 4b4d0936-eb5b-496b-8714-2d4b10e85f67 completed',
+  ts: 1786466934408,
+  taskId: '4b4d0936-eb5b-496b-8714-2d4b10e85f67',
+  agentName: 'lumanation_expert_wellbeing',
+  owner: '019e0e27-8111-7941-92fe-f54469a748dd'
+}

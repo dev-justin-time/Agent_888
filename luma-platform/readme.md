@@ -48,8 +48,8 @@ Visit [http://localhost:3000](http://localhost:3000). Sign in at `/sign-in` with
 
 The app itself is fully local, but the same agent definitions under `blocks/`
 can still be published to [Blocks Network](https://blocks.ai). See
-`blocks/README.md` for the full runbook (deployed agents need an OpenAI key,
-and the resources/community agents read the app's local SQLite DB).
+`blocks/README.md` for the full runbook (model-backed agents use the local
+Ollama runtime, and resources/community agents read the app's local SQLite DB).
 
 ## 🏗 Architecture
 

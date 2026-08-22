@@ -4,21 +4,21 @@ export type {
   CommunityCall,
   EscrowCall,
   OutreachCall,
-} from "./types";
+} from "./types.ts";
 
-import type { TopCall } from "./types";
-import { FINANCE_TOP_CALLS } from "./finance";
-import { LEGAL_TOP_CALLS } from "./legal";
-import { CAREER_TOP_CALLS } from "./career";
-import { LEARNING_TOP_CALLS } from "./learning";
-import { HOME_TOP_CALLS } from "./home";
-import { DIGITAL_TOP_CALLS } from "./digital";
-import { WELLBEING_TOP_CALLS } from "./wellbeing";
-import { NAVIGATOR_TOP_CALLS } from "./navigator";
-import { RESOURCES_TOP_CALLS } from "./resources";
-import { COMMUNITY_TOP_CALLS } from "./community";
-import { ESCROW_TOP_CALLS } from "./escrow";
-import { OUTREACH_TOP_CALLS } from "./outreach";
+import type { TopCall } from "./types.ts";
+import { FINANCE_TOP_CALLS } from "./finance.ts";
+import { LEGAL_TOP_CALLS } from "./legal.ts";
+import { CAREER_TOP_CALLS } from "./career.ts";
+import { LEARNING_TOP_CALLS } from "./learning.ts";
+import { HOME_TOP_CALLS } from "./home.ts";
+import { DIGITAL_TOP_CALLS } from "./digital.ts";
+import { WELLBEING_TOP_CALLS } from "./wellbeing.ts";
+import { NAVIGATOR_TOP_CALLS } from "./navigator.ts";
+import { RESOURCES_TOP_CALLS } from "./resources.ts";
+import { COMMUNITY_TOP_CALLS } from "./community.ts";
+import { ESCROW_TOP_CALLS } from "./escrow.ts";
+import { OUTREACH_TOP_CALLS } from "./outreach.ts";
 
 export {
   FINANCE_TOP_CALLS,

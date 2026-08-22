@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const CAREER_TOP_CALLS: TopCall[] = [
   // STAR Method

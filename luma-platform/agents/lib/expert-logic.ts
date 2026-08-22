@@ -1,14 +1,5 @@
-import OpenAI from "openai";
+import { completeJSON } from "../../lib/ollama.ts";
 import { TOP_CALLS_BY_EXPERT } from "../../data/top-calls/index.ts";
-
-// Lazily created so the agent process can start and stay connected even when
-// the API key is missing — tasks then fail gracefully instead of crashing the
-// whole agent on startup.
-let _openai: OpenAI | null = null;
-function getOpenAI(): OpenAI {
-  _openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  return _openai;
-}
 
 /**
  * ────────────────────────────────────────────────────────────────────────────
@@ -236,15 +227,6 @@ interface LLMResult {
   framework_used: string;
 }
 
-function safeParseJson(text: string): Record<string, unknown> | null {
-  try {
-    const value = JSON.parse(text);
-    return value && typeof value === "object" ? (value as Record<string, unknown>) : null;
-  } catch {
-    return null;
-  }
-}
-
 export function buildScaffold(topic: ExpertTopic, fw: ExpertFramework | null): string {
   if (!fw) {
     return "No specific framework matched — respond with your best plain-language guidance for the user's situation, staying within your expertise and disclaiming anything outside it.";
@@ -261,20 +243,11 @@ export async function enrichWithLLM(
 ): Promise<LLMResult | null> {
   try {
     const scaffold = buildScaffold(topic, fw);
-    const response = await getOpenAI().chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: topic.systemPrompt },
-        {
-          role: "user",
-          content: `USER MESSAGE:\n${message}\n\n${scaffold}\n\nReturn ONLY valid JSON with exactly these keys: "response" (your full guidance, 1-3 short paragraphs, ending with one gentle next step), "framework_used" (the framework name or "General").`,
-        },
-      ],
-      temperature: 0.7,
-      response_format: { type: "json_object" },
-    });
-
-    const parsed = safeParseJson(response.choices[0].message.content || "");
+    const parsed = await completeJSON<Record<string, unknown>>(
+      topic.systemPrompt,
+      `USER MESSAGE:\n${message}\n\n${scaffold}\n\nReturn ONLY valid JSON with exactly these keys: "response" (your full guidance, 1-3 short paragraphs, ending with one gentle next step), "framework_used" (the framework name or "General").`,
+      0.7
+    );
     if (!parsed || typeof parsed.response !== "string" || !parsed.response.trim()) {
       return null;
     }

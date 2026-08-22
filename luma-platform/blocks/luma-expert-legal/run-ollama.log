@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Expert: Legal & Rights" (lumanation_expert_legal)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263732059,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263732059,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263732493,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_expert_legal-c7b0bdad-b1ee-40be-9db8-8fb2bdb3047f started (agent name: lumanation_expert_legal)',
+  ts: 1786263732571,
+  agentName: 'lumanation_expert_legal',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_expert_legal-c7b0bdad-b1ee-40be-9db8-8fb2bdb3047f'
+}
+[blocks-run] instance AG-lumanation_expert_legal-c7b0bdad-b1ee-40be-9db8-8fb2bdb3047f running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_expert_legal (instance: AG-lumanation_expert_legal-c7b0bdad-b1ee-40be-9db8-8fb2bdb3047f)',
+  ts: 1786263732742,
+  event: 'agent_registered',
+  agentName: 'lumanation_expert_legal',
+  instanceId: 'AG-lumanation_expert_legal-c7b0bdad-b1ee-40be-9db8-8fb2bdb3047f'
+}

@@ -1,14 +1,7 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
-import OpenAI from "openai";
+import { completeLLM } from "../../lib/ollama.ts";
 import { CRISIS_KEYWORDS, CRISIS_RESPONSE, CONTINUITY_PROTOCOL } from "../../agents/lib/expert-logic.ts";
 import { getTaskText, jsonResult, jsonError } from "../shared/handler-utils.ts";
-
-// Lazily created — the agent starts and stays connected even without a key.
-let _openai: OpenAI | null = null;
-function getOpenAI(): OpenAI {
-  _openai ??= new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  return _openai;
-}
 
 const NAVIGATOR_PROMPT = `You are Luma, a gentle life navigator. 
 RULES:
@@ -43,16 +36,7 @@ export default async function handler(
 
   ctx?.reportStatus("Listening...");
   try {
-    const completion = await getOpenAI().chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: NAVIGATOR_PROMPT },
-        { role: "user", content: message },
-      ],
-      temperature: 0.8,
-    });
-
-    const text = completion.choices[0]?.message.content || "";
+    const text = await completeLLM(NAVIGATOR_PROMPT, message, 0.8);
     return jsonResult({
       status: "success",
       response: text,

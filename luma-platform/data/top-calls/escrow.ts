@@ -1,4 +1,4 @@
-import type { EscrowCall } from "./types";
+import type { EscrowCall } from "./types.ts";
 
 export const ESCROW_TOP_CALLS: EscrowCall[] = [
   { id: "esc-01", category: "Community", question: "Fund a school garden for a local primary school", donorName: "Riverside Neighbors Fund", donorType: "Foundation", amount: "5000", currency: "USD", useCase: "Community vegetable garden at Riverside Primary School, including soil, seeds, and raised beds" },

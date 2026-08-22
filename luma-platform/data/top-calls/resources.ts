@@ -1,4 +1,4 @@
-import type { ResourceCall } from "./types";
+import type { ResourceCall } from "./types.ts";
 
 export const RESOURCES_TOP_CALLS: ResourceCall[] = [
   // Immediate support / hotlines

@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Expert: Digital Safety" (lumanation_expert_digital)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263732014,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263732015,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263732553,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_expert_digital-0fd34e5e-a636-4ad7-8431-9f2ac885ec2d started (agent name: lumanation_expert_digital)',
+  ts: 1786263732559,
+  agentName: 'lumanation_expert_digital',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_expert_digital-0fd34e5e-a636-4ad7-8431-9f2ac885ec2d'
+}
+[blocks-run] instance AG-lumanation_expert_digital-0fd34e5e-a636-4ad7-8431-9f2ac885ec2d running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_expert_digital (instance: AG-lumanation_expert_digital-0fd34e5e-a636-4ad7-8431-9f2ac885ec2d)',
+  ts: 1786263732711,
+  event: 'agent_registered',
+  agentName: 'lumanation_expert_digital',
+  instanceId: 'AG-lumanation_expert_digital-0fd34e5e-a636-4ad7-8431-9f2ac885ec2d'
+}

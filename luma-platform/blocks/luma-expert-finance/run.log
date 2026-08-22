@@ -1,0 +1,6 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] fatal: Cannot find module './finance'
+Require stack:
+- C:\Users\dividicus\Agent_888\luma-platform\data\top-calls\index.ts
+Error: exit status 1
+Access is denied.

@@ -1,4 +1,4 @@
-import type { TopCall } from "./types";
+import type { TopCall } from "./types.ts";
 
 export const WELLBEING_TOP_CALLS: TopCall[] = [
   // The Brain Dump & Micro-Step

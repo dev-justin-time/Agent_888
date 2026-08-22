@@ -41,12 +41,18 @@ and writes `BLOCKS_API_KEY` to `.env`. **Copy that same key into every
 
 ```
 BLOCKS_API_KEY=bk_...
-OPENAI_API_KEY=sk-...      # navigator, escrow, outreach, all experts
+# Model-backed agents use the local Ollama instance on this machine.
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_MODEL=llama3.2:3b
 # luma-resources & luma-community read through ../../lib/prisma.ts, which now
 # targets the app's LOCAL SQLite database — set DATABASE_URL="file:./dev.db"
 # (relative to prisma/) and run those two agents on a machine with that file.
 DATABASE_URL="file:./dev.db"
 ```
+
+The model-backed agents do not require `OPENAI_API_KEY`. Ollama must be running
+and reachable from the same machine as each `blocks run` process (`ollama serve`).
+Use `ollama list` to confirm that `OLLAMA_MODEL` is installed.
 
 > Agent names are claimed network-wide. If a name is already taken,
 > `blocks register` will error — rename it in the folder's `agent-card.json`.

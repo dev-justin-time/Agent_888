@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Navigator" (lumanation_navigator)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263724221,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263724222,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263724767,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_navigator-c9b10958-fb07-4c05-9adc-09db2c3f7369 started (agent name: lumanation_navigator)',
+  ts: 1786263724825,
+  agentName: 'lumanation_navigator',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_navigator-c9b10958-fb07-4c05-9adc-09db2c3f7369'
+}
+[blocks-run] instance AG-lumanation_navigator-c9b10958-fb07-4c05-9adc-09db2c3f7369 running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_navigator (instance: AG-lumanation_navigator-c9b10958-fb07-4c05-9adc-09db2c3f7369)',
+  ts: 1786263725001,
+  event: 'agent_registered',
+  agentName: 'lumanation_navigator',
+  instanceId: 'AG-lumanation_navigator-c9b10958-fb07-4c05-9adc-09db2c3f7369'
+}

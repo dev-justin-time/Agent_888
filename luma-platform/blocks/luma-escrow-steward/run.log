@@ -1,0 +1,40 @@
+[blocks] Delegating to Node SDK (blocks-run)...
+[blocks-run] starting "Luma Escrow Steward" (lumanation_escrow_steward)
+[AgentInstance] {
+  level: 'info',
+  message: 'CDM config loaded — environment switching enabled',
+  ts: 1786263249930,
+  event: 'cdm_config_loaded'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'AgentAuth created — will authenticate via connect',
+  ts: 1786263249931,
+  event: 'agent_auth_created'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'registry billingMode: paid — using network environment',
+  ts: 1786263250293,
+  event: 'registry_billing_mode_resolved',
+  billingMode: 'paid',
+  environment: 'network'
+}
+[AgentInstance] {
+  level: 'info',
+  message: 'Agent instance AG-lumanation_escrow_steward-27ae326d-f78a-4585-969c-0daba33114a7 started (agent name: lumanation_escrow_steward)',
+  ts: 1786263250298,
+  agentName: 'lumanation_escrow_steward',
+  event: 'agent_instance_started',
+  instanceId: 'AG-lumanation_escrow_steward-27ae326d-f78a-4585-969c-0daba33114a7'
+}
+[blocks-run] instance AG-lumanation_escrow_steward-27ae326d-f78a-4585-969c-0daba33114a7 running
+[blocks-run] press Ctrl+C to stop
+[AgentInstance] {
+  level: 'info',
+  message: 'registered agent: lumanation_escrow_steward (instance: AG-lumanation_escrow_steward-27ae326d-f78a-4585-969c-0daba33114a7)',
+  ts: 1786263250474,
+  event: 'agent_registered',
+  agentName: 'lumanation_escrow_steward',
+  instanceId: 'AG-lumanation_escrow_steward-27ae326d-f78a-4585-969c-0daba33114a7'
+}

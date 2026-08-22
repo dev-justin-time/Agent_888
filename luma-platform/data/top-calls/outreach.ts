@@ -1,4 +1,4 @@
-import type { OutreachCall } from "./types";
+import type { OutreachCall } from "./types.ts";
 
 export const OUTREACH_TOP_CALLS: OutreachCall[] = [
   { id: "out-01", category: "Conservation", question: "Partner with a conservation agency on wetland restoration", orgName: "Delta Conservation Agency", orgType: "Eco-Conservation Agency", alignment: "Joint wetland restoration along the Cedar River floodplain" },
