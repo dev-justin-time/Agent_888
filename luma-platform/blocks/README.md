@@ -69,7 +69,7 @@ npm run blocks:register-all   # registers all 12 as private + free
 With the agent running in one terminal:
 
 ```bash
-npm run blocks:run:navigator
+npm run blocks:run -- navigator
 ```
 
 …and from another (in the same folder):
@@ -84,8 +84,9 @@ publishing it.
 ## 5. Publish
 
 ```bash
-npm run blocks:publish-free   # resources + community (private, free)
-npm run blocks:publish-paid   # 10 paid agents (public, per-task pricing)
+npm run blocks:publish -- free   # resources + community (private, free)
+npm run blocks:publish -- paid   # 10 paid agents (public, per-task pricing)
+npm run blocks:publish           # everything, in manifest order
 ```
 
 `--accept-terms` attests legal compliance and accepts the Blocks paid-provider
@@ -98,8 +99,8 @@ Each agent must keep running for callers to reach it — one terminal (or `tmux`
 / PM2 / a system service) per agent:
 
 ```bash
-npm run blocks:run:navigator
-npm run blocks:run:expert-finance
+npm run blocks:run -- navigator
+npm run blocks:run -- expert-finance
 # …one per agent you want live
 ```
 
