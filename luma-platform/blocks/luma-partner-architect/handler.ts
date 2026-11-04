@@ -1,6 +1,6 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
 import { completeJSON } from "../../lib/ollama.ts";
-import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
+import { getTaskText, jsonSuccess, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
 
 interface OutreachInput {
   org_name?: string;
@@ -40,11 +40,7 @@ Context: ${input.org_recent_initiative || "None"}.`,
     );
     if (!outreach) return jsonError("Outreach generation returned invalid JSON.");
 
-    return jsonResult({
-      status: "success",
-      outreach,
-      billed_amount: 0,
-    });
+    return jsonSuccess({ outreach });
   } catch (error) {
     return jsonError(error instanceof Error ? error.message : "Outreach generation failed");
   }

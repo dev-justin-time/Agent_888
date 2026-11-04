@@ -1,10 +1,16 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
-import { prisma } from "../../lib/prisma.ts";
-import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
+import {
+  ASSISTANCE_MESSAGE,
+  HOTLINE_MESSAGE,
+  getGrants,
+  getHotline,
+} from "../../lib/resources.ts";
+import type { ResourceNeed } from "../../lib/resources.ts";
+import { jsonSuccess, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
 
 interface ResourceInput {
   locale?: string;
-  need?: "hotline" | "sponsor" | "community";
+  need?: ResourceNeed;
 }
 
 const DEFAULT_INPUT: ResourceInput = { locale: "US", need: "community" };
@@ -20,32 +26,17 @@ export default async function handler(
   ctx?.reportStatus(`Finding ${need} support for ${locale}...`);
   try {
     if (need === "hotline") {
-      const hotline =
-        (await prisma.hotline.findUnique({ where: { locale } })) ??
-        (await prisma.hotline.findUnique({ where: { locale: "US" } }));
-      return jsonResult({
-        status: "success",
+      return jsonSuccess({
         type: "hotline",
-        data: hotline,
-        message: "Here is a safe, immediate connection in your area.",
-        billed_amount: 0,
+        data: await getHotline(locale),
+        message: HOTLINE_MESSAGE,
       });
     }
 
-    const grants = await prisma.grant.findMany({
-      where:
-        need === "sponsor"
-          ? { OR: [{ coverage: locale }, { coverage: "Global" }] }
-          : undefined,
-      orderBy: [{ featured: "desc" }, { name: "asc" }],
-    });
-
-    return jsonResult({
-      status: "success",
+    return jsonSuccess({
       type: need,
-      data: grants,
-      message: "Here are organizations that offer payment assistance.",
-      billed_amount: 0,
+      data: await getGrants(need, locale),
+      message: ASSISTANCE_MESSAGE,
     });
   } catch (error) {
     return jsonError(error instanceof Error ? error.message : "Resources unavailable");

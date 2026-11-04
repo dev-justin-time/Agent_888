@@ -23,6 +23,14 @@ export function jsonResult(payload: unknown): HandlerResult {
   };
 }
 
+/**
+ * Wrap a success payload as a JSON artifact. Luma's per-task billing field is
+ * always zero (routes are local-first), so callers only describe their data.
+ */
+export function jsonSuccess(payload: Record<string, unknown>): HandlerResult {
+  return jsonResult({ status: "success", billed_amount: 0, ...payload });
+}
+
 /** Wrap a failure as a JSON artifact with a standard error shape. */
 export function jsonError(message: string): HandlerResult {
   return jsonResult({ status: "error", message, billed_amount: 0 });

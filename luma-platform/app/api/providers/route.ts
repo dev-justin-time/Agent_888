@@ -1,80 +1,42 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { parseTags } from "@/lib/utils";
-import { ProviderConnectSchema, formatValidationError } from "@/lib/validation";
+import { NextRequest } from "next/server";
+import { ProviderConnectSchema } from "@/lib/validation";
+import { fail, parseBody, runRoute, success } from "@/lib/api";
+import {
+  NO_PROVIDER_MESSAGE,
+  findProviderConnection,
+  getVerifiedProviders,
+} from "@/lib/providers";
 
 export async function GET() {
-  try {
-    const providers = await prisma.provider.findMany({
-      where: { verified: true },
-      orderBy: { name: "asc" },
-    });
-
-    const data = providers.map((p) => ({ ...p, tags: parseTags(p.tags) }));
-
-    return NextResponse.json({
-      status: "success",
-      data,
-      message: "Verified provider directory.",
-    });
-  } catch (error) {
-    console.error("Providers API error:", error);
-    return NextResponse.json(
-      { status: "error", message: "Provider directory is currently unavailable." },
-      { status: 503 }
-    );
-  }
+  return runRoute(
+    "Providers API error",
+    async () => {
+      return success({
+        data: await getVerifiedProviders(),
+        message: "Verified provider directory.",
+      });
+    },
+    "Provider directory is currently unavailable.",
+    503
+  );
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const parsed = ProviderConnectSchema.safeParse(body);
+  const body = await parseBody(req, ProviderConnectSchema);
+  if ("response" in body) return body.response;
 
-    if (!parsed.success) {
-      return NextResponse.json(
-        { status: "error", ...formatValidationError(parsed) },
-        { status: 400 }
-      );
-    }
+  const userLocale = body.data.user_locale.toUpperCase();
+  const providerType = body.data.provider_type;
 
-    const userLocale = parsed.data.user_locale.toUpperCase();
-    const providerType = parsed.data.provider_type;
+  return runRoute(
+    "Provider connection error",
+    async () => {
+      const connection = await findProviderConnection(providerType, userLocale);
+      if (!connection) return fail(NO_PROVIDER_MESSAGE, 500);
 
-    const providers = await prisma.provider.findMany({
-      where: { type: providerType },
-    });
-
-    const matched = providers.find(
-      (p) => p.locale === userLocale || p.locale.startsWith(userLocale.split("-")[0])
-    );
-
-    if (!matched) {
-      return NextResponse.json({
-        status: "error",
-        message:
-          "No verified providers currently available in your specific locale. Please check back soon or use the Hotline feature.",
-      });
-    }
-
-    const secureLink = `https://luma.link/bridge/${matched.id}?token=${Date.now()}`;
-
-    return NextResponse.json({
-      status: "success",
-      provider: {
-        name: matched.name,
-        cost: matched.cost,
-        verification_status: "Verified via National Registry",
-      },
-      secure_handoff_link: secureLink,
-      privacy_notice:
-        "Clicking this link will take you off Luma to the provider's secure booking system. Luma does not store your name, data, or session details. This interaction is completely anonymous.",
-    });
-  } catch (error) {
-    console.error("Provider connection error:", error);
-    return NextResponse.json(
-      { status: "error", message: "Could not connect to a provider right now." },
-      { status: 503 }
-    );
-  }
+      return success(connection);
+    },
+    "Could not connect to a provider right now.",
+    503
+  );
 }

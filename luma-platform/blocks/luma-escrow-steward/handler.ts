@@ -1,6 +1,6 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
 import { completeJSON } from "../../lib/ollama.ts";
-import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
+import { getTaskText, jsonSuccess, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
 
 interface EscrowInput {
   donor_name?: string;
@@ -46,11 +46,7 @@ Open to growth strategy: ${input.open_to_growth_strategy}.`,
     );
     if (!document) return jsonError("Escrow generation returned invalid JSON.");
 
-    return jsonResult({
-      status: "success",
-      escrow_document: document,
-      billed_amount: 0,
-    });
+    return jsonSuccess({ escrow_document: document });
   } catch (error) {
     return jsonError(error instanceof Error ? error.message : "Escrow generation failed");
   }

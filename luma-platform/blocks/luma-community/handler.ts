@@ -1,6 +1,10 @@
 import type { HandlerResult, StartTaskMessage, TaskContext } from "@blocks-network/sdk";
-import { prisma } from "../../lib/prisma.ts";
-import { getTaskText, jsonResult, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
+import {
+  NO_PROVIDER_MESSAGE,
+  findProviderConnection,
+  getVerifiedProviders,
+} from "../../lib/providers.ts";
+import { jsonResult, jsonSuccess, jsonError, parseTaskJson } from "../shared/handler-utils.ts";
 
 interface CommunityInput {
   action?: "list" | "connect";
@@ -26,50 +30,18 @@ export default async function handler(
   );
   try {
     if (action === "list") {
-      const providers = await prisma.provider.findMany({
-        where: { verified: true },
-        orderBy: { name: "asc" },
-      });
-      return jsonResult({
-        status: "success",
-        data: providers,
+      return jsonSuccess({
+        data: await getVerifiedProviders(),
         message: "Verified provider directory.",
-        billed_amount: 0,
       });
     }
 
-    const providers = await prisma.provider.findMany({
-      where: { type: providerType },
-    });
-
-    const matched = providers.find(
-      (p) =>
-        p.locale === userLocale ||
-        p.locale.startsWith(userLocale.split("-")[0])
-    );
-
-    if (!matched) {
-      return jsonResult({
-        status: "error",
-        message:
-          "No verified providers currently available in your specific locale. Please check back soon or use the Hotline feature.",
-      });
+    const connection = await findProviderConnection(providerType, userLocale);
+    if (!connection) {
+      return jsonResult({ status: "error", message: NO_PROVIDER_MESSAGE });
     }
 
-    const secureLink = `https://luma.link/bridge/${matched.id}?token=${Date.now()}`;
-
-    return jsonResult({
-      status: "success",
-      provider: {
-        name: matched.name,
-        cost: matched.cost,
-        verification_status: "Verified via National Registry",
-      },
-      secure_handoff_link: secureLink,
-      privacy_notice:
-        "Clicking this link will take you off Luma to the provider's secure booking system. Luma does not store your name, data, or session details. This interaction is completely anonymous.",
-      billed_amount: 0,
-    });
+    return jsonSuccess({ ...connection });
   } catch (error) {
     return jsonError(error instanceof Error ? error.message : "Community registry unavailable");
   }
