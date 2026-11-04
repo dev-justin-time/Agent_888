@@ -17,6 +17,7 @@ dist
 # misc
 .DS_Store
 *.pem
+luma-platform-main.bundle
 
 # debug
 npm-debug.log*
