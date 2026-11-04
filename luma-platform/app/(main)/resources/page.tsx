@@ -6,23 +6,7 @@ import { GlassCard } from "@/components/ui/GlassCard";
 import { Chip } from "@/components/ui/Chip";
 import { Phone, Globe, Heart, MapPin, AlertCircle, Sparkles } from "lucide-react";
 import { RESOURCES_TOP_CALLS } from "@/data/top-calls";
-
-interface Hotline {
-  name: string;
-  number: string;
-  text: string;
-}
-
-interface Grant {
-  id: string;
-  name: string;
-  description: string;
-  amount: string;
-  coverage: string;
-  featured: boolean;
-  rolling: boolean;
-  tags: string[];
-}
+import type { Grant, Hotline } from "@/lib/types";
 
 export default function ResourcesPage() {
   const [locale, setLocale] = useState("US");
@@ -82,7 +66,7 @@ export default function ResourcesPage() {
         </p>
       </section>
 
-      <div className="glass-card inner-glow rounded-2xl border border-white/10 p-4">
+      <GlassCard hover={false} className="p-4">
         <p className="font-label-sm text-label-sm text-on-surface-variant mb-3 flex items-center gap-1.5">
           <Sparkles size={14} className="text-primary" /> What are you looking for? Tap a need to jump straight to it
         </p>
@@ -98,7 +82,7 @@ export default function ResourcesPage() {
             </button>
           ))}
         </div>
-      </div>
+      </GlassCard>
 
       <div className="flex justify-end">
         <label className="flex items-center gap-2 text-sm text-on-surface-variant">

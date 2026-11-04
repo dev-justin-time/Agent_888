@@ -36,7 +36,7 @@ export default function ExpertsPage() {
       </section>
 
       {/* Question Library — search all 600 curated questions */}
-      <section className="glass-card inner-glow p-6 rounded-2xl border-l-4 border-l-primary/50">
+      <GlassCard hover={false} className="p-6 border-l-4 border-l-primary/50">
         <div className="flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-4">
             <span className="w-12 h-12 rounded-2xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
@@ -90,7 +90,7 @@ export default function ExpertsPage() {
             </Link>
           ))}
         </div>
-      </section>
+      </GlassCard>
 
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {EXPERT_TOPICS.map((topic) => (

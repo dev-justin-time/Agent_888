@@ -95,7 +95,7 @@ export default function CommunityPage() {
         </p>
       </section>
 
-      <div className="glass-card inner-glow rounded-2xl border border-white/10 p-4">
+      <GlassCard hover={false} className="p-4">
         <p className="font-label-sm text-label-sm text-on-surface-variant mb-3 flex items-center gap-1.5">
           <Sparkles size={14} className="text-primary" /> Top 50 needs — tap to find a matching provider
         </p>
@@ -110,7 +110,7 @@ export default function CommunityPage() {
             </button>
           ))}
         </div>
-      </div>
+      </GlassCard>
 
       <GlassCard className="p-4 flex flex-col md:flex-row gap-4 items-center">
         <div className="relative flex-1 w-full">

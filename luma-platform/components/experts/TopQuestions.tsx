@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, Sparkles } from "lucide-react";
 import type { TopCall } from "@/data/top-calls";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { cn } from "@/lib/utils";
 
 interface TopQuestionsProps {
@@ -40,13 +41,7 @@ export default function TopQuestions({
   const shown = expanded || q ? filtered : filtered.slice(0, visible);
 
   return (
-    <div
-      className={cn(
-        "glass-card inner-glow rounded-2xl border border-white/10",
-        compact ? "p-3" : "p-4",
-        className
-      )}
-    >
+    <GlassCard hover={false} className={cn(compact ? "p-3" : "p-4", className)}>
       <div className="flex items-center gap-2 mb-3">
         <Sparkles size={14} className="text-primary shrink-0" />
         <p className="font-label-sm text-label-sm text-on-surface-variant">
@@ -99,6 +94,6 @@ export default function TopQuestions({
             : `Show all ${filtered.length} questions`}
         </button>
       )}
-    </div>
+    </GlassCard>
   );
 }

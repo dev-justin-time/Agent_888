@@ -187,7 +187,7 @@ export default function QuestionsPage() {
       </section>
 
       {/* Search + stats */}
-      <div className="glass-card inner-glow rounded-2xl border border-white/10 p-4 space-y-4">
+      <GlassCard hover={false} className="p-4 space-y-4">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -242,7 +242,7 @@ export default function QuestionsPage() {
             ? `${matchedCount} match${matchedCount === 1 ? "" : "es"} across ${groups.length} agent${groups.length === 1 ? "" : "s"}`
             : `${TOTAL} curated questions · ${LIBRARIES.length} agents`}
         </p>
-      </div>
+      </GlassCard>
 
       {/* Results */}
       {groups.length > 0 ? (
