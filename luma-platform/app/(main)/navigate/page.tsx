@@ -2,12 +2,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Send, Heart, Sparkles, Wind } from "lucide-react";
+import { Wind } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import TopQuestions from "@/components/experts/TopQuestions";
 import { NAVIGATOR_TOP_CALLS } from "@/data/top-calls";
-import { copyToClipboard } from "@/lib/utils";
+import {
+  ChatComposer,
+  MessageBubble,
+  PromptChips,
+  TypingBubble,
+  useAutoScroll,
+} from "@/components/chat/ChatUI";
 
 interface Message {
   role: "user" | "luma";
@@ -30,15 +36,11 @@ export default function NavigatePage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showGrounding, setShowGrounding] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+  const endRef = useAutoScroll([messages]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   const sentQ = useRef(false);
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   // Auto-send a question from the Question Library (?q=…).
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function NavigatePage() {
       if (data.status === "success" && data.response) {
         setMessages((prev) => [...prev, { role: "luma", text: data.response }]);
 
-        if (data.route_to_resources || data.response.includes("[ROUTE_TO_RESOURCES]")) {
+        if (data.route_to_resources) {
           router.push("/resources");
         }
       } else {
@@ -100,32 +102,14 @@ export default function NavigatePage() {
 
       <div className="flex-1 overflow-y-auto space-y-4 pr-1">
         {messages.map((msg, idx) => (
-          <div
+          <MessageBubble
             key={idx}
-            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-          >
-            <div
-              className={`max-w-[85%] p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-xl ${
-                msg.role === "user"
-                  ? "bg-primary/20 text-primary rounded-[24px_24px_4px_24px] border border-primary/30"
-                  : "glass-card inner-glow chat-bubble-luma text-on-surface"
-              }`}
-            >
-              {msg.role === "luma" && <Heart size={14} className="text-pink-400 inline mr-2 mb-1" />}
-              {msg.text}
-            </div>
-          </div>
+            role={msg.role === "user" ? "user" : "assistant"}
+            text={msg.text}
+          />
         ))}
 
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="glass-card inner-glow p-4 rounded-2xl rounded-bl-none border border-white/10 flex gap-1">
-              <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-              <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-              <span className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-            </div>
-          </div>
-        )}
+        {isLoading && <TypingBubble />}
 
         {/* Searchable library of the 50 most common ways people open up */}
         {messages.length <= 1 && !isLoading && (
@@ -140,46 +124,22 @@ export default function NavigatePage() {
         <div ref={endRef} />
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        {SUGGESTED_PROMPTS.map((prompt) => (
-          <button
-            key={prompt}
-            onClick={() => handleSend(prompt)}
-            className="text-xs font-label-sm text-primary border border-primary/30 rounded-full px-3 py-1 hover:bg-primary/10 transition-colors"
-          >
-            {prompt}
-          </button>
-        ))}
+      <PromptChips prompts={SUGGESTED_PROMPTS} onSelect={handleSend}>
         <button
           onClick={() => setShowGrounding(true)}
           className="text-xs font-label-sm text-secondary border border-secondary/30 rounded-full px-3 py-1 hover:bg-secondary/10 transition-colors inline-flex items-center gap-1"
         >
           <Wind size={12} /> Grounding exercise
         </button>
-      </div>
+      </PromptChips>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSend();
-        }}
-        className="mt-4 glass-card inner-glow rounded-full px-4 py-3 flex items-center gap-3 border border-white/10"
-      >
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Speak to the forest..."
-          className="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md"
-        />
-        <button
-          type="submit"
-          disabled={!input.trim() || isLoading}
-          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-inverse-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-90 transition-all disabled:opacity-50"
-        >
-          <Send size={18} />
-        </button>
-      </form>
+      <ChatComposer
+        value={input}
+        onChange={setInput}
+        onSubmit={() => handleSend()}
+        placeholder="Speak to the forest..."
+        busy={isLoading}
+      />
 
       {showGrounding && (
         <div className="fixed inset-0 z-[60] bg-surface/90 backdrop-blur-xl flex items-center justify-center p-6">

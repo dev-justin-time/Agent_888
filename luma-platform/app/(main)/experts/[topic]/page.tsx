@@ -3,12 +3,20 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { Send, Heart, ArrowLeft, Phone, ShieldAlert, Info } from "lucide-react";
+import { ArrowLeft, Phone, ShieldAlert, Info } from "lucide-react";
 import { EXPERT_TOPIC_MAP, EXPERT_TOPICS } from "@/lib/constants";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
+import { GlassCard } from "@/components/ui/GlassCard";
 import TopQuestions from "@/components/experts/TopQuestions";
 import { TOP_CALLS_BY_EXPERT } from "@/data/top-calls";
 import { cn } from "@/lib/utils";
+import {
+  ChatComposer,
+  MessageBubble,
+  PromptChips,
+  TypingBubble,
+  useAutoScroll,
+} from "@/components/chat/ChatUI";
 
 interface Message {
   role: "user" | "expert";
@@ -29,7 +37,7 @@ export default function ExpertChatPage() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [hasUrgent, setHasUrgent] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+  const endRef = useAutoScroll([messages, isLoading]);
 
   useEffect(() => {
     if (topic) {
@@ -43,10 +51,6 @@ export default function ExpertChatPage() {
       setInput("");
     }
   }, [topicId, topic]);
-
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isLoading]);
 
   // Auto-send a question from the Question Library (?q=…).
   useEffect(() => {
@@ -140,7 +144,7 @@ export default function ExpertChatPage() {
           <ArrowLeft size={16} /> All experts
         </Link>
 
-        <div className="glass-card inner-glow p-6 rounded-2xl">
+        <GlassCard hover={false} className="p-6">
           <div className="flex items-center gap-4">
             <span className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/25 flex items-center justify-center shrink-0">
               <ExpertIcon icon={topic.icon} className="text-primary" size={28} />
@@ -181,53 +185,22 @@ export default function ExpertChatPage() {
               it matters.
             </p>
           </div>
-        </div>
+        </GlassCard>
       </div>
 
       {/* Chat */}
       <div className="flex flex-col h-[calc(100dvh-430px)] min-h-[320px] max-h-[520px]">
         <div className="flex-1 overflow-y-auto space-y-4 pr-1">
           {messages.map((msg, idx) => (
-            <div
+            <MessageBubble
               key={idx}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={cn(
-                  "max-w-[85%] p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-xl",
-                  msg.role === "user"
-                    ? "bg-primary/20 text-primary rounded-[24px_24px_4px_24px] border border-primary/30"
-                    : msg.urgent
-                      ? "bg-error/15 text-error border border-error/40 rounded-[24px_24px_24px_4px]"
-                      : "glass-card inner-glow chat-bubble-luma text-on-surface rounded-[24px_24px_24px_4px]"
-                )}
-              >
-                {msg.role === "expert" && (
-                  <Heart size={14} className="text-pink-400 inline mr-2 mb-1" />
-                )}
-                {msg.text}
-              </div>
-            </div>
+              role={msg.role === "user" ? "user" : "assistant"}
+              text={msg.text}
+              urgent={msg.urgent}
+            />
           ))}
 
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="glass-card inner-glow p-4 rounded-2xl rounded-bl-none border border-white/10 flex gap-1">
-                <span
-                  className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "0ms" }}
-                />
-                <span
-                  className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "150ms" }}
-                />
-                <span
-                  className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"
-                  style={{ animationDelay: "300ms" }}
-                />
-              </div>
-            </div>
-          )}
+          {isLoading && <TypingBubble />}
 
           {/* Searchable library of the 50 most common questions for this expert */}
           {messages.length <= 1 && !isLoading && (
@@ -259,42 +232,16 @@ export default function ExpertChatPage() {
 
         {/* Suggested prompts */}
         {messages.length <= 1 && !isLoading && (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {topic.prompts.map((prompt) => (
-              <button
-                key={prompt}
-                onClick={() => handleSend(prompt)}
-                className="text-xs font-label-sm text-primary border border-primary/30 rounded-full px-3 py-1 hover:bg-primary/10 transition-colors text-left"
-              >
-                {prompt}
-              </button>
-            ))}
-          </div>
+          <PromptChips prompts={topic.prompts} onSelect={handleSend} />
         )}
 
-        {/* Input */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSend();
-          }}
-          className="mt-4 glass-card inner-glow rounded-full px-4 py-3 flex items-center gap-3 border border-white/10"
-        >
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={`Ask the ${topic.label.toLowerCase()} guide...`}
-            className="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md"
-          />
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
-            className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-inverse-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-90 transition-all disabled:opacity-50"
-          >
-            <Send size={18} />
-          </button>
-        </form>
+        <ChatComposer
+          value={input}
+          onChange={setInput}
+          onSubmit={() => handleSend()}
+          placeholder={`Ask the ${topic.label.toLowerCase()} guide...`}
+          busy={isLoading}
+        />
       </div>
     </div>
   );
