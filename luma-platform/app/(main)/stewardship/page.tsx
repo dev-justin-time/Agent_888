@@ -5,32 +5,17 @@ import { useSearchParams } from "next/navigation";
 import { Copy, Check, Mail, FileText, Briefcase, Shield, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { Input, Select, Textarea } from "@/components/ui/Field";
 import { ESCROW_TOP_CALLS, OUTREACH_TOP_CALLS } from "@/data/top-calls";
 import type { EscrowCall, OutreachCall } from "@/data/top-calls";
+import type { EscrowResult, OutreachEmail } from "@/lib/types";
 import { copyToClipboard } from "@/lib/utils";
-
-interface OutreachResult {
-  subject: string;
-  body: string;
-}
-
-interface EscrowDocument {
-  document_title: string;
-  fund_source: string;
-  designated_use: string;
-  stewardship_strategy: string;
-  disbursement_conditions: string;
-}
-
-interface EscrowResult {
-  escrow_document: EscrowDocument;
-}
 
 export default function StewardshipPage() {
   const [orgName, setOrgName] = useState("");
   const [orgType, setOrgType] = useState("Eco-Conservation Agency");
   const [alignment, setAlignment] = useState("");
-  const [outreach, setOutreach] = useState<OutreachResult | null>(null);
+  const [outreach, setOutreach] = useState<OutreachEmail | null>(null);
   const [outreachLoading, setOutreachLoading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -170,28 +155,23 @@ export default function StewardshipPage() {
                 ))}
               </div>
             </div>
-            <input
+            <Input
               type="text"
               placeholder="Organization name"
               value={orgName}
               onChange={(e) => setOrgName(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             />
-            <select
-              value={orgType}
-              onChange={(e) => setOrgType(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none"
-            >
+            <Select value={orgType} onChange={(e) => setOrgType(e.target.value)}>
               <option>Eco-Conservation Agency</option>
               <option>Private Land Steward</option>
               <option>Educational Institution</option>
               <option>Community Collective</option>
-            </select>
-            <textarea
+            </Select>
+            <Textarea
               placeholder="Alignment focus"
               value={alignment}
               onChange={(e) => setAlignment(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none min-h-[80px]"
+              className="min-h-[80px]"
             />
             <Button onClick={() => generateOutreach()} disabled={outreachLoading} className="w-full">
               {outreachLoading ? "Generating..." : "Generate outreach email"}
@@ -246,36 +226,30 @@ export default function StewardshipPage() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <input
+              <Input
                 type="text"
                 placeholder="Donor name"
                 value={donorName}
                 onChange={(e) => setDonorName(e.target.value)}
-                className="col-span-2 bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
+                className="col-span-2"
               />
-              <select
-                value={donorType}
-                onChange={(e) => setDonorType(e.target.value)}
-                className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none"
-              >
+              <Select value={donorType} onChange={(e) => setDonorType(e.target.value)}>
                 <option>Individual</option>
                 <option>Organization</option>
                 <option>Foundation</option>
-              </select>
-              <input
+              </Select>
+              <Input
                 type="number"
                 placeholder="Amount"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
               />
             </div>
-            <input
+            <Input
               type="text"
               placeholder="Specific use case (optional)"
               value={useCase}
               onChange={(e) => setUseCase(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             />
             <Button onClick={() => generateEscrow()} disabled={escrowLoading} className="w-full">
               {escrowLoading ? "Generating..." : "Generate escrow document"}

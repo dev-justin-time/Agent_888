@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Field";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -64,28 +65,25 @@ export default function SignUpPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
+            <Input
               type="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
               required
             />
-            <input
+            <Input
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
               required
             />
-            <input
+            <Input
               type="password"
               placeholder="Confirm password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
               required
             />
             {error && <p className="text-error text-sm">{error}</p>}

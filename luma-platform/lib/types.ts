@@ -1,4 +1,7 @@
+/** Domain types shared by API routes and client pages. */
+
 export type ProviderType = "navigator" | "counselor" | "peer";
+export type ApplicationStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface Provider {
   id: string;
@@ -15,6 +18,8 @@ export interface Provider {
 }
 
 export interface Hotline {
+  id: string;
+  locale: string;
   name: string;
   number: string;
   text: string;
@@ -25,9 +30,33 @@ export interface Grant {
   name: string;
   description: string;
   amount: string;
+  coverage: string;
   featured: boolean;
   rolling: boolean;
+  tags: string[];
   image?: string;
+}
+
+export interface ProviderApplication {
+  id: string;
+  userId: string;
+  name: string;
+  type: string;
+  cost: string;
+  description: string;
+  tags: string[];
+  status: ApplicationStatus;
+  createdAt: string;
+  user?: { email: string };
+}
+
+export interface AdminStats {
+  users: number;
+  applications: number;
+  hotlines: number;
+  grants: number;
+  providers: number;
+  pendingApplications: number;
 }
 
 export interface ChatMessage {
@@ -41,6 +70,10 @@ export interface EscrowDocument {
   designated_use: string;
   stewardship_strategy: string;
   disbursement_conditions: string;
+}
+
+export interface EscrowResult {
+  escrow_document: EscrowDocument;
 }
 
 export interface OutreachEmail {

@@ -1,113 +1,62 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { AdminNav } from "@/components/admin/AdminNav";
-import { SectionHeader } from "@/components/admin/SectionHeader";
+import { useState } from "react";
+import { Trash2, Edit, Plus } from "lucide-react";
+import { AdminPage } from "@/components/admin/AdminPage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
-import { Heart, Trash2, Edit, Plus, AlertCircle } from "lucide-react";
+import { ErrorAlert } from "@/components/ui/Feedback";
+import { Input, Textarea } from "@/components/ui/Field";
+import { useAdminCollection } from "@/lib/admin-client";
+import type { Grant } from "@/lib/types";
 
-interface Grant {
-  id: string;
-  name: string;
-  description: string;
-  amount: string;
-  coverage: string;
-  featured: boolean;
-  rolling: boolean;
-  tags: string[];
-}
+const EMPTY_FORM = {
+  name: "",
+  description: "",
+  amount: "",
+  coverage: "",
+  featured: false,
+  rolling: false,
+  tags: "",
+};
+
+const splitTags = (value: string) =>
+  value
+    .split(",")
+    .map((tag) => tag.trim().toLowerCase())
+    .filter(Boolean);
 
 export default function AdminGrantsPage() {
-  const { data: session, status } = useSession();
-  const [grants, setGrants] = useState<Grant[]>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    items: grants,
+    loading,
+    error,
+    mutate,
+  } = useAdminCollection<Grant>("/api/admin/grants", "Could not load grants.");
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState<Grant | null>(null);
-  const [form, setForm] = useState({
-    name: "",
-    description: "",
-    amount: "",
-    coverage: "",
-    featured: false,
-    rolling: false,
-    tags: "",
-  });
-
-  const fetchGrants = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/admin/grants");
-      const data = await res.json();
-      if (data.status === "success" && Array.isArray(data.data)) {
-        setGrants(data.data);
-      } else {
-        setError("Could not load grants.");
-      }
-    } catch {
-      setError("Could not load grants.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchGrants();
-  }, []);
+  const [form, setForm] = useState(EMPTY_FORM);
 
   const resetForm = () => {
-    setForm({ name: "", description: "", amount: "", coverage: "", featured: false, rolling: false, tags: "" });
+    setForm(EMPTY_FORM);
     setEditing(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
     setSaving(true);
-
-    const payload = {
-      ...form,
-      id: editing?.id,
-      tags: form.tags.split(",").map((t) => t.trim().toLowerCase()).filter(Boolean),
-    };
-
-    try {
-      const res = await fetch("/api/admin/grants", {
-        method: editing ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (data.status === "success") {
-        resetForm();
-        await fetchGrants();
-      } else {
-        setError(data.message || "Could not save grant.");
-      }
-    } catch {
-      setError("Could not save grant.");
-    } finally {
-      setSaving(false);
-    }
+    const saved = await mutate({
+      method: editing ? "PATCH" : "POST",
+      body: { ...form, id: editing?.id, tags: splitTags(form.tags) },
+    });
+    if (saved) resetForm();
+    setSaving(false);
   };
 
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this grant?")) return;
-    try {
-      const res = await fetch(`/api/admin/grants?id=${id}`, { method: "DELETE" });
-      const data = await res.json();
-      if (data.status === "success") {
-        await fetchGrants();
-      } else {
-        setError(data.message || "Could not delete grant.");
-      }
-    } catch {
-      setError("Could not delete grant.");
-    }
+    await mutate({ method: "DELETE", query: `?id=${id}` });
   };
 
   const startEdit = (grant: Grant) => {
@@ -123,57 +72,47 @@ export default function AdminGrantsPage() {
     });
   };
 
-  if (status === "loading" || loading) {
-    return <div className="text-center text-on-surface-variant animate-pulse py-12">Loading grants...</div>;
-  }
-
-  if (!session || session.user?.role !== "ADMIN") {
-    return <div className="text-center text-error py-12">You do not have permission to view this page.</div>;
-  }
-
   return (
-    <div className="max-w-6xl mx-auto">
-      <SectionHeader title="Manage Grants" description="Add, edit, and remove community grants and funding." />
-      <AdminNav />
-
+    <AdminPage
+      title="Manage Grants"
+      description="Add, edit, and remove community grants and funding."
+      loading={loading}
+      loadingText="Loading grants..."
+    >
       <GlassCard className="p-6 mb-8">
         <h3 className="font-headline-md text-headline-md text-on-surface mb-4">
           {editing ? "Edit Grant" : "Add Grant"}
         </h3>
         <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input
+          <Input
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
             placeholder="Grant name"
-            className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             required
           />
-          <input
+          <Input
             value={form.amount}
             onChange={(e) => setForm({ ...form, amount: e.target.value })}
             placeholder="Amount (e.g. Up to $5,000)"
-            className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             required
           />
-          <input
+          <Input
             value={form.coverage}
             onChange={(e) => setForm({ ...form, coverage: e.target.value })}
             placeholder="Coverage (e.g. US, Global)"
-            className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             required
           />
-          <input
+          <Input
             value={form.tags}
             onChange={(e) => setForm({ ...form, tags: e.target.value })}
             placeholder="Tags (comma separated)"
-            className="bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
           />
           <div className="md:col-span-2">
-            <textarea
+            <Textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               placeholder="Description"
-              className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none min-h-[100px]"
+              className="min-h-[100px]"
               required
             />
           </div>
@@ -200,7 +139,13 @@ export default function AdminGrantsPage() {
           <div className="md:col-span-2 flex gap-3">
             <Button type="submit" disabled={saving} className="flex items-center gap-2">
               {editing ? <Edit size={16} /> : <Plus size={16} />}
-              {saving ? (editing ? "Updating..." : "Adding...") : editing ? "Update Grant" : "Add Grant"}
+              {saving
+                ? editing
+                  ? "Updating..."
+                  : "Adding..."
+                : editing
+                  ? "Update Grant"
+                  : "Add Grant"}
             </Button>
             {editing && (
               <Button type="button" variant="outline" onClick={resetForm} disabled={saving}>
@@ -209,12 +154,7 @@ export default function AdminGrantsPage() {
             )}
           </div>
         </form>
-        {error && (
-          <div className="mt-4 flex items-center gap-2 text-error text-sm">
-            <AlertCircle size={16} />
-            {error}
-          </div>
-        )}
+        <ErrorAlert message={error} className="mt-4" />
       </GlassCard>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -243,7 +183,9 @@ export default function AdminGrantsPage() {
                   </button>
                 </div>
               </div>
-              <h4 className="font-headline-md text-headline-md text-on-surface mb-1">{grant.name}</h4>
+              <h4 className="font-headline-md text-headline-md text-on-surface mb-1">
+                {grant.name}
+              </h4>
               <p className="text-primary font-display-lg text-xl mb-2">{grant.amount}</p>
               <p className="text-on-surface-variant text-body-md mb-3">{grant.description}</p>
               <div className="flex flex-wrap gap-2 mb-2">
@@ -256,6 +198,6 @@ export default function AdminGrantsPage() {
           </GlassCard>
         ))}
       </div>
-    </div>
+    </AdminPage>
   );
 }

@@ -1,34 +1,20 @@
-import { NextResponse } from "next/server";
-import { requireAdmin, forbidden } from "@/lib/admin";
 import { prisma } from "@/lib/prisma";
+import { adminRoute } from "@/lib/admin";
+import { ok } from "@/lib/api";
 
-export async function GET() {
-  const session = await requireAdmin();
-  if (!session) return forbidden();
+export const GET = adminRoute(
+  { label: "Admin stats error", fallback: "Could not load stats" },
+  async () => {
+    const [users, applications, hotlines, grants, providers, pendingApplications] =
+      await Promise.all([
+        prisma.user.count(),
+        prisma.providerApplication.count(),
+        prisma.hotline.count(),
+        prisma.grant.count(),
+        prisma.provider.count(),
+        prisma.providerApplication.count({ where: { status: "PENDING" } }),
+      ]);
 
-  try {
-    const [users, applications, hotlines, grants, providers, pendingApplications] = await Promise.all([
-      prisma.user.count(),
-      prisma.providerApplication.count(),
-      prisma.hotline.count(),
-      prisma.grant.count(),
-      prisma.provider.count(),
-      prisma.providerApplication.count({ where: { status: "PENDING" } }),
-    ]);
-
-    return NextResponse.json({
-      status: "success",
-      data: {
-        users,
-        applications,
-        hotlines,
-        grants,
-        providers,
-        pendingApplications,
-      },
-    });
-  } catch (error) {
-    console.error("Admin stats error:", error);
-    return NextResponse.json({ status: "error", message: "Could not load stats" }, { status: 500 });
+    return ok({ users, applications, hotlines, grants, providers, pendingApplications });
   }
-}
+);

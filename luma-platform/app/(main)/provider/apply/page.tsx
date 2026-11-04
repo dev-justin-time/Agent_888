@@ -5,6 +5,8 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
+import { Input, Select, Textarea } from "@/components/ui/Field";
+import { LoadingState } from "@/components/ui/Feedback";
 
 const PROVIDER_TYPES = ["navigator", "counselor", "peer"];
 
@@ -50,7 +52,7 @@ export default function ProviderApplyPage() {
   };
 
   if (status === "loading") {
-    return <div className="text-center text-on-surface-variant animate-pulse">Loading...</div>;
+    return <LoadingState />;
   }
 
   if (!session) {
@@ -85,46 +87,39 @@ export default function ProviderApplyPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
+          <Input
             type="text"
             placeholder="Provider / organization name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             required
           />
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface focus:ring-2 focus:ring-primary/50 outline-none"
-          >
+          <Select value={type} onChange={(e) => setType(e.target.value)}>
             {PROVIDER_TYPES.map((t) => (
               <option key={t} value={t}>
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </option>
             ))}
-          </select>
-          <input
+          </Select>
+          <Input
             type="text"
             placeholder="Cost / sliding scale (e.g. Pro Bono, $25/session)"
             value={cost}
             onChange={(e) => setCost(e.target.value)}
-            className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
             required
           />
-          <textarea
+          <Textarea
             placeholder="Description of your practice or community"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none min-h-[120px]"
+            className="min-h-[120px]"
             required
           />
-          <input
+          <Input
             type="text"
             placeholder="Tags (comma separated)"
             value={tags}
             onChange={(e) => setTags(e.target.value)}
-            className="w-full bg-surface-container/50 border border-white/10 rounded-xl px-4 py-3 text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
           />
           {result && (
             <p className={result.status === "success" ? "text-primary text-sm" : "text-error text-sm"}>

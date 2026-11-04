@@ -1,106 +1,48 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { AdminNav } from "@/components/admin/AdminNav";
-import { SectionHeader } from "@/components/admin/SectionHeader";
+import { useState } from "react";
+import { Check, X, FileText } from "lucide-react";
+import { AdminPage } from "@/components/admin/AdminPage";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
-import { Check, X, FileText, AlertCircle } from "lucide-react";
+import { ErrorAlert } from "@/components/ui/Feedback";
+import { useAdminCollection } from "@/lib/admin-client";
+import type { ApplicationStatus, ProviderApplication } from "@/lib/types";
 
-interface ProviderApplication {
-  id: string;
-  userId: string;
-  name: string;
-  type: string;
-  cost: string;
-  description: string;
-  tags: string[];
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  createdAt: string;
-  user?: { email: string };
-}
+const FILTERS = ["ALL", "PENDING", "APPROVED", "REJECTED"] as const;
+type Filter = (typeof FILTERS)[number];
 
 export default function AdminApplicationsPage() {
-  const { data: session, status } = useSession();
-  const [applications, setApplications] = useState<ProviderApplication[]>([]);
-  const [filter, setFilter] = useState<"ALL" | "PENDING" | "APPROVED" | "REJECTED">("ALL");
-  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<Filter>("ALL");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  const fetchApplications = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const url = filter === "ALL" ? "/api/admin/applications" : `/api/admin/applications?status=${filter}`;
-      const res = await fetch(url);
-      const data = await res.json();
-      if (data.status === "success" && Array.isArray(data.data)) {
-        setApplications(data.data);
-      } else {
-        setError("Could not load applications.");
-      }
-    } catch {
-      setError("Could not load applications.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const endpoint =
+    filter === "ALL" ? "/api/admin/applications" : `/api/admin/applications?status=${filter}`;
+  const {
+    items: applications,
+    loading,
+    error,
+    mutate,
+  } = useAdminCollection<ProviderApplication>(endpoint, "Could not load applications.");
 
-  useEffect(() => {
-    fetchApplications();
-  }, [filter]);
-
-  const updateStatus = async (id: string, newStatus: "APPROVED" | "REJECTED") => {
+  const updateStatus = async (id: string, status: Extract<ApplicationStatus, "APPROVED" | "REJECTED">) => {
     setUpdatingId(id);
-    setError(null);
-    try {
-      const res = await fetch("/api/admin/applications", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, status: newStatus }),
-      });
-
-      const data = await res.json();
-      if (data.status === "success") {
-        await fetchApplications();
-      } else {
-        setError(data.message || "Could not update application.");
-      }
-    } catch {
-      setError("Could not update application.");
-    } finally {
-      setUpdatingId(null);
-    }
+    await mutate({ method: "PATCH", body: { id, status } });
+    setUpdatingId(null);
   };
-
-  if (status === "loading" || loading) {
-    return <div className="text-center text-on-surface-variant animate-pulse py-12">Loading applications...</div>;
-  }
-
-  if (!session || session.user?.role !== "ADMIN") {
-    return <div className="text-center text-error py-12">You do not have permission to view this page.</div>;
-  }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <SectionHeader
-        title="Review Applications"
-        description="Approve or reject provider applications. Approving creates a public provider listing."
-      />
-      <AdminNav />
-
-      {error && (
-        <div className="mb-4 flex items-center gap-2 text-error text-sm">
-          <AlertCircle size={16} />
-          {error}
-        </div>
-      )}
+    <AdminPage
+      title="Review Applications"
+      description="Approve or reject provider applications. Approving creates a public provider listing."
+      loading={loading}
+      loadingText="Loading applications..."
+    >
+      <ErrorAlert message={error} className="mb-4" />
 
       <div className="flex flex-wrap gap-2 mb-6">
-        {(["ALL", "PENDING", "APPROVED", "REJECTED"] as const).map((f) => (
+        {FILTERS.map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -125,7 +67,9 @@ export default function AdminApplicationsPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <FileText size={18} className="text-primary" />
-                  <h4 className="font-headline-md text-headline-md text-on-surface">{application.name}</h4>
+                  <h4 className="font-headline-md text-headline-md text-on-surface">
+                    {application.name}
+                  </h4>
                   <Chip active={application.status === "PENDING"}>{application.status}</Chip>
                 </div>
                 <p className="text-on-surface-variant text-sm mb-1">
@@ -134,14 +78,18 @@ export default function AdminApplicationsPage() {
                 <p className="text-on-surface-variant text-sm mb-2">
                   <span className="text-primary">Cost:</span> {application.cost}
                 </p>
-                <p className="text-on-surface-variant text-body-md mb-3">{application.description}</p>
+                <p className="text-on-surface-variant text-body-md mb-3">
+                  {application.description}
+                </p>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {application.tags.map((tag) => (
                     <Chip key={tag}>{tag}</Chip>
                   ))}
                 </div>
                 {application.user?.email && (
-                  <p className="text-on-surface-variant text-xs mt-2">Applicant: {application.user.email}</p>
+                  <p className="text-on-surface-variant text-xs mt-2">
+                    Applicant: {application.user.email}
+                  </p>
                 )}
               </div>
               {application.status === "PENDING" && (
@@ -167,6 +115,6 @@ export default function AdminApplicationsPage() {
           </GlassCard>
         ))}
       </div>
-    </div>
+    </AdminPage>
   );
 }

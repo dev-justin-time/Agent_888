@@ -114,6 +114,15 @@ export const ApplicationUpdateSchema = z.object({
   status: ApplicationStatusEnum,
 });
 
+/** PATCH bodies carry the record id alongside the editable fields. */
+export const HotlineUpdateSchema = HotlineSchema.extend({
+  id: z.string().min(1, "Hotline id is required"),
+});
+
+export const GrantUpdateSchema = GrantSchema.extend({
+  id: z.string().min(1, "Grant id is required"),
+});
+
 /** Validates the LLM-generated escrow document (see /api/generate-escrow). */
 export const EscrowDocumentSchema = z.object({
   document_title: z.string().min(1),

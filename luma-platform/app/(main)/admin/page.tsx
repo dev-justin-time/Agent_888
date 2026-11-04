@@ -1,68 +1,52 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Users, Phone, Heart, Briefcase, FileText } from "lucide-react";
-import { AdminNav } from "@/components/admin/AdminNav";
+import { AdminPage } from "@/components/admin/AdminPage";
 import { StatCard } from "@/components/admin/StatCard";
-import { SectionHeader } from "@/components/admin/SectionHeader";
 import { Button } from "@/components/ui/Button";
-
-interface Stats {
-  users: number;
-  applications: number;
-  hotlines: number;
-  grants: number;
-  providers: number;
-  pendingApplications: number;
-}
+import { ErrorAlert } from "@/components/ui/Feedback";
+import type { AdminStats } from "@/lib/types";
 
 export default function AdminDashboardPage() {
-  const { data: session, status } = useSession();
-  const [stats, setStats] = useState<Stats | null>(null);
+  const [stats, setStats] = useState<AdminStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/admin/stats")
-      .then((r) => (r.ok ? r.json() : { status: "error" }))
-      .then((res) => {
-        if (res.status === "success" && res.data) {
-          setStats(res.data);
+    let active = true;
+
+    (async () => {
+      try {
+        const res = await fetch("/api/admin/stats");
+        const json = await res.json();
+        if (!active) return;
+        if (json.status === "success" && json.data) {
+          setStats(json.data);
         } else {
           setError("Could not load dashboard stats.");
         }
-      })
-      .catch(() => setError("Could not load dashboard stats."))
-      .finally(() => setLoading(false));
+      } catch {
+        if (active) setError("Could not load dashboard stats.");
+      } finally {
+        if (active) setLoading(false);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
-  if (status === "loading" || loading) {
-    return (
-      <div className="text-center text-on-surface-variant animate-pulse py-12">
-        Loading dashboard...
-      </div>
-    );
-  }
-
-  if (!session || session.user?.role !== "ADMIN") {
-    return (
-      <div className="text-center text-error py-12">
-        You do not have permission to view this page.
-      </div>
-    );
-  }
-
   return (
-    <div className="max-w-6xl mx-auto">
-      <SectionHeader
-        title="Admin Dashboard"
-        description="Manage hotlines, grants, and provider applications."
-      />
-      <AdminNav />
-
-      {error && <p className="text-error text-sm mb-6">{error}</p>}
+    <AdminPage
+      title="Admin Dashboard"
+      description="Manage hotlines, grants, and provider applications."
+      loading={loading}
+      loadingText="Loading dashboard..."
+    >
+      <ErrorAlert message={error} className="mb-6" />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
         <StatCard label="Users" value={stats?.users ?? 0} icon={<Users size={24} />} />
@@ -87,6 +71,6 @@ export default function AdminDashboardPage() {
           <Button variant="outline">Review Applications</Button>
         </Link>
       </div>
-    </div>
+    </AdminPage>
   );
 }
