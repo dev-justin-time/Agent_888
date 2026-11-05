@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import type { TopCall } from "@/data/top-calls";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { SearchInput } from "@/components/ui/Field";
 import { cn } from "@/lib/utils";
 
 interface TopQuestionsProps {
@@ -52,19 +53,14 @@ export default function TopQuestions({
         </p>
       </div>
 
-      <div className="relative mb-3">
-        <Search
-          size={14}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
-        />
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder={placeholder}
-          className="w-full pl-9 pr-4 py-2 bg-surface-container/50 border border-white/10 rounded-full text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
-        />
-      </div>
+      <SearchInput
+        wrapperClassName="mb-3"
+        iconSize={14}
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder={placeholder}
+        className="pl-9 py-2 text-sm"
+      />
 
       <div className="flex flex-wrap gap-2 max-h-44 overflow-y-auto pr-1">
         {shown.map((call) => (

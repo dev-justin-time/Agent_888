@@ -17,10 +17,10 @@
 | Duplicated admin role guard / loading / error blocks | Low | **Resolved** |
 | Agent startup + trigger boilerplate | Medium | **Resolved** |
 | Navigator prompt + safety pipeline | Medium-High | **Resolved** |
-| `glass-card` class string bypassing `GlassCard` | Medium | **Resolved** (7 sites) |
+| `glass-card` class string bypassing `GlassCard` | Medium | **Resolved** (11 sites) |
 | Per-block npm scripts (13 → 2) | Low | **Resolved** |
 | `billed_amount: 0` in every block payload | Low | **Resolved** |
-| Pill search-input class string | Low | **Open** — §2.1 |
+| Pill search-input class string | Low | **Resolved** (4 sites) |
 
 ---
 
@@ -37,7 +37,8 @@
 | Hotline `US` fallback + grants query (and the drifted tag parsing) | `lib/resources.ts` — `getHotline`, `getGrants` | `app/api/resources`, `blocks/luma-resources` |
 | Message bubble, typing dots, prompt chips, composer, scroll-to-end ref | `components/chat/ChatUI.tsx` — `MessageBubble`, `TypingBubble`, `PromptChips`, `ChatComposer`, `useAutoScroll` | `app/(main)/navigate`, `app/(main)/experts/[topic]` |
 | `NAVIGATOR_PROMPT` + crisis → continuity → LLM order (and the drifted marker handling) | `agents/lib/navigator.ts` — `navigateReply`, `NAVIGATOR_PROMPT`, `RESOURCE_MARKER` | `app/api/chat`, `blocks/luma-navigator` |
-| Hand-written `glass-card inner-glow rounded-2xl` panels (7 sites) | `components/ui/GlassCard.tsx` — `<GlassCard hover={false}>` | `community`, `resources`, `questions`, `experts`, `experts/[topic]`, `TopQuestions`, `ChatUI` |
+| Hand-written `glass-card inner-glow` panels (11 sites) | `components/ui/GlassCard.tsx` — `<GlassCard>` with `shape` (`rounded`/`square`/`pill`/`bubble`) and `as` | `community`, `resources`, `questions`, `experts`, `experts/[topic]`, `navigate`, `app/page`, `TopQuestions`, `ChatUI` |
+| Pill search field (relative wrapper + leading icon + `rounded-full` classes) | `components/ui/Field.tsx` — `SearchInput` | `community`, `experts`, `questions`, `TopQuestions` |
 | 12 `blocks:run:*` scripts + 2 hand-chained publish commands | `scripts/blocks.mjs` — one manifest of billing mode, listing, and price | `npm run blocks:run -- <block>`, `npm run blocks:publish [-- free\|paid]` |
 | `billed_amount: 0` in every block success payload | `blocks/shared/handler-utils.ts` — `jsonSuccess` | 6 block handlers |
 | Admin PATCH body shape (id + fields) | `lib/validation.ts` — `HotlineUpdateSchema`, `GrantUpdateSchema` | admin hotlines, grants |
@@ -52,25 +53,13 @@
 
 ## 2. Still worth doing
 
-### 2.1 Pill search input duplicated 4× (Low)
-
-`community/page.tsx`, `experts/page.tsx`, `questions/page.tsx`, `TopQuestions.tsx` each
-repeat the `rounded-full pl-9/10/11 … placeholder:text-on-surface-variant/50` string with
-only padding differing.
-
-**Recommendation:** a `SearchInput` in `components/ui/Field.tsx` (icon slot + `Input`
-with `rounded-full`), or expose a `shape="pill"` variant on `Input`.
+Nothing outstanding: every item cataloged in this report has been merged into a shared
+module. Append new findings here as they are confirmed.
 
 ---
 
 ## 3. Intentional, leave alone
 
-- **Squared `glass-card` callouts and the two chat shapes**: the privacy panel in
-  `app/page.tsx`, the matching panel in `app/(main)/experts/page.tsx`, the luma message
-  bubble, and the composer keep their hand-written classes. `cn` is a plain `join`
-  (`lib/utils.ts`), not tailwind-merge, so a `rounded-none` / `rounded-full` passed to
-  `<GlassCard>` cannot beat its `rounded-2xl` except by stylesheet order. Converting them
-  would change corners, so they wait until `cn` becomes tailwind-merge.
 - **`lib/validation.ts` enums** (`ProviderTypeEnum`, `ApplicationStatusEnum`,
   `ExpertTopicEnum`): `prisma/schema.prisma` declares **no** enums — SQLite stores plain
   strings — so validation is the single source of truth. v1's "derive from the Prisma
@@ -123,12 +112,10 @@ the same change — the two cannot be split, or lint breaks again.
 
 ## 6. Suggested order for the next pass
 
-The block trigger scripts and expert handlers were collapsed after this list was first
-written (`blocks/shared/run-trigger.ts`, `blocks/shared/expert-handler.ts` — 19 files,
-−460/+74 lines), as was the app↔agent duplication (`lib/providers.ts`,
-`lib/resources.ts`), the chat surface (`components/chat/ChatUI.tsx`), and the navigator
-pipeline (`agents/lib/navigator.ts`), the `GlassCard` migration (7 sites), the per-block
-scripts (`scripts/blocks.mjs`), and the `billed_amount` default (`jsonSuccess`), so none
-of them appear below.
+Nothing is queued. Every duplication this report tracked has been merged into a shared
+module — §1 maps each one to its new home, and §3 records the cases left alone on purpose.
 
-1. **`SearchInput` (§2.1)** — the last duplicated class string.
+The last two passes closed the shapes that used to be exceptions: `GlassCard` now takes
+`shape` (`rounded`/`square`/`pill`/`bubble`) and `as`, so the square accent callouts, the
+luma bubble, and the composer no longer carry hand-written classes; and the four pill
+search fields share `SearchInput`.

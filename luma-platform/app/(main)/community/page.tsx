@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Shield, CheckCircle2, ExternalLink, Users, Search, Filter, Sparkles } from "lucide-react";
+import { Shield, CheckCircle2, ExternalLink, Users, Filter, Sparkles } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { SearchInput } from "@/components/ui/Field";
 import { Chip } from "@/components/ui/Chip";
 import { Button } from "@/components/ui/Button";
 import { COMMUNITY_TOP_CALLS } from "@/data/top-calls";
@@ -113,16 +114,14 @@ export default function CommunityPage() {
       </GlassCard>
 
       <GlassCard className="p-4 flex flex-col md:flex-row gap-4 items-center">
-        <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50" size={18} />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search providers, tags, or descriptions..."
-            className="w-full pl-10 pr-4 py-2 bg-surface-container/50 border border-white/10 rounded-full text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
-          />
-        </div>
+        <SearchInput
+          wrapperClassName="flex-1 w-full"
+          iconSize={18}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search providers, tags, or descriptions..."
+          className="pl-10 py-2"
+        />
         <div className="flex items-center gap-2 w-full md:w-auto">
           <Filter size={18} className="text-on-surface-variant/60" />
           <select

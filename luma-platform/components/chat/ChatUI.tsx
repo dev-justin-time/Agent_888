@@ -23,22 +23,50 @@ export function MessageBubble({
   urgent?: boolean;
 }) {
   const isUser = role === "user";
+  const bubble = "max-w-[85%] p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-xl";
+  const body = (
+    <>
+      {!isUser && <Heart size={14} className="text-pink-400 inline mr-2 mb-1" />}
+      {text}
+    </>
+  );
+
+  if (isUser) {
+    return (
+      <div className="flex justify-end">
+        <div
+          className={cn(
+            bubble,
+            "bg-primary/20 text-primary rounded-[24px_24px_4px_24px] border border-primary/30"
+          )}
+        >
+          {body}
+        </div>
+      </div>
+    );
+  }
+
+  if (urgent) {
+    return (
+      <div className="flex justify-start">
+        <div
+          className={cn(
+            bubble,
+            "bg-error/15 text-error border border-error/40 rounded-[24px_24px_24px_4px]"
+          )}
+        >
+          {body}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
-      <div
-        className={cn(
-          "max-w-[85%] p-4 text-sm leading-relaxed whitespace-pre-wrap shadow-xl",
-          isUser
-            ? "bg-primary/20 text-primary rounded-[24px_24px_4px_24px] border border-primary/30"
-            : urgent
-              ? "bg-error/15 text-error border border-error/40 rounded-[24px_24px_24px_4px]"
-              : "glass-card inner-glow chat-bubble-luma text-on-surface"
-        )}
-      >
-        {!isUser && <Heart size={14} className="text-pink-400 inline mr-2 mb-1" />}
-        {text}
-      </div>
+    <div className="flex justify-start">
+      {/* `bubble` shape adds no radius — `.chat-bubble-luma` supplies the asymmetric one. */}
+      <GlassCard shape="bubble" hover={false} className={cn(bubble, "chat-bubble-luma text-on-surface")}>
+        {body}
+      </GlassCard>
     </div>
   );
 }
@@ -102,22 +130,24 @@ export function ChatComposer({
         e.preventDefault();
         onSubmit();
       }}
-      className="mt-4 glass-card inner-glow rounded-full px-4 py-3 flex items-center gap-3 border border-white/10"
+      className="mt-4"
     >
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md"
-      />
-      <button
-        type="submit"
-        disabled={!value.trim() || busy}
-        className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-inverse-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-90 transition-all disabled:opacity-50"
-      >
-        <Send size={18} />
-      </button>
+      <GlassCard shape="pill" hover={false} className="px-4 py-3 flex items-center gap-3">
+        <input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/50 font-body-md"
+        />
+        <button
+          type="submit"
+          disabled={!value.trim() || busy}
+          className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-inverse-primary flex items-center justify-center text-on-primary shadow-lg shadow-primary/20 hover:scale-105 active:scale-90 transition-all disabled:opacity-50"
+        >
+          <Send size={18} />
+        </button>
+      </GlassCard>
     </form>
   );
 }

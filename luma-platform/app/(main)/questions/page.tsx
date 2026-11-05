@@ -2,8 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { BookOpen, ArrowRight, Search, ChevronDown, Sparkles } from "lucide-react";
+import { BookOpen, ArrowRight, ChevronDown, Sparkles, Search } from "lucide-react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { SearchInput } from "@/components/ui/Field";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
 import { EXPERT_TOPICS } from "@/lib/constants";
 import {
@@ -195,16 +196,13 @@ export default function QuestionsPage() {
           }}
           className="relative"
         >
-          <Search
-            size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
-          />
-          <input
-            type="text"
+          <SearchInput
+            iconSize={18}
+            iconClassName="left-4"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search all questions — try 'eviction', 'STAR method', 'gift card scam', 'overwhelmed'…"
-            className="w-full pl-11 pr-4 py-3 bg-surface-container/50 border border-white/10 rounded-full text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
+            className="pl-11 py-3 text-sm"
           />
         </form>
 

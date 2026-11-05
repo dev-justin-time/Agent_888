@@ -78,7 +78,12 @@ export default function LandingPage() {
         </Link>
       </section>
 
-      <section className="mt-12 flex items-start gap-4 glass-card inner-glow p-6 border-l-4 border-l-primary/50">
+      <GlassCard
+        as="section"
+        shape="square"
+        hover={false}
+        className="mt-12 flex items-start gap-4 p-6 border-l-4 border-l-primary/50"
+      >
         <Shield className="text-primary flex-shrink-0 mt-1" size={24} />
         <div>
           <h4 className="font-headline-md text-headline-md text-on-surface mb-2">Privacy First</h4>
@@ -86,7 +91,7 @@ export default function LandingPage() {
             No records are kept. No accounts required. Your session is completely anonymous.
           </p>
         </div>
-      </section>
+      </GlassCard>
     </MainLayout>
   );
 }

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Sparkles, Shield, Cpu, Search, ArrowRight } from "lucide-react";
 import { EXPERT_TOPICS } from "@/lib/constants";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { SearchInput } from "@/components/ui/Field";
 import { ExpertIcon } from "@/components/experts/ExpertIcon";
 
 const QUICK_SEARCHES = [
@@ -64,18 +65,14 @@ export default function ExpertsPage() {
             e.preventDefault();
             router.push(`/questions?q=${encodeURIComponent(quick)}`);
           }}
-          className="relative mt-4"
+          className="mt-4"
         >
-          <Search
-            size={16}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/50"
-          />
-          <input
-            type="text"
+          <SearchInput
+            iconClassName="left-4"
             value={quick}
             onChange={(e) => setQuick(e.target.value)}
             placeholder="Search 600 questions — e.g. eviction, STAR method, gift card scam…"
-            className="w-full pl-10 pr-4 py-2.5 bg-surface-container/50 border border-white/10 rounded-full text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:ring-2 focus:ring-primary/50 outline-none"
+            className="pl-10 py-2.5 text-sm"
           />
         </form>
 
@@ -120,7 +117,12 @@ export default function ExpertsPage() {
         ))}
       </section>
 
-      <section className="flex items-start gap-4 glass-card inner-glow p-6 border-l-4 border-l-primary/50">
+      <GlassCard
+        as="section"
+        shape="square"
+        hover={false}
+        className="flex items-start gap-4 p-6 border-l-4 border-l-primary/50"
+      >
         <Shield className="text-primary flex-shrink-0 mt-1" size={24} />
         <div>
           <h4 className="font-headline-md text-headline-md text-on-surface mb-2">
@@ -135,7 +137,7 @@ export default function ExpertsPage() {
             human for serious matters.
           </p>
         </div>
-      </section>
+      </GlassCard>
     </div>
   );
 }
